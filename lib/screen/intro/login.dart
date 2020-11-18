@@ -5,22 +5,25 @@ import 'package:crypto_template/screen/intro/signup.dart';
 import 'package:crypto_template/screen/setting/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_template/component/style.dart';
+import 'package:crypto_template/Network/signup.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
-class login extends StatefulWidget {
+// ignore: camel_case_types, must_be_immutable
+class LoginNow extends StatefulWidget {
   ThemeBloc themeBloc;
-  login({this.themeBloc});
+  LoginNow({this.themeBloc});
   @override
-  _loginState createState() => _loginState(themeBloc);
+  _LoginNowState createState() => _LoginNowState(themeBloc);
 }
 
-class _loginState extends State<login> {
+// ignore: camel_case_types
+class _LoginNowState extends State<LoginNow> {
   ThemeBloc _themeBloc;
-  _loginState(this._themeBloc);
-  @override
+  _LoginNowState(this._themeBloc);
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  String _email, _pass;
+  String email, password;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -62,12 +65,11 @@ class _loginState extends State<login> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Image.asset("assets/image/logo.png", height: 35.0),
                             Padding(
                               padding:
                                   const EdgeInsets.only(left: 17.0, top: 7.0),
                               child: Text(
-                                "Crypto",
+                                "Login",
                                 style: TextStyle(
                                     fontFamily: "Sans",
                                     color: Colors.white,
@@ -104,12 +106,13 @@ class _loginState extends State<login> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 10.0),
                                     child: TextFormField(
+                                      // ignore: missing_return
                                       validator: (input) {
                                         if (input.isEmpty) {
-                                          return 'Please typle an email';
+                                          return 'Please type an email';
                                         }
                                       },
-                                      onSaved: (input) => _email = input,
+                                      onSaved: (input) => email = input,
                                       style: new TextStyle(color: Colors.white),
                                       textAlign: TextAlign.start,
                                       controller: _emailController,
@@ -171,12 +174,13 @@ class _loginState extends State<login> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 10.0),
                                     child: TextFormField(
+                                      // ignore: missing_return
                                       validator: (input) {
                                         if (input.isEmpty) {
-                                          return 'Please typle an password';
+                                          return 'Please type an password';
                                         }
                                       },
-                                      onSaved: (input) => _pass = input,
+                                      onSaved: (input) => password = input,
                                       style: new TextStyle(color: Colors.white),
                                       textAlign: TextAlign.start,
                                       controller: _passwordController,
@@ -241,14 +245,23 @@ class _loginState extends State<login> {
                         padding: const EdgeInsets.only(
                             left: 20.0, right: 20.0, top: 40.0),
                         child: GestureDetector(
-                          onTap: () {
+                          onTap: () async {
                             final formState = _formKey.currentState;
                             if (formState.validate()) {
                               formState.save();
-                              Navigator.of(context).pushReplacement(
-                                  PageRouteBuilder(
-                                      pageBuilder: (_, __, ___) =>
-                                          bottomNavBar(themeBloc: _themeBloc)));
+                              var ressp = await login(email, password);
+                              if (ressp == 200){
+                                Navigator.of(context).pushReplacement(
+                                    PageRouteBuilder(
+                                        pageBuilder: (_, __, ___) =>
+                                            bottomNavBar(themeBloc: _themeBloc)));
+                              } else {
+                                Alert(
+                                  context: context,
+                                  title: "Error",
+                                  desc: ressp,
+                                ).show();
+                              }
                             }
                           },
                           child: Container(

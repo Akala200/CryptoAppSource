@@ -260,9 +260,9 @@ class _cardDetailHomeState extends State<cardDetailHome> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
-              item.valueMarket,
+              item.name,
               style: TextStyle(
-                  color: item.chartColor,
+                  color: Colors.green,
                   fontSize: 36.0,
                   fontFamily: "Sans",
                   fontWeight: FontWeight.w700),
@@ -321,8 +321,8 @@ class _cardDetailHomeState extends State<cardDetailHome> {
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0),
                   child: Text(
-                    item.valuePercent,
-                    style: TextStyle(color: item.chartColor),
+                    item.name,
+                    style: TextStyle(color: Colors.green),
                   ),
                 ),
               ],
@@ -355,11 +355,11 @@ class _cardDetailHomeState extends State<cardDetailHome> {
         data: item.data,
         lineWidth: 0.3,
         fillMode: FillMode.below,
-        lineColor: item.chartColor,
+        lineColor: Colors.green,
         fillGradient: new LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: item.chartColorGradient,
+          colors: [Colors.green,Colors.blue,Colors.blueGrey,],
         ),
       ),
     );

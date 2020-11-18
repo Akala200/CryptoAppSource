@@ -1,56 +1,48 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class gridHome {
-  String name,image,valueMarket,valuePercent;
-  Color chartColor;
-  List<Color> chartColorGradient;
-  var data;
-  gridHome({this.image,this.name,this.data,this.chartColor,this.valueMarket,this.valuePercent,this.chartColorGradient});
+
+final storage = new FlutterSecureStorage();
+
+Future <List<gridHome>> getListHome() async {
+  String value = await storage.read(key: "tokenize");
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String token = prefs.getString('token');
+
+  var url = "https://coinzz.herokuapp.com/api/mobile"; // iOS
+  final http.Response response = await http.get(
+    url,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Accept': 'application/json',
+      'authorization': '$token',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    var st = jsonDecode(response.body);
+    List<gridHome> _list =  List<gridHome>();
+    for (var u in st) {
+      //_list.add(gainers(pair: u["currency"], lastPrice: u["price"], chg: u["percentage_change"]));
+      _list.add(gridHome(name: u["currency"], data: u["prices"].cast<double>().toList()));
+    }
+    return _list;
+  } else {
+    var st = jsonDecode(response.body);
+    var status = st["message"];
+    return status;
+  }
 }
 
-List<gridHome> listGridHome = [
-gridHome(
-  name: "LTC/USDT",
-  image: "Test",
-  chartColor: Colors.greenAccent,
-  valueMarket: "56.03",
-  valuePercent: "0.32%",
-  chartColorGradient: [Colors.greenAccent.withOpacity(0.2), Colors.greenAccent.withOpacity(0.01)],
-  data: [
-    0.0, 0.5, 0.9, 1.4, 2.2, 1.0,3.3,0.0, -0.5, -1.0, -0.5, 0.0, 0.0
-  ]
-),
-gridHome(
-  name: "BTC/USDT",
-  image: "Test",
-  chartColor: Colors.greenAccent,
-  valueMarket: "3873.98",
-  valuePercent: "0.14%",
-  chartColorGradient: [Colors.greenAccent.withOpacity(0.2), Colors.greenAccent.withOpacity(0.01)],
-  data: [
-    0.0, -0.3, -0.5, -0.1, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0,
-  ]
-),
-gridHome(
-  name: "ETH/USDT",
-  image: "Test",
-  valueMarket: "132.20",
-  valuePercent: "0.34%",
-  chartColor: Colors.redAccent,
-  chartColorGradient: [Colors.redAccent.withOpacity(0.2), Colors.redAccent.withOpacity(0.01)],
-  data: [
-    0.0, 1.0, 1.5, 2.0, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0
-  ]
-),
-gridHome(
-  name: "XRP/USDT",
-  image: "Test",
-  valueMarket: "0.31",
-  valuePercent: "0.53%",
-  chartColor: Colors.greenAccent,
-  chartColorGradient: [Colors.greenAccent.withOpacity(0.2), Colors.greenAccent.withOpacity(0.01)],
-  data: [
-    0.0, 1.0, 1.5, 2.0,1.8, 1.7, 1.6, 1.67,1.4, 1.2, 1.5, 2.0,0.7,1.1, 2.2, 1.5, 2.0,1.8, 1.7, 1.6, 1.67,1.4, 1.2, 1.5, 0.5, -0.5, -0.7, -0.5, 0.0, 0.0
-  ]
-),
-];
+
+class gridHome {
+  String name;
+  var data;
+  gridHome({this.name,this.data});
+}
+

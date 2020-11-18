@@ -5,7 +5,12 @@ import 'package:crypto_template/screen/setting/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:crypto_template/screen/setting/setting.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:crypto_template/screen/home/home.dart';
+import 'package:crypto_template/screen/intro/login.dart';
 
+final storage = new FlutterSecureStorage();
 /// Run first apps open
 void main() {
   runApp(myApp());
@@ -84,9 +89,29 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   /// To navigate layout change
-  void NavigatorPage() {
-    Navigator.of(context).pushReplacementNamed("onBoarding");
+  void NavigatorPage() async {
+    String value = await storage.read(key: "tokenize");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String uid = await prefs.getString('id');
+    String token = await prefs.getString('token');
+
+
+    if(token != null){
+      Navigator.of(context).pushReplacement(
+          PageRouteBuilder(
+              pageBuilder: (_, __, ___) =>
+                  bottomNavBar(themeBloc: themeBloc)));
+    } else if(uid != null){
+      Navigator.of(context)
+          .pushReplacement(PageRouteBuilder(
+          pageBuilder: (_, __, ___) => new LoginNow(
+            themeBloc: themeBloc,
+          )));
+    } else {
+      Navigator.of(context).pushReplacementNamed("onBoarding");
+    }
   }
+
 
   /// Declare startTime to InitState
   @override

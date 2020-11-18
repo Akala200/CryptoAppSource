@@ -1,58 +1,46 @@
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+
+final storage = new FlutterSecureStorage();
+
 class gainers {
   String pair,lastPrice, chg;
   gainers({this.pair, this.lastPrice, this.chg});
 }
 
-List<gainers> gainersList = [
-gainers(
-  pair: "GRS",
-  lastPrice: "0.000013278",
-  chg: "+114.26%"
-),
-gainers(
-  pair: "VIA",
-  lastPrice: "0.00001319",
-  chg: "+38.12%"
-),
-gainers(
-  pair: "STORJ",
-  lastPrice: "0.000007024",
-  chg: "+19.29%"
-),
-gainers(
-  pair: "CMT",
-  lastPrice: "0.00000946",
-  chg: "+17.22%"
-),
-gainers(
-  pair: "GXS",
-  lastPrice: "0.0002294",
-  chg: "+9.92%"
-),
-gainers(
-  pair: "GNT",
-  lastPrice: "0.0002042",
-  chg: "+8.32%"
-),
-gainers(
-  pair: "EOS",
-  lastPrice: "0.0003313",
-  chg: "+5.92%"
-),
-gainers(
-  pair: "SNT",
-  lastPrice: "0.0016850",
-  chg: "+4.00%"
-),
-gainers(
-  pair: "BEE",
-  lastPrice: "0.0002294",
-  chg: "+2.92%"
-),
+Future <List<gainers>> getList() async {
+  String value = await storage.read(key: "tokenize");
 
-gainers(
-  pair: "BTT",
-  lastPrice: "0.0001252",
-  chg: "+1.92%"
-),
-];
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String token = prefs.getString('token');
+
+  var url = "https://coinzz.herokuapp.com/api/coin/history"; // iOS
+  final http.Response response = await http.get(
+    url,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Accept': 'application/json',
+      'authorization': '$token',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    var st = jsonDecode(response.body);
+    List<gainers> _list =  List<gainers>();
+    for (var u in st) {
+     //_list.add(gainers(pair: u["currency"], lastPrice: u["price"], chg: u["percentage_change"]));
+      _list.add(gainers(pair: u["currency"], lastPrice: u["price"], chg: u["percentage_change"]));
+    }
+    return _list;
+  } else {
+    var st = jsonDecode(response.body);
+    var status = st["message"];
+    return status;
+  }
+}
+

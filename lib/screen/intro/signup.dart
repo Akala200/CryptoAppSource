@@ -1,10 +1,15 @@
 import 'package:crypto_template/screen/Bottom_Nav_Bar/bottom_nav_bar.dart';
 import 'package:crypto_template/screen/home/home.dart';
 import 'package:crypto_template/screen/intro/login.dart';
+import 'package:crypto_template/screen/intro/verify.dart';
 import 'package:crypto_template/screen/setting/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_template/component/style.dart';
 import 'package:crypto_template/Network/signup.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:loading_overlay/loading_overlay.dart';
+
+
 
 class signUp extends StatefulWidget {
   ThemeBloc themeBloc;
@@ -70,7 +75,7 @@ class _signUpState extends State<signUp> {
 
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 20.0, right: 20.0, top: 150.0),
+                          left: 20.0, right: 20.0, top: 230.0),
                       child: _buildTextFeild(
                           widgetIcon: Icon(
                             Icons.people,
@@ -156,7 +161,7 @@ class _signUpState extends State<signUp> {
                         child: DropdownButtonFormField<String>(
                           value: dropdownValue,
                           icon: Icon(Icons.arrow_downward),
-                          hint: Text(hintz),
+                          hint: Text('Phone'),
                           iconSize: 24,
                           elevation: 16,
                           style: TextStyle(color: Colors.white),
@@ -198,8 +203,21 @@ class _signUpState extends State<signUp> {
                       padding: const EdgeInsets.only(
                           left: 20.0, right: 20.0, top: 40.0),
                       child: GestureDetector(
-                        onTap: () {
-                          createAccount(email, password, firstName, lastName, hintz, phone);
+                        onTap: () async {
+                           CircularProgressIndicator();
+                        var ressp = await createAccount(email, password, firstName, lastName, phone);
+                        if (ressp == 201){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => verifyemail()),
+                          );
+                        } else {
+                          Alert(
+                            context: context,
+                            title: "Error",
+                            desc: ressp,
+                          ).show();
+                        }
                         },
                         child: Container(
                           height: 50.0,
@@ -231,7 +249,7 @@ class _signUpState extends State<signUp> {
                         onTap: () {
                           Navigator.of(context)
                               .pushReplacement(PageRouteBuilder(
-                                  pageBuilder: (_, __, ___) => new login(
+                                  pageBuilder: (_, __, ___) => new LoginNow(
                                         themeBloc: _themeBloc,
                                       )));
                         },

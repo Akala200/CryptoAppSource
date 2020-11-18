@@ -1,85 +1,43 @@
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+final storage = new FlutterSecureStorage();
+
+
+
 class assetsWallet {
-   String icon,name,pairValue,priceValue;
-  assetsWallet({this.icon,this.name,this.pairValue,this.priceValue});
+   String amount,cardType,coins, lastFour,status;
+  assetsWallet({this.amount,this.cardType,this.coins, this.lastFour, this.status});
 }
 
-List<assetsWallet> assetsWalletList = [
-  assetsWallet(
-    icon: "assets/image/market/ae.png",
-    name: "AE",
-    pairValue: "0",
-    priceValue: "0.00",
-  ),
-  assetsWallet(
-    icon: "assets/image/market/aion.png",
-    name: "AION",
-    pairValue: "0",
-    priceValue: "0.00",
-  ),
-  assetsWallet(
-    icon: "assets/image/market/bat.png",
-    name: "BAT",
-    pairValue: "0",
-    priceValue: "0.00",
-  ),
-  assetsWallet(
-    icon: "assets/image/market/BCH.png",
-    name: "BCH",
-    pairValue: "0",
-    priceValue: "0.00",
-  ),
-  assetsWallet(
-    icon: "assets/image/market/btc.png",
-    name: "BCHSV",
-    pairValue: "0",
-    priceValue: "0.00",
-  ),
-  assetsWallet(
-    icon: "assets/image/market/bee.png",
-    name: "BEE",
-    pairValue: "0",
-    priceValue: "0.00",
-  ),
-  assetsWallet(
-    icon: "assets/image/market/bnt.png",
-    name: "BNT",
-    pairValue: "0",
-    priceValue: "0.00",
-  ),
-  assetsWallet(
-    icon: "assets/image/market/dnt.png",
-    name: "DNT",
-    pairValue: "0",
-    priceValue: "0.00",
-  ),
-  assetsWallet(
-    icon: "assets/image/market/elf.png",
-    name: "ELF",
-    pairValue: "0",
-    priceValue: "0.00",
-  ),
-  assetsWallet(
-    icon: "assets/image/market/EOS.png",
-    name: "EOS",
-    pairValue: "0",
-    priceValue: "0.00",
-  ),
-  assetsWallet(
-    icon: "assets/image/market/ETC.png",
-    name: "ETC",
-    pairValue: "0",
-    priceValue: "0.00",
-  ),
-  assetsWallet(
-    icon: "assets/image/market/eth.png",
-    name: "ETH",
-    pairValue: "0",
-    priceValue: "0.00",
-  ),
-  assetsWallet(
-    icon: "assets/image/market/NEO.png",
-    name: "NEO",
-    pairValue: "0",
-    priceValue: "0.00",
-  ),
-];
+
+  Future <List<assetsWallet>>  transactionHistory() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String email = prefs.getString('email');
+  var url = "https://coinzz.herokuapp.com/api/history?email=$email"; // iOS
+  final http.Response response = await http.get(
+    url,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+  );
+  if (response.statusCode == 200) {
+    var st = jsonDecode(response.body);
+    var resp = st;
+    List<assetsWallet> _list =  List<assetsWallet>();
+    for (var u in resp) {
+      //_list.add(gainers(pair: u["currency"], lastPrice: u["price"], chg: u["percentage_change"]));
+          _list.add(assetsWallet(amount: u["amount"].toString(), cardType: u["cardType"], coins: u["coins"].toStringAsFixed(4),  lastFour: u["lastFour"], status: u["status"]));
+    }
+    return _list;
+  } else {
+    var st = jsonDecode(response.body);
+    var status = st["message"];
+    return status;
+  }
+}
+

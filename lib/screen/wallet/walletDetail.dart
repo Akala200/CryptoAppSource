@@ -13,13 +13,20 @@ class walletDetail extends StatefulWidget {
 class _walletDetailState extends State<walletDetail>
     with SingleTickerProviderStateMixin {
   @override
+  void initState() {
+    super.initState();
+    setState(() {
+      getBalanceNew();
+    });
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         brightness: Brightness.dark,
         centerTitle: true,
         title: Text(
-          "Market",
+          "Wallet Transaction",
           style: TextStyle(
               color: Theme.of(context).textSelectionColor,
               fontFamily: "Gotik",

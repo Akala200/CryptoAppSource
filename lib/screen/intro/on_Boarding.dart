@@ -4,6 +4,8 @@ import 'package:crypto_template/screen/intro/login.dart';
 import 'package:crypto_template/screen/setting/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_template/component/style.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class onBoarding extends StatefulWidget {
   ThemeBloc themeBloc;
@@ -11,6 +13,8 @@ class onBoarding extends StatefulWidget {
   @override
   _onBoardingState createState() => _onBoardingState(themeBloc);
 }
+
+
 
 ///
 /// Page View Model for on boarding
@@ -108,7 +112,7 @@ class _onBoardingState extends State<onBoarding> {
       ),
       onTapDoneButton: () {
         Navigator.of(context).pushReplacement(PageRouteBuilder(
-            pageBuilder: (_, __, ___) => new login(themeBloc: _themeBloc)));
+            pageBuilder: (_, __, ___) => new LoginNow(themeBloc: _themeBloc)));
       },
     );
   }

@@ -34,7 +34,10 @@ setState(() {
   loadImage=false;
 });
     });
-    // TODO: implement initState
+  setState(() {
+    var rees = getAll();
+    //  print(rees);
+  });
     super.initState();
   }
 
@@ -55,7 +58,7 @@ setState(() {
                   child: Container(
                       width: 100.0,
                       child: Text(
-                        "Pair",
+                        "Cureency",
                         style: TextStyle(
                             color: Theme.of(context).hintColor,
                             fontFamily: "Popins"),
@@ -72,7 +75,7 @@ setState(() {
                 Container(
                     width: 80.0,
                     child: Text(
-                      "24h Chg%",
+                      "1h Chg%",
                       style: TextStyle(
                           color: Theme.of(context).hintColor,
                           fontFamily: "Popins"),
@@ -119,7 +122,7 @@ Widget listPriceloser(losers item, BuildContext ctx) {
                   style: TextStyle(fontFamily: "Popins", fontSize: 16.5),
                 ),
                 Text(
-                  " / BTC",
+                  " / USD",
                   style: TextStyle(
                       fontFamily: "Popins",
                       fontSize: 11.5,
@@ -142,7 +145,7 @@ Widget listPriceloser(losers item, BuildContext ctx) {
                 height: 35.0,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(2.0)),
-                  color: Colors.redAccent,
+                  color: Colors.lightBlue,
                 ),
                 child: Center(
                     child: Text(
@@ -243,3 +246,20 @@ Widget _imageLoaded(BuildContext context) {
     ),
   );
 }
+
+
+@override
+List<losers> getAll() {
+  List<losers> _listProducts;
+  Future<List<losers>> listFuture;
+  listFuture = getList2();
+  listFuture.then((value) {
+    _listProducts = value;
+    losersList = _listProducts;
+  });
+  print(_listProducts);
+  return _listProducts == null ? [] : _listProducts;
+}
+
+
+List<losers> losersList = [];

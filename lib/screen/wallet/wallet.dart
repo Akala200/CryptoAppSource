@@ -1,3 +1,5 @@
+
+import 'dart:async';
 import 'dart:math';
 import 'dart:ui' as ui;
 import 'package:crypto_template/component/AssetsWallet/assetsModel.dart';
@@ -10,6 +12,10 @@ import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:crypto_template/component/style.dart';
+import 'package:crypto_template/Network/wallet.dart';
+
+var newBalance;
+var newBalanceNaira;
 
 class wallet extends StatefulWidget {
   @override
@@ -26,9 +32,28 @@ class wallet extends StatefulWidget {
 class _walletState extends State<wallet> {
   @override
   assetsWallet item;
+
+  @override
+  void initState() {
+    super.initState();
+    getBalance();
+     getNew();
+    getBalanceNaira();
+    setState(() {
+      getBalance();
+    });
+    setState(() {
+      getNew();
+    });
+    setState(() {
+      getBalanceNaira();
+    });
+  }
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     Size size = new Size(MediaQuery.of(context).size.width, 200.0);
+
+
     return new Scaffold(
       body: Stack(
         children: <Widget>[
@@ -40,14 +65,14 @@ class _walletState extends State<wallet> {
             ///
             child: Container(
                 child: ListView.builder(
-              shrinkWrap: true,
-              primary: false,
-              padding: EdgeInsets.only(top: 0.0),
-              itemBuilder: (ctx, i) {
-                return card(assetsWalletList[i], ctx);
-              },
-              itemCount: assetsWalletList.length,
-            )),
+                  shrinkWrap: true,
+                  primary: false,
+                  padding: EdgeInsets.only(top: 0.0),
+                  itemBuilder: (ctx, i) {
+                    return card(assetsWalletList[i], ctx);
+                  },
+                  itemCount: assetsWalletList.length,
+                )),
           ),
           Column(
             children: <Widget>[
@@ -73,30 +98,47 @@ class _walletState extends State<wallet> {
               ),
               Padding(
                 padding:
-                    const EdgeInsets.only(left: 13.0, right: 13.0, top: 6.0),
+                const EdgeInsets.only(left: 17.0, right: 17.0, top: 6.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "Coin Type",
+                      "Amount",
                       style: TextStyle(
                           color: Theme.of(context).hintColor,
                           fontFamily: "Popins",
                           fontSize: 14.0),
                     ),
                     Text(
-                      "Value (USDT)",
+                      "Coin",
                       style: TextStyle(
                           color: Theme.of(context).hintColor,
                           fontFamily: "Popins",
                           fontSize: 14.0),
-                    )
+                    ),
+                    Text(
+                      "Card",
+                      style: TextStyle(
+                          color: Theme.of(context).hintColor,
+                          fontFamily: "Popins",
+                          fontSize: 14.0),
+                    ),
+
                   ],
                 ),
               ),
             ],
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Add your onPressed code here!
+          Navigator.of(context).push(PageRouteBuilder(
+              pageBuilder: (_, __, ___) => new walletDetail()));
+        },
+        child: Icon(Icons.account_balance_sharp),
+        backgroundColor: Color(0xFF45C2DA),
       ),
     );
   }
@@ -125,21 +167,21 @@ class _waveBodyState extends State<waveBody> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
+    getBalance();
     animationController = new AnimationController(
         vsync: this, duration: new Duration(seconds: 2));
 
     animationController.addListener(() {
       animList1.clear();
       for (int i = -2 - widget.xOffset;
-          i <= widget.size.width.toInt() + 2;
-          i++) {
+      i <= widget.size.width.toInt() + 2;
+      i++) {
         animList1.add(new Offset(
             i.toDouble() + widget.xOffset,
             sin((animationController.value * 360 - i) %
-                        360 *
-                        Vector.degrees2Radians) *
-                    20 +
+                360 *
+                Vector.degrees2Radians) *
+                20 +
                 50 +
                 widget.yOffset));
       }
@@ -155,82 +197,115 @@ class _waveBodyState extends State<waveBody> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(
-          height: 185.0,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  tileMode: TileMode.repeated,
-                  colors: [Color(0xFF15EDED), Color(0xFF029CF5)])),
-          child: new Container(
-            margin: EdgeInsets.only(top: 75.0),
-            height: 20.0,
-            child: new AnimatedBuilder(
-              animation: new CurvedAnimation(
-                parent: animationController,
-                curve: Curves.easeInOut,
-              ),
-              builder: (context, child) => new ClipPath(
-                    child: widget.color == null
-                        ? new Container(
-                            width: widget.size.width,
-                            height: widget.size.height,
-                            color: Colors.white.withOpacity(0.25),
-                          )
-                        : new Container(
-                            width: widget.size.width,
-                            height: widget.size.height,
-                            color: Colors.white.withOpacity(0.9),
-                          ),
-                    clipper:
+    return new FutureBuilder <double>(
+        future: balanceNew(),
+        builder: (BuildContext context, AsyncSnapshot <double> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return new Center(
+              child: new CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return new Text('Error: ${snapshot.error}');
+          } else
+            return Stack(
+              children: <Widget>[
+                Container(
+                  height: 185.0,
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          tileMode: TileMode.repeated,
+                          colors: [Color(0xFF15EDED), Color(0xFF029CF5)])),
+                  child: new Container(
+                    margin: EdgeInsets.only(top: 75.0),
+                    height: 20.0,
+                    child: new AnimatedBuilder(
+                      animation: new CurvedAnimation(
+                        parent: animationController,
+                        curve: Curves.easeInOut,
+                      ),
+                      builder: (context, child) => new ClipPath(
+                        child: widget.color == null
+                            ? new Container(
+                          width: widget.size.width,
+                          height: widget.size.height,
+                          color: Colors.white.withOpacity(0.25),
+                        )
+                            : new Container(
+                          width: widget.size.width,
+                          height: widget.size.height,
+                          color: Colors.white.withOpacity(0.9),
+                        ),
+                        clipper:
                         new WaveClipper(animationController.value, animList1),
+                      ),
+                    ),
                   ),
-            ),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 180.0),
-          height: 5.0,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: <Color>[
-                  Theme.of(context).scaffoldBackgroundColor.withOpacity(0.1),
-                  Theme.of(context).scaffoldBackgroundColor
-                ],
-                stops: [
-                  0.0,
-                  1.0
-                ],
-                begin: FractionalOffset(0.0, 0.0),
-                end: FractionalOffset(0.0, 1.0)),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 70.0),
-          alignment: Alignment.topCenter,
-          child: Column(children: <Widget>[
-            Text(
-              "Total Asseets (USDT)",
-              style: TextStyle(fontFamily: "Popins", color: Colors.white),
-            ),
-            SizedBox(
-              height: 5.0,
-            ),
-            Text(
-              "0.0",
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontFamily: "Popins",
-                  fontSize: 30.0,
-                  color: Colors.white),
-            ),
-          ]),
-        )
-      ],
-    );
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 180.0),
+                  height: 5.0,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: <Color>[
+                          Theme.of(context).scaffoldBackgroundColor.withOpacity(0.1),
+                          Theme.of(context).scaffoldBackgroundColor
+                        ],
+                        stops: [
+                          0.0,
+                          1.0
+                        ],
+                        begin: FractionalOffset(0.0, 0.0),
+                        end: FractionalOffset(0.0, 1.0)),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 70.0),
+                  alignment: Alignment.topCenter,
+                  child: Column(children: <Widget>[
+                    Text(
+                      "Total Asseets (BTC)",
+                      style: TextStyle(fontFamily: "Popins", color: Colors.white),
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Text(
+                      newBalance.toStringAsFixed(6),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontFamily: "Popins",
+                          fontSize: 15.0,
+                          color: Colors.white),
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+   FutureBuilder <double>(
+    future: balanceNaira(),
+    builder: (BuildContext context, AsyncSnapshot <double> snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return new Center(
+          child: new CircularProgressIndicator(),
+        );
+      } else if (snapshot.hasError) {
+        return new Text('Error: ${snapshot.error}');
+      } else
+       return   Text(
+          'NGN-' + snapshot.data.toString(),
+          style: TextStyle(
+          fontWeight: FontWeight.w700,
+          fontFamily: "Popins",
+          fontSize: 15.0,
+          color: Colors.white),
+          );
+    }),
+                  ]),
+                )
+              ],
+            );
+        });
   }
 }
 
@@ -259,93 +334,96 @@ class WaveClipper extends CustomClipper<Path> {
 }
 
 Widget card(assetsWallet item, BuildContext ctx) {
-  return Padding(
-    padding: const EdgeInsets.only(top: 7.0),
-    child: Column(
-      children: <Widget>[
-        InkWell(
-          onTap: () {
-            Navigator.of(ctx).push(PageRouteBuilder(
-                pageBuilder: (_, __, ___) => new walletDetail()));
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 12.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(left: 5.0, right: 12.0),
-                      child: Image.asset(
-                        item.icon,
-                        height: 25.0,
-                        fit: BoxFit.contain,
-                        width: 22.0,
-                      ),
+  return new FutureBuilder  <List<assetsWallet>>(
+      future: transactionHistory(),
+      builder: (BuildContext context, AsyncSnapshot  <List<assetsWallet>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return new Center(
+            child: new CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          return new Text('Error: ${snapshot.error}');
+        } else
+          return Padding(
+            padding: const EdgeInsets.only(left: 12.0, top: 20.0),
+            child: InkWell(
+              onTap: () {
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    width: 100.0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          item.amount
+                          ,
+                          style: TextStyle(fontFamily: "Popins", fontSize: 16.5),
+                        ),
+                      ],
                     ),
-                    Container(
-                      width: 95.0,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            item.name,
-                            style:
-                                TextStyle(fontFamily: "Popins", fontSize: 16.5),
-                          ),
-                          Text(
-                            item.pairValue,
-                            style: TextStyle(
-                                fontFamily: "Popins",
-                                fontSize: 11.5,
-                                color: Theme.of(ctx).hintColor),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 15.0),
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        item.priceValue,
-                        style: TextStyle(
-                            fontFamily: "Popins",
-                            fontSize: 14.5,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      Icon(
-                        Icons.keyboard_arrow_right,
-                        size: 19.0,
-                      )
-                    ],
                   ),
-                ),
+                  Container(
+                    width: 60.0,
+                    child: Text(
+                      item.coins,
+                      style: TextStyle(fontFamily: "Popins", fontSize: 14.0),
+                    ),
+                  ),
+                  Container(
+                    width: 100.0,
+                    child: Text(
+                      item.cardType + '***' + item.lastFour,
+                      style: TextStyle(fontFamily: "Popins", fontSize: 14.0),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 10.0, right: 20.0, top: 6.0),
-          child: Container(
-            width: double.infinity,
-            height: 0.5,
-            decoration:
-                BoxDecoration(color: Theme.of(ctx).hintColor.withOpacity(0.1)),
-          ),
-        )
-      ],
-    ),
-  );
+            ),
+          );
+      });
 }
+
+
+
+
+@override
+double getBalance() {
+  double  _balance;
+  // ignore: non_constant_identifier_names
+  Future<double> StringFuture;
+  StringFuture = balanceNew();
+  StringFuture.then((value) {
+    newBalance = value;
+  });
+}
+
+@override
+double getBalanceNaira() {
+  double  _balance;
+  // ignore: non_constant_identifier_names
+  Future<double> StringFuture;
+  StringFuture = balanceNaira();
+  StringFuture.then((value) {
+    newBalanceNaira = value;
+  });
+}
+
+@override
+List<assetsWallet> getNew() {
+  List<assetsWallet> _listProducts;
+  Future<List<assetsWallet>> listFuture;
+  listFuture = transactionHistory();
+  listFuture.then((value) {
+    _listProducts = value;
+    assetsWalletList = _listProducts;
+  });
+  return _listProducts == null ? [] : _listProducts;
+}
+
+
+
+List<assetsWallet> assetsWalletList =  getNew();
+

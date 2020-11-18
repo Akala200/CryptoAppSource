@@ -111,7 +111,7 @@ class _btcDetailState extends State<btcDetail> {
                                 padding: const EdgeInsets.only(left: 10.0),
                                 child: Text(
                                   item.percent,
-                                  style: TextStyle(color: item.colorChg),
+                                  style: TextStyle(color:Colors.lightBlue),
                                 ),
                               ),
                             ],

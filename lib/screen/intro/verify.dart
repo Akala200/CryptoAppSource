@@ -1,19 +1,25 @@
+import 'package:crypto_template/Network/signup.dart';
+import 'package:crypto_template/screen/Bottom_Nav_Bar/bottom_nav_bar.dart';
 import 'package:crypto_template/screen/intro/login.dart';
 import 'package:crypto_template/screen/intro/signup.dart';
 import 'package:crypto_template/screen/setting/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_template/component/style.dart';
+import 'package:otp_text_field/otp_text_field.dart';
+import 'package:otp_text_field/style.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
-class forgetPassword extends StatefulWidget {
+class verifyemail extends StatefulWidget {
   ThemeBloc themeBloc;
-  forgetPassword({this.themeBloc});
+  verifyemail({this.themeBloc});
   @override
-  _forgetPasswordState createState() => _forgetPasswordState(themeBloc);
+  _verifyemailState createState() => _verifyemailState(themeBloc);
 }
 
-class _forgetPasswordState extends State<forgetPassword> {
+class _verifyemailState extends State<verifyemail> {
   ThemeBloc _themeBloc;
-  _forgetPasswordState(this._themeBloc);
+  _verifyemailState(this._themeBloc);
+  var code;
   @override
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -47,16 +53,15 @@ class _forgetPasswordState extends State<forgetPassword> {
                   children: <Widget>[
                     Padding(
                       padding:
-                          EdgeInsets.only(top: mediaQuery.padding.top + 160.0),
+                      EdgeInsets.only(top: mediaQuery.padding.top + 160.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Image.asset("assets/image/logo.png", height: 35.0),
                           Padding(
                             padding:
-                                const EdgeInsets.only(left: 17.0, top: 7.0),
+                            const EdgeInsets.only(left: 17.0, top: 7.0),
                             child: Text(
-                              "Crypto",
+                              "Verify Account",
                               style: TextStyle(
                                   fontFamily: "Sans",
                                   color: Colors.white,
@@ -71,17 +76,20 @@ class _forgetPasswordState extends State<forgetPassword> {
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 20.0, right: 20.0, top: 90.0),
-                      child: _buildTextFeild(
-                          widgetIcon: Icon(
-                            Icons.email,
-                            color: colorStyle.primaryColor,
-                            size: 20,
-                          ),
-                          controller: _emailController,
-                          hint: 'Email',
-                          obscure: false,
-                          keyboardType: TextInputType.emailAddress,
-                          textAlign: TextAlign.start),
+                      child: OTPTextField(
+                        length: 7,
+                        width: MediaQuery.of(context).size.width,
+                        fieldWidth: 40,
+                        style: TextStyle(
+                            fontSize: 13
+                        ),
+                        textFieldAlignment: MainAxisAlignment.spaceAround,
+                        fieldStyle: FieldStyle.underline,
+                        onCompleted: (pin) {
+                          print("Completed: " + pin);
+                          code = pin;
+                        },
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
@@ -94,13 +102,41 @@ class _forgetPasswordState extends State<forgetPassword> {
                           color: colorStyle.primaryColor,
                         ),
                         child: Center(
-                          child: Text(
-                            "Send Verification Code",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 15.0,
-                                letterSpacing: 1.0),
+                          child: RaisedButton(
+                            onPressed: () async {
+                              var ressp = await verifyAccount(code);
+                              if (ressp == 200){
+                                Navigator.of(context).pushReplacement(
+                                    PageRouteBuilder(
+                                        pageBuilder: (_, __, ___) =>
+                                            bottomNavBar(themeBloc: _themeBloc)));
+                              } else {
+                                Alert(
+                                  context: context,
+                                  title: "Error",
+                                  desc: ressp,
+                                ).show();
+                              }
+                            },
+                            child: Container(
+                              height: 50.0,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(0.0)),
+                                color: colorStyle.primaryColor,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Create Account",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 20.0,
+                                      letterSpacing: 1.0),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -114,16 +150,16 @@ class _forgetPasswordState extends State<forgetPassword> {
                         onTap: () {
                           Navigator.of(context)
                               .pushReplacement(PageRouteBuilder(
-                                  pageBuilder: (_, __, ___) => new LoginNow(
-                                        themeBloc: _themeBloc,
-                                      )));
+                              pageBuilder: (_, __, ___) => new LoginNow(
+                                themeBloc: _themeBloc,
+                              )));
                         },
                         child: Container(
                           height: 50.0,
                           width: double.infinity,
                           decoration: BoxDecoration(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(0.0)),
+                            BorderRadius.all(Radius.circular(0.0)),
                             border: Border.all(
                               color: colorStyle.primaryColor,
                               width: 0.35,

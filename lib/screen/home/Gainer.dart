@@ -35,6 +35,10 @@ setState(() {
   loadImage=false;
 });
     });
+  setState(() {
+    var rees = getAll();
+  //  print(rees);
+  });
     // TODO: implement initState
     super.initState();
   }
@@ -56,7 +60,7 @@ setState(() {
                   child: Container(
                       width: 100.0,
                       child: Text(
-                        "Pair",
+                        "Currency",
                         style: TextStyle(
                             color: Theme.of(context).hintColor,
                             fontFamily: "Popins"),
@@ -73,7 +77,7 @@ setState(() {
                 Container(
                     width: 80.0,
                     child: Text(
-                      "24h Chg%",
+                      "1h Chg%",
                       style: TextStyle(
                           color: Theme.of(context).hintColor,
                           fontFamily: "Popins"),
@@ -120,7 +124,7 @@ Widget listPriceGainers(gainers item, BuildContext ctx) {
                   style: TextStyle(fontFamily: "Popins", fontSize: 16.5),
                 ),
                 Text(
-                  " / BTC",
+                  " / NGN",
                   style: TextStyle(
                       fontFamily: "Popins",
                       fontSize: 11.5,
@@ -143,7 +147,8 @@ Widget listPriceGainers(gainers item, BuildContext ctx) {
                 height: 35.0,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(2.0)),
-                    color: Color(0xFF00C087)),
+                  color: Colors.lightBlue,
+                ),
                 child: Center(
                     child: Text(
                   item.chg,
@@ -243,3 +248,19 @@ Widget _imageLoaded(BuildContext context) {
     ),
   );
 }
+
+@override
+List<gainers> getAll() {
+  List<gainers> _listProducts;
+  Future<List<gainers>> listFuture;
+  listFuture = getList();
+  listFuture.then((value) {
+    _listProducts = value;
+    gainersList = _listProducts;
+  });
+  print(_listProducts);
+  return _listProducts == null ? [] : _listProducts;
+}
+
+
+List<gainers> gainersList = [];

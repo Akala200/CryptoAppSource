@@ -38,7 +38,10 @@ setState(() {
   loadCard=false;
 });
     });
-    // TODO: implement initState
+  setState(() {
+    var rees = getAll();
+    //  print(rees);
+  });
     super.initState();
   }
 
@@ -121,17 +124,12 @@ setState(() {
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 4.0),
-                                              child: Icon(
-                                                IconData(0xe900,
-                                                    fontFamily: 'gainers'),
-                                                size: 15.0,
-                                              ),
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 8.0),
                                               child: Text(
-                                                "Gainers",
+                                                "Naira",
                                                 style: TextStyle(
                                                     fontFamily: "Sans"),
                                               ),
@@ -145,16 +143,12 @@ setState(() {
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 8.0),
-                                              child: Icon(
-                                                IconData(0xe901,
-                                                    fontFamily: 'loser'),
-                                                size: 15.0,
-                                              ),
+
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 8.0),
-                                              child: Text("Loser"),
+                                              child: Text("Dollar"),
                                             )
                                           ],
                                         ),
@@ -189,9 +183,15 @@ setState(() {
   }
 }
 
-class card extends StatelessWidget {
+class card extends StatefulWidget {
   gridHome item;
   card(this.item);
+
+  @override
+  _cardState createState() => _cardState();
+}
+
+class _cardState extends State<card> {
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
@@ -201,7 +201,7 @@ class card extends StatelessWidget {
         onTap: () {
           Navigator.of(context).push(PageRouteBuilder(
               pageBuilder: (_, __, ___) => new cardDetailHome(
-                    item: item,
+                    item: widget.item,
                   )));
         },
         child: Container(
@@ -226,7 +226,7 @@ class card extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      item.name,
+                      widget.item.name,
                       style: TextStyle(
                           color: Theme.of(context).textSelectionColor,
                           fontFamily: "Popins",
@@ -240,15 +240,15 @@ class card extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            item.valueMarket,
+                            widget.item.name,
                             style: TextStyle(
-                                color: item.chartColor,
+                                color: Colors.green,
                                 fontFamily: "Gotik",
                                 fontSize: 13.5),
                           ),
                           Text(
-                            item.valuePercent,
-                            style: TextStyle(color: item.chartColor),
+                            'NGN',
+                            style: TextStyle(color: Colors.green),
                           ),
                         ],
                       ),
@@ -261,14 +261,14 @@ class card extends StatelessWidget {
                 child: Container(
                   height: 30.0,
                   child: new Sparkline(
-                    data: item.data,
+                    data: widget.item.data,
                     lineWidth: 0.3,
                     fillMode: FillMode.below,
-                    lineColor: item.chartColor,
+                    lineColor: Colors.green,
                     fillGradient: new LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: item.chartColorGradient,
+                      colors: [Colors.green, Colors.lightBlue, Colors.blueGrey],
                     ),
                   ),
                 ),
@@ -281,9 +281,15 @@ class card extends StatelessWidget {
   }
 }
 
-class cardLoading extends StatelessWidget {
+class cardLoading extends StatefulWidget {
   gridHome item;
   cardLoading(this.item);
+
+  @override
+  _cardLoadingState createState() => _cardLoadingState();
+}
+
+class _cardLoadingState extends State<cardLoading> {
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
@@ -344,14 +350,14 @@ class cardLoading extends StatelessWidget {
                 child: Container(
                   height: 30.0,
                   child: new Sparkline(
-                    data: item.data,
+                    data: widget.item.data,
                     lineWidth: 0.3,
                     fillMode: FillMode.below,
-                    lineColor: item.chartColor,
+                    lineColor: Colors.green,
                     fillGradient: new LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: item.chartColorGradient,
+                      colors: [Colors.green, Colors.lightBlue, Colors.blueGrey],
                     ),
                   ),
                 ),
@@ -403,3 +409,19 @@ Widget _cardLoaded(BuildContext context) {
         (index) => card(listGridHome[index]),
       ));
 }
+
+@override
+List<gridHome> getAll() {
+  List<gridHome> _listProducts;
+  Future<List<gridHome>> listFuture;
+  listFuture = getListHome();
+  listFuture.then((value) {
+    _listProducts = value;
+    listGridHome = _listProducts;
+  });
+  print(_listProducts);
+  return _listProducts == null ? [] : _listProducts;
+}
+
+
+List<gridHome> listGridHome = [];
