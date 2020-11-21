@@ -5,6 +5,7 @@ import 'package:crypto_template/screen/intro/signup.dart';
 import 'package:crypto_template/screen/setting/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_template/component/style.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -104,6 +105,7 @@ class _verifyemailState extends State<verifyemail> {
                         child: Center(
                           child: RaisedButton(
                             onPressed: () async {
+                              Loader.show(context,progressIndicator: CircularProgressIndicator(backgroundColor: Colors.blueGrey,),themeData: Theme.of(context).copyWith(accentColor: Colors.blueAccent));
                               var ressp = await verifyAccount(code);
                               if (ressp == 200){
                                 Navigator.of(context).pushReplacement(
@@ -111,6 +113,7 @@ class _verifyemailState extends State<verifyemail> {
                                         pageBuilder: (_, __, ___) =>
                                             bottomNavBar(themeBloc: _themeBloc)));
                               } else {
+                                Loader.hide();
                                 Alert(
                                   context: context,
                                   title: "Error",

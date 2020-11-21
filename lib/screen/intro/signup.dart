@@ -6,6 +6,7 @@ import 'package:crypto_template/screen/setting/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_template/component/style.dart';
 import 'package:crypto_template/Network/signup.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
@@ -204,14 +205,15 @@ class _signUpState extends State<signUp> {
                           left: 20.0, right: 20.0, top: 40.0),
                       child: GestureDetector(
                         onTap: () async {
-                           CircularProgressIndicator();
-                        var ressp = await createAccount(email, password, firstName, lastName, phone);
+                          Loader.show(context,progressIndicator: CircularProgressIndicator(backgroundColor: Colors.blueGrey,),themeData: Theme.of(context).copyWith(accentColor: Colors.blueAccent));
+                          var ressp = await createAccount(email, password, firstName, lastName, phone);
                         if (ressp == 201){
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => verifyemail()),
                           );
                         } else {
+                          Loader.hide();
                           Alert(
                             context: context,
                             title: "Error",

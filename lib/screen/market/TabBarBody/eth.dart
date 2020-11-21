@@ -4,6 +4,7 @@ import 'package:crypto_template/component/market/ethModel.dart';
 import 'package:crypto_template/screen/market/detailCrypto/ethDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:crypto_template/Network/crptoList.dart';
 
 class eth extends StatefulWidget {
   final Widget child;
@@ -29,72 +30,73 @@ class _ethState extends State<eth> {
 
   @override
   void initState() {
-   
-  Timer(Duration(seconds: 3),(){
-setState(() {
-  loadImage=false;
-});
+
+    Timer(Duration(seconds: 6),(){
+      setState(() {
+        loadImage=false;
+      });
     });
-    
-    // TODO: implement initState
+
+    setState(() {
+      ldd4 = getNew();
+    });
     super.initState();
   }
 
   Widget build(BuildContext context) {
     return Container(
         child: ListView(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(
-              left: 0.0, right: 0.0, top: 7.0, bottom: 7.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 12.0),
-                child: Container(
-                    width: 100.0,
-                    child: Text(
-                      "Pair",
-                      style: TextStyle(
-                          color: Theme.of(context).hintColor,
-                          fontFamily: "Popins"),
-                    )),
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 0.0, right: 0.0, top: 7.0, bottom: 7.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12.0),
+                    child: Container(
+                        width: 100.0,
+                        child: Text(
+                          "Pair",
+                          style: TextStyle(
+                              color: Theme.of(context).hintColor,
+                              fontFamily: "Popins"),
+                        )),
+                  ),
+                  Container(
+                      width: 150.0,
+                      child: Text(
+                        "Price Change",
+                        style: TextStyle(
+                            color: Theme.of(context).hintColor,
+                            fontFamily: "Popins"),
+                      )),
+                  Container(
+                      width: 80.0,
+                      child: Text(
+                        "1h Chg%",
+                        style: TextStyle(
+                            color: Theme.of(context).hintColor,
+                            fontFamily: "Popins"),
+                      )),
+                ],
               ),
-              Container(
-                  width: 100.0,
-                  child: Text(
-                    "Last Price",
-                    style: TextStyle(
-                        color: Theme.of(context).hintColor,
-                        fontFamily: "Popins"),
-                  )),
-              Container(
-                  width: 80.0,
-                  child: Text(
-                    "24h Chg%",
-                    style: TextStyle(
-                        color: Theme.of(context).hintColor,
-                        fontFamily: "Popins"),
-                  )),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 5.0,
-        ),
+            ),
+            SizedBox(
+              height: 5.0,
+            ),
 
-        ///
-        ///
-        /// check the condition if image data from server firebase loaded or no
-        /// if image loaded true (image still downloading from server)
-        /// Card to set card loading animation
-        ///
-
-        loadImage ? _loadingData(context) : _dataLoaded(context),
-      ],
-    ));
+            ///
+            ///
+            /// check the condition if image data from server firebase loaded or no
+            /// if image loaded true (image still downloading from server)
+            /// Card to set card loading animation
+            ///
+            loadImage ? _loadingData(context) : _dataLoaded(context),
+          ],
+        ));
   }
 }
 
@@ -171,7 +173,7 @@ Widget loadingCard(BuildContext ctx, ethMarket item) {
                               decoration: BoxDecoration(
                                   color: Theme.of(ctx).hintColor,
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(20.0))),
+                                  BorderRadius.all(Radius.circular(20.0))),
                             ),
                           ],
                         ),
@@ -183,7 +185,7 @@ Widget loadingCard(BuildContext ctx, ethMarket item) {
                             decoration: BoxDecoration(
                                 color: Theme.of(ctx).hintColor,
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(20.0))),
+                                BorderRadius.all(Radius.circular(20.0))),
                           ),
                         ),
                       ],
@@ -204,7 +206,7 @@ Widget loadingCard(BuildContext ctx, ethMarket item) {
                         decoration: BoxDecoration(
                             color: Theme.of(ctx).hintColor,
                             borderRadius:
-                                BorderRadius.all(Radius.circular(20.0))),
+                            BorderRadius.all(Radius.circular(20.0))),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 4.0),
@@ -214,7 +216,7 @@ Widget loadingCard(BuildContext ctx, ethMarket item) {
                           decoration: BoxDecoration(
                               color: Theme.of(ctx).hintColor,
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0))),
+                              BorderRadius.all(Radius.circular(20.0))),
                         ),
                       ),
                     ],
@@ -267,15 +269,6 @@ Widget card(BuildContext ctx, ethMarket item) {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(left: 5.0, right: 12.0),
-                      child: Image.asset(
-                        item.icon,
-                        height: 22.0,
-                        fit: BoxFit.contain,
-                        width: 22.0,
-                      ),
-                    ),
                     Container(
                       width: 95.0,
                       child: Column(
@@ -290,7 +283,7 @@ Widget card(BuildContext ctx, ethMarket item) {
                                     fontFamily: "Popins", fontSize: 16.5),
                               ),
                               Text(
-                                "/BTC",
+                                "/EHT",
                                 style: TextStyle(
                                     fontFamily: "Popins",
                                     fontSize: 11.5,
@@ -324,13 +317,7 @@ Widget card(BuildContext ctx, ethMarket item) {
                           fontSize: 14.5,
                           fontWeight: FontWeight.w600),
                     ),
-                    Text(
-                      item.priceDollar,
-                      style: TextStyle(
-                          fontFamily: "Popins",
-                          fontSize: 11.5,
-                          color: Theme.of(ctx).hintColor),
-                    ),
+
                   ],
                 ),
               ),
@@ -340,16 +327,16 @@ Widget card(BuildContext ctx, ethMarket item) {
                     height: 25.0,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(2.0)),
-                        color: item.colorChg),
+                        color: Colors.blue),
                     child: Center(
                         child: Padding(
-                      padding: const EdgeInsets.only(left: 5.0, right: 5.0),
-                      child: Text(
-                        item.percent,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600, color: Colors.white),
-                      ),
-                    ))),
+                          padding: const EdgeInsets.only(left: 5.0, right: 5.0),
+                          child: Text(
+                            item.percent,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, color: Colors.white),
+                          ),
+                        ))),
               )
             ],
           ),
@@ -366,3 +353,25 @@ Widget card(BuildContext ctx, ethMarket item) {
     ),
   );
 }
+
+
+
+
+
+@override
+List<ethMarket> getNew() {
+  List<ethMarket> _listProducts = List<ethMarket>();
+  getMarketETH().then((value) {
+    print(value);
+    for(var u in value){
+      _listProducts.add(ethMarket(name: u["currency"].toString(), priceValue: u["priceChange"].toString(), pairValue: u["price"].toString(), percent: u["percentage_change"].toString()));
+    }
+    ethMarketList = _listProducts;
+
+    return ethMarketList == null ? [] : ethMarketList;
+  });
+}
+
+
+List<ethMarket> ldd4;
+List<ethMarket> ethMarketList = ldd4 ?? [];

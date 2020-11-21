@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:toast/toast.dart';
-import 'package:share/share.dart';
+import 'package:wc_flutter_share/wc_flutter_share.dart';
+import 'package:crypto_template/screen/wallet/tabs/coinDeposit.dart';
 
 var balanceNewHere;
 var balanceNaira;
@@ -94,10 +95,15 @@ class _depositState extends State<deposit> {
                color: Theme.of(context).primaryColor,
                child: Center(
                  child: RaisedButton(onPressed: (){
-                   FlutterClipboard.copy(snapshot.data).then(( value ) => {
-                     Toast.show("Copied!", context, duration: Toast.LENGTH_SHORT, backgroundColor: Colors.green, gravity:  Toast.TOP)
-                   });
-                 }, child: Text("COPY ADDRESS",style: TextStyle(color: Theme.of(context).textSelectionColor),)),
+                   WcFlutterShare.share(
+                       sharePopupTitle: 'Share',
+                       subject: 'Share Wallet Address',
+                       text: snapshot.data,
+                       mimeType: 'text/plain');
+                  // FlutterClipboard.copy(snapshot.data).then(( value ) => {
+                    // Toast.show("Copied!", context, duration: Toast.LENGTH_SHORT, backgroundColor: Colors.green, gravity:  Toast.TOP)
+                   //});
+                 }, child: Text("SHARE",style: TextStyle(color: Theme.of(context).textSelectionColor),)),
                ),
              )
            ],
@@ -134,13 +140,11 @@ class _depositState extends State<deposit> {
                       color: Theme.of(context).primaryColor,
                       child: Center(
                         child: RaisedButton( onPressed: (){
-                          final RenderBox box = context.findRenderObject();
-                          Share.share(snapshot.data,
-                              subject: 'Share Wallet Address',
-                              sharePositionOrigin:
-                              box.localToGlobal(Offset.zero) &
-                              box.size);
-                        }, child: Text("Share Address",style: TextStyle(color: Theme.of(context).textSelectionColor),)),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => coinDeposit()),
+                          );
+                        }, child: Text("CARD DEPOSIT",style: TextStyle(color: Theme.of(context).textSelectionColor),)),
                       ),
                     )
                   ],
@@ -158,10 +162,10 @@ class _depositState extends State<deposit> {
                   SizedBox(height: 25.0,),
                   Container(
                     height: 40.0,
-                    width: 150.0,
+                    width: 210.0,
                     color: Theme.of(context).primaryColor,
                     child: Center(
-                      child: Text("SAVE IMAGE",style: TextStyle(color: Theme.of(context).textSelectionColor),),
+                      child: Text("QR CODE COMING SOON",style: TextStyle(color: Theme.of(context).textSelectionColor),),
                     ),
                   )
                 ],

@@ -4,6 +4,7 @@ import 'package:crypto_template/component/market/usdtModel.dart';
 import 'package:crypto_template/screen/market/detailCrypto/usdtDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:crypto_template/Network/crptoList.dart';
 
 class usdt extends StatefulWidget {
   final Widget child;
@@ -19,65 +20,67 @@ class _usdtState extends State<usdt> {
   ///
   var imageNetwork = NetworkImage("https://firebasestorage.googleapis.com/v0/b/beauty-look.appspot.com/o/Screen2.png?alt=media&token=0d7fbd84-418b-4a6d-a6cb-e2f36dea78e6");
 
- ///
+  ///
   /// check the condition is right or wrong for image loaded or no
   ///
   bool loadImage = true;
 
- 
+
 
   @override
   void initState() {
 
-    
-  Timer(Duration(seconds: 3),(){
-setState(() {
-  loadImage=false;
-});
+
+    Timer(Duration(seconds: 6),(){
+      setState(() {
+        loadImage=false;
+      });
     });
-    // TODO: implement initState
+    setState(() {
+      ldd5 = getNew();
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-     return Container(
-       child: ListView(
-         children: <Widget>[
-           Padding(
-            padding: const EdgeInsets.only(
-                left: 0.0, right: 0.0, top: 7.0, bottom: 7.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(left:12.0),
-                  child: Container(
-                    width: 100.0,
-                    child: Text("Pair",style: TextStyle(color: Theme.of(context).hintColor,fontFamily: "Popins"),)),
-                ),
-                Container(
-                  width: 100.0,
-                child: Text("Last Price",style: TextStyle(color: Theme.of(context).hintColor,fontFamily: "Popins"),)),
-                Container(
-                  width: 80.0,
-                    child: Text("24h Chg%",style: TextStyle(color: Theme.of(context).hintColor,fontFamily: "Popins"),)),
-              ],
+    return Container(
+        child: ListView(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 0.0, right: 0.0, top: 7.0, bottom: 7.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left:12.0),
+                    child: Container(
+                        width: 100.0,
+                        child: Text("Pair",style: TextStyle(color: Theme.of(context).hintColor,fontFamily: "Popins"),)),
+                  ),
+                  Container(
+                      width: 150.0,
+                      child: Text("Price Change",style: TextStyle(color: Theme.of(context).hintColor,fontFamily: "Popins"),)),
+                  Container(
+                      width: 80.0,
+                      child: Text("1h Chg%",style: TextStyle(color: Theme.of(context).hintColor,fontFamily: "Popins"),)),
+                ],
+              ),
             ),
-          ),
-       SizedBox(height: 5.0,),
-          ///
-              ///
-              /// check the condition if image data from server firebase loaded or no
-              /// if image loaded true (image still downloading from server)
-              /// Card to set card loading animation
-              ///
-           
+            SizedBox(height: 5.0,),
+            ///
+            ///
+            /// check the condition if image data from server firebase loaded or no
+            /// if image loaded true (image still downloading from server)
+            /// Card to set card loading animation
+            ///
+
             loadImage?_loadingData(context):_dataLoaded(context),
-       
-           ],
-         )
+
+          ],
+        )
     );
   }
 }
@@ -91,16 +94,16 @@ setState(() {
 ///
 ///
 Widget _loadingData(BuildContext context){
- return  Container(
-          child: ListView.builder(
-            shrinkWrap: true,
-            primary: false,
-            itemCount: usdtMarketList.length,
-            itemBuilder: (ctx, i) {
-                return loadingCard(ctx,usdtMarketList[i]);
-            },
-          ),
-        );
+  return  Container(
+    child: ListView.builder(
+      shrinkWrap: true,
+      primary: false,
+      itemCount: usdtMarketList.length,
+      itemBuilder: (ctx, i) {
+        return loadingCard(ctx,usdtMarketList[i]);
+      },
+    ),
+  );
 }
 
 
@@ -111,15 +114,15 @@ Widget _loadingData(BuildContext context){
 ///
 Widget _dataLoaded(BuildContext context){
   return  Container(
-          child: ListView.builder(
-            shrinkWrap: true,
-            primary: false,
-            itemCount: usdtMarketList.length,
-            itemBuilder: (ctx, i) {
-              return card(ctx,usdtMarketList[i]);
-            },
-          ),
-        );
+    child: ListView.builder(
+      shrinkWrap: true,
+      primary: false,
+      itemCount: usdtMarketList.length,
+      itemBuilder: (ctx, i) {
+        return card(ctx,usdtMarketList[i]);
+      },
+    ),
+  );
 }
 
 
@@ -128,9 +131,9 @@ Widget loadingCard(BuildContext ctx,usdtMarket item){
     padding: const EdgeInsets.only(top:7.0),
     child: Shimmer.fromColors(
       baseColor: Color(0xFF3B4659),
-                  highlightColor: Color(0xFF606B78),
-          child: Column(
-          children: <Widget>[
+      highlightColor: Color(0xFF606B78),
+      child: Column(
+        children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,92 +141,92 @@ Widget loadingCard(BuildContext ctx,usdtMarket item){
               Padding(
                 padding: const EdgeInsets.only(left:8.0),
                 child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                         Padding(
-                           padding: const EdgeInsets.only(left:5.0,right: 12.0),
-                           child: CircleAvatar(
-                             backgroundColor: Theme.of(ctx).hintColor,
-                             radius: 13.0,
-                           ),
-                         ),
-                         Column(
-                           crossAxisAlignment: CrossAxisAlignment.start,
-                           mainAxisAlignment: MainAxisAlignment.start,
-                           children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Container(
-                          height: 15.0,
-                          width: 60.0,
-                          decoration: BoxDecoration(
-                          color: Theme.of(ctx).hintColor,
-                          borderRadius: BorderRadius.all(Radius.circular(20.0))
-                          ),
-                          ),
-                      ],
-                    ),
-                   Padding(
-                     padding: const EdgeInsets.only(top:4.0),
-                     child: Container(
-                          height: 12.0,
-                          width: 25.0,
-                          decoration: BoxDecoration(
-                            color: Theme.of(ctx).hintColor,
-                            borderRadius: BorderRadius.all(Radius.circular(20.0))
-                          ),
-                          ),
-                   ),  ],
-                         ),
-                      ],
-                  ),
-              ),
-
-            Padding(
-              padding: const EdgeInsets.only(right:20.0),
-              child: Container(
-              
-                          child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                      Container(
-                            height: 15.0,
-                            width: 100.0,
-                            decoration: BoxDecoration(
-                              color: Theme.of(ctx).hintColor,
-                              borderRadius: BorderRadius.all(Radius.circular(20.0))
-                            ),
-                            ),
-                        
-                      
-                     Padding(
-                       padding: const EdgeInsets.only(top:4.0),
-                       child: Container(
-                              height: 12.0,
-                              width: 35.0,
+                    Padding(
+                      padding: const EdgeInsets.only(left:5.0,right: 12.0),
+                      child: CircleAvatar(
+                        backgroundColor: Theme.of(ctx).hintColor,
+                        radius: 13.0,
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Container(
+                              height: 15.0,
+                              width: 60.0,
                               decoration: BoxDecoration(
+                                  color: Theme.of(ctx).hintColor,
+                                  borderRadius: BorderRadius.all(Radius.circular(20.0))
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top:4.0),
+                          child: Container(
+                            height: 12.0,
+                            width: 25.0,
+                            decoration: BoxDecoration(
                                 color: Theme.of(ctx).hintColor,
                                 borderRadius: BorderRadius.all(Radius.circular(20.0))
-                              ),
-                              ),
-                     ), ],
+                            ),
+                          ),
+                        ),  ],
+                    ),
+                  ],
                 ),
               ),
-            ),
 
-            Padding(
-              padding: const EdgeInsets.only(right:20.0),
-              child: Container(
-                              height: 25.0,
-                              width: 55.0,
-                              decoration: BoxDecoration(
-                                color: Theme.of(ctx).hintColor,
-                                borderRadius: BorderRadius.all(Radius.circular(2.0))
-                              ),
-                              ),
-            )
+              Padding(
+                padding: const EdgeInsets.only(right:20.0),
+                child: Container(
+
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        height: 15.0,
+                        width: 100.0,
+                        decoration: BoxDecoration(
+                            color: Theme.of(ctx).hintColor,
+                            borderRadius: BorderRadius.all(Radius.circular(20.0))
+                        ),
+                      ),
+
+
+                      Padding(
+                        padding: const EdgeInsets.only(top:4.0),
+                        child: Container(
+                          height: 12.0,
+                          width: 35.0,
+                          decoration: BoxDecoration(
+                              color: Theme.of(ctx).hintColor,
+                              borderRadius: BorderRadius.all(Radius.circular(20.0))
+                          ),
+                        ),
+                      ), ],
+                  ),
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.only(right:20.0),
+                child: Container(
+                  height: 25.0,
+                  width: 55.0,
+                  decoration: BoxDecoration(
+                      color: Theme.of(ctx).hintColor,
+                      borderRadius: BorderRadius.all(Radius.circular(2.0))
+                  ),
+                ),
+              )
             ],
           ),
           Padding(
@@ -232,7 +235,7 @@ Widget loadingCard(BuildContext ctx,usdtMarket item){
               width: double.infinity,
               height: 0.5,
               decoration: BoxDecoration(
-                color: Colors.black12
+                  color: Colors.black12
               ),
             ),
           )
@@ -248,12 +251,12 @@ Widget card(BuildContext ctx,usdtMarket item){
   return Padding(
     padding: const EdgeInsets.only(top:7.0),
     child: Column(
-        children: <Widget>[
+      children: <Widget>[
         InkWell(
-           onTap: (){
+          onTap: (){
             Navigator.of(ctx).push(PageRouteBuilder(pageBuilder: (_,__,___)=> new usdtDetail(item:item)));
           },
-                  child: Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -263,55 +266,50 @@ Widget card(BuildContext ctx,usdtMarket item){
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                       Padding(
-                         padding: const EdgeInsets.only(left:5.0,right: 12.0),
-                         child: Image.asset(item.icon,height: 22.0,fit: BoxFit.contain,width: 22.0,),
-                       ),
-                       Container(
-              width: 95.0,
-                         child: Column(
-                           crossAxisAlignment: CrossAxisAlignment.start,
-                           mainAxisAlignment: MainAxisAlignment.start,
-                           children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Text(item.name,style: TextStyle(fontFamily: "Popins",fontSize: 16.5),),
-                    Text("/BTC",style: TextStyle(fontFamily: "Popins",fontSize: 11.5,color: Theme.of(ctx).hintColor),),    
-                    ],
-                  ),
-                  Text(item.pairValue,style: TextStyle(fontFamily: "Popins",fontSize: 11.5,color: Theme.of(ctx).hintColor),)
-                           ],
-                         ),
-                       ),
-                    ],
+                    Container(
+                      width: 95.0,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Text(item.name,style: TextStyle(fontFamily: "Popins",fontSize: 16.5),),
+                              Text("/USDT",style: TextStyle(fontFamily: "Popins",fontSize: 11.5,color: Theme.of(ctx).hintColor),),
+                            ],
+                          ),
+                          Text(item.pairValue,style: TextStyle(fontFamily: "Popins",fontSize: 11.5,color: Theme.of(ctx).hintColor),)
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
 
-            Container(
-              width: 120.0,
-                        child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(item.priceValue,style: TextStyle(fontFamily: "Popins",fontSize: 14.5,fontWeight: FontWeight.w600),),
-                  Text(item.priceDollar,style: TextStyle(fontFamily: "Popins",fontSize: 11.5,color: Theme.of(ctx).hintColor),),
-                ],
+              Container(
+                width: 120.0,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(item.priceValue,style: TextStyle(fontFamily: "Popins",fontSize: 14.5,fontWeight: FontWeight.w600),),
+                  ],
+                ),
               ),
-            ),
 
-            Padding(
-              padding: const EdgeInsets.only(right:20.0),
-              child: Container(
-                height: 25.0,
+              Padding(
+                padding: const EdgeInsets.only(right:20.0),
+                child: Container(
+                    height: 25.0,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(2.0)),
-                      color: item.colorChg
+                        borderRadius: BorderRadius.all(Radius.circular(2.0)),
+                        color: Colors.blue
                     ),
                     child: Center(child: Padding(
                       padding: const EdgeInsets.only(left:5.0,right: 5.0),
                       child: Text(item.percent,style: TextStyle(fontWeight: FontWeight.w600,color: Colors.white),),
                     ))),
-            )
+              )
             ],
           ),
         ),
@@ -321,7 +319,7 @@ Widget card(BuildContext ctx,usdtMarket item){
             width: double.infinity,
             height: 0.5,
             decoration: BoxDecoration(
-              color: Colors.black12
+                color: Colors.black12
             ),
           ),
         )
@@ -329,3 +327,25 @@ Widget card(BuildContext ctx,usdtMarket item){
     ),
   );
 }
+
+
+
+
+@override
+List<usdtMarket> getNew() {
+  List<usdtMarket> _listProducts = List<usdtMarket>();
+  getMarketUSDT().then((value) {
+    print(value);
+    for(var u in value){
+      _listProducts.add(usdtMarket(name: u["currency"].toString(), priceValue: u["priceChange"].toString(), pairValue: u["price"].toString(), percent: u["percentage_change"].toString()));
+    }
+    usdtMarketList = _listProducts;
+
+    return usdtMarketList == null ? [] : usdtMarketList;
+  });
+}
+
+
+
+List<usdtMarket> ldd5;
+List<usdtMarket> usdtMarketList = ldd5 ?? [];
