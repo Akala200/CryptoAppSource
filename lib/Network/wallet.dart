@@ -3,11 +3,9 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
 
-final storage = new FlutterSecureStorage();
 
 var skTest = "sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e";
 
@@ -126,7 +124,7 @@ Future<String> realAmount(query) async {
   }
 }
 
-Future<String>createAccessCode(amount, bitcoin) async {
+Future<String>createAccessCode() async {
   // skTest -> Secret key
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String email = prefs.getString('email');
@@ -135,16 +133,16 @@ Future<String>createAccessCode(amount, bitcoin) async {
     'Accept': 'application/json',
    // 'Authorization': 'Bearer $skTest'
    };
-  Map data = {"amount": amount, "email": email, "bitcoin": bitcoin, };
+  Map data = {"amount": 10000, "email": email, "bitcoin": 0.000939393, };
   String payload = json.encode(data);                         http.Response response = await http.post(
       'https://coinzz.herokuapp.com/api/credit',
       headers: headers,
       body: payload);
   final Map dataNew = jsonDecode(response.body);
   print(dataNew);
-  String accessCode = dataNew['authorization_url'];
-  var databe = dataNew['data'];
-  print(databe);
+  String accessCode = dataNew['accessCode'];
+ // var databe = dataNew['data'];
+  //print(databe);
   return accessCode;
 }
 

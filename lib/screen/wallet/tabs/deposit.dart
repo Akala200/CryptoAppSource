@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:crypto_template/Network/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:clipboard/clipboard.dart';
+import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:toast/toast.dart';
 import 'package:wc_flutter_share/wc_flutter_share.dart';
@@ -26,6 +27,10 @@ class _depositState extends State<deposit> {
     setState(() {
       getBalanceNew();
     });
+    @override
+      var reee =  PaystackPlugin.initialize(
+          publicKey: 'pk_test_f68c4c8bf31e9dbe7b821d5922cc06c29505f956');
+      print(reee);
   }
   @override
   Widget build(BuildContext context) {
@@ -94,7 +99,7 @@ class _depositState extends State<deposit> {
                width: 150.0,
                color: Theme.of(context).primaryColor,
                child: Center(
-                 child: RaisedButton(onPressed: (){
+                 child: GestureDetector(onTap: (){
                    WcFlutterShare.share(
                        sharePopupTitle: 'Share',
                        subject: 'Share Wallet Address',
@@ -139,7 +144,7 @@ class _depositState extends State<deposit> {
                       width: 150.0,
                       color: Theme.of(context).primaryColor,
                       child: Center(
-                        child: RaisedButton( onPressed: (){
+                        child: GestureDetector( onTap: (){
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => coinDeposit()),

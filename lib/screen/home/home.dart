@@ -38,10 +38,9 @@ setState(() {
   loadCard=false;
 });
     });
-  setState(() {
-    var rees = getAll();
-    //  print(rees);
-  });
+   getAll();
+    getAll33();
+  getAll22();
     super.initState();
   }
 
@@ -199,10 +198,6 @@ class _cardState extends State<card> {
       padding: const EdgeInsets.only(top: 3.0, bottom: 3.0),
       child: InkWell(
         onTap: () {
-          Navigator.of(context).push(PageRouteBuilder(
-              pageBuilder: (_, __, ___) => new cardDetailHome(
-                    item: widget.item,
-                  )));
         },
         child: Container(
           height: 70.0,

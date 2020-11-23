@@ -1,9 +1,14 @@
+import 'dart:io';
+
+import 'package:crypto_template/screen/wallet/tabs/coinDeposit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_credit_card/credit_card_form.dart';
 import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 //import 'package:paystack_sdk/paystack_sdk.dart';
+import 'package:flutter_paystack/flutter_paystack.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 
 
 class MySample extends StatefulWidget {
@@ -13,6 +18,17 @@ class MySample extends StatefulWidget {
   }
 }
 
+String _getReference() {
+  String platform;
+  if (Platform.isIOS) {
+    platform = 'iOS';
+  } else {
+    platform = 'Android';
+  }
+
+  return 'ChargedFrom${platform}_${DateTime.now().millisecondsSinceEpoch}';
+}
+
 class MySampleState extends State<MySample> {
   String cardNumber = '';
   String expiryDate = '';
@@ -20,12 +36,24 @@ class MySampleState extends State<MySample> {
   String cvvCode = '';
   bool isCvvFocused = true;
 
+  String _message = '';
+  bool _paymentReady = false;
+
+
   @override
   void initState() {
-    super.initState();
-      initPaystack();
+  initPaystack();
   }
-  @override
+
+  Future<CheckoutResponse> initPaystack() async {
+    Charge charge = Charge()
+      ..amount = 10000
+      ..reference = _getReference()
+      ..accessCode = getUrl()
+      ..email = 'customer@email.com';
+    CheckoutResponse response = await PaystackPlugin.checkout(context,   method: CheckoutMethod.card, // Defaults to CheckoutMethod.selectable
+      charge: charge,);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +85,8 @@ class MySampleState extends State<MySample> {
                 child: Center(
                   child:  GestureDetector(
                       onTap: () {
-                        initPayment(cardNumber, cvvCode, expiryDate);
+
+                        initPaystack();
                       },
                       child: Text("Make PAYMENT",style: TextStyle(color: Theme.of(context).textSelectionColor),)),
                 ),
@@ -83,31 +112,16 @@ class MySampleState extends State<MySample> {
 
 Future<void> initPaystack() async {
   String paystackKey = "sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e";
+  var publicKey = 'pk_live_149127b35639db9211193e2dc2296e769b30c494';
+
   try {
-    //await PaystackSDK.initialize(paystackKey);
+    await PaystackPlugin.initialize(
+        publicKey: publicKey).then((value) => {
+      print(value)
+    });
     // Paystack is ready for use in receiving payments
   } on PlatformException {
     // well, error, deal with it
     print('error');
   }
-}
-
-initPayment(cardNumber, cvvCode, expiryDate) {
-  var arr = expiryDate.split('/');
-  // pass card number, cvc, expiry month and year to the Card constructor function
- // var card = PaymentCard(cardNumber, cvvCode, arr[0], arr[1]);
-
-  // create a transaction with the payer's email and amount (in kobo)
-  //var transaction = PaystackTransaction("wisdom.arerosuoghene@gmail.com", 100000);
-
-  // debit the card (using Javascript style promises)
-  //transaction.chargeCard(card)
-    //  .then((transactionReference) {
-    // payment successful! You should send your transaction request to your server for validation
-    //print(transactionReference);
-  //})
-    //  .catchError((e) {
-    // oops, payment failed, a readable error message should be in e.message
-    //print(e);
- // });
 }

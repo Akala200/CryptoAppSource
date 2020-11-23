@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:crypto_template/screen/setting/SeeAllTemplate.dart';
 import 'package:crypto_template/screen/setting/themes.dart';
@@ -6,16 +7,31 @@ import 'package:crypto_template/screen/wallet/tabs/card.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_template/component/style.dart';
 import 'package:crypto_template/Network/wallet.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_paystack/flutter_paystack.dart';
+import 'package:tuple/tuple.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_paystack/flutter_paystack.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
+import 'dart:async';
+import 'dart:convert';
 
+String _getReference() {
+  String platform;
+  if (Platform.isIOS) {
+    platform = 'iOS';
+  } else {
+    platform = 'Android';
+  }
 
-
-
+  return 'ChargedFrom${platform}_${DateTime.now().millisecondsSinceEpoch}';
+}
 
 final _formKey = GlobalKey<FormState>();
 var bitcoin = '0';
 var realPrice = '0';
 int amount;
+var queryGotten;
 class coinDeposit extends StatefulWidget {
   ///
   /// Get data bloc from
@@ -28,6 +44,12 @@ class coinDeposit extends StatefulWidget {
 }
 
 class _coinDeposit extends State<coinDeposit> {
+
+
+  @override
+  void initState() {
+    initPaystack();
+  }
   ///
   /// Bloc for double theme
   ///
@@ -38,26 +60,43 @@ class _coinDeposit extends State<coinDeposit> {
 
   var publicKey = '[pk_test_f68c4c8bf31e9dbe7b821d5922cc06c29505f956]';
 
+  static const paystack_pub_key = "sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e";
+  static const paystack_backend_url = "https://infinite-peak-60063.herokuapp.com";
 
+  Future<CheckoutResponse> initPaystack() async {
+    Charge charge = Charge()
+      ..amount = amount * 100
+      ..reference = _getReference()
+      ..accessCode = getUrl()
+      ..email = 'customer@email.com';
+    CheckoutResponse response = await PaystackPlugin.checkout(context,   method: CheckoutMethod.card, // Defaults to CheckoutMethod.selectable
+      charge: charge,);
+
+    return response;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        brightness: Brightness.dark,
+        centerTitle: true,
+        title: Text(
+          "Make Payment",
+          style: TextStyle(
+              color: Theme.of(context).textSelectionColor,
+              fontFamily: "Gotik",
+              fontWeight: FontWeight.w600,
+              fontSize: 18.5),
+        ),
+        iconTheme: IconThemeData(color: Theme.of(context).textSelectionColor),
+        elevation: 0.0,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 100.0, right: 60.0, left: 60.0),
-              child: Center(
-                  child: Text(
-                    "Make Payment",
-                    style: TextStyle(
-                        fontFamily: "Sans",
-                        fontSize: 19.5,
-                        fontWeight: FontWeight.w700),
-                  )),
-            ),
             SizedBox(
-              height: 20.0,
+              height: 50.0,
             ),
 
             ///
@@ -79,14 +118,14 @@ class _coinDeposit extends State<coinDeposit> {
                 if (query.length < 4) return;
                 // if the length of the word is less than 2, stop executing your API call.
 
-                setState(() {
                   convert(query).then((value) {
-                    print(value);
-                    bitcoin = value.item1.toString();
-                    realPrice = value.item2;
-                    amount = num.parse(query);
+                    queryGotten = query;
+                    setState(() {
+                      bitcoin = value.item1.toString();
+                      realPrice = value.item2;
+                      amount = num.parse(query);
+                    });
                   });
-                });
               },
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
@@ -126,10 +165,9 @@ class _coinDeposit extends State<coinDeposit> {
                 style: new TextStyle(
                     color: Color(0xFF84A2AF), fontWeight: FontWeight.bold),
               ),
-
-              Text(
-                realPrice,
-              ),
+          Text(
+          realPrice,
+        ),
             ],
           ),
 
@@ -143,10 +181,11 @@ class _coinDeposit extends State<coinDeposit> {
             child: Center(
               child:  GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MySample()),
-                  );
+                // getUrl(amount, bitcoin);
+                  initPaystacks();
+                var resp =  initPaystack();
+                  print(resp);
+                  print('Here');
                 },
                   child: Text("INITIATE PAYMENT",style: TextStyle(color: Theme.of(context).textSelectionColor),)),
               ),
@@ -217,7 +256,7 @@ class _coinDeposit extends State<coinDeposit> {
     );
   }
 
-  ///
+  ///CheckoutResponse{message: Success, card: PaymentCard{_cvc: 408, expiryMonth: 11, expiryYear: 21, _type: Visa, _last4Digits: 4081 , _number: null}, account: null, reference: ChargedFromAndroid_1606065172022, status: true, method: CheckoutMethod.card, verify: true}
   /// Change to mode light theme
   ///
   DemoTheme _buildLightTheme() {
@@ -283,4 +322,35 @@ _launchURL(urlz) async {
   return balaneed == null ? 0 : balaneed;
 }
 
+@override
+String getUrl() {
+  String urlb;
+  Future<String> urlc;
+  urlc = createAccessCode();
+  urlc.then((value) {
+   urlb = value;
+  });
+  return urlb;
+}
+
 var balance;
+
+Future<void> initPaystacks() async {
+  String paystackKey = "sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e";
+  var publicKey = 'pk_test_57c953b3220d4dc11412b46c30f1060c57c308b0';
+
+  try {
+    await PaystackPlugin.initialize(
+        publicKey: publicKey).then((value) => {
+      print(value)
+    });
+    // Paystack is ready for use in receiving payments
+  } on PlatformException {
+    // well, error, deal with it
+    print('error');
+  }
+}
+// Navigator.push(
+//                     context,
+//                     MaterialPageRoute(builder: (context) => MySample()),
+//                   );

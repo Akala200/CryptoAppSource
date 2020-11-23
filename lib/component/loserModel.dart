@@ -2,10 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final storage = new FlutterSecureStorage();
 
 class losers {
   String pair,lastPrice, chg;
@@ -14,7 +12,6 @@ class losers {
 
 
 Future <List<losers>> getList2() async {
-  String value = await storage.read(key: "tokenize");
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String token = prefs.getString('token');

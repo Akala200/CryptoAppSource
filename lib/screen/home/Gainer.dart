@@ -35,10 +35,8 @@ setState(() {
   loadImage=false;
 });
     });
-  setState(() {
-    var rees = getAll();
+     getAll33();
   //  print(rees);
-  });
     // TODO: implement initState
     super.initState();
   }
@@ -250,7 +248,7 @@ Widget _imageLoaded(BuildContext context) {
 }
 
 @override
-List<gainers> getAll() {
+List<gainers> getAll33() {
   List<gainers> _listProducts;
   Future<List<gainers>> listFuture;
   listFuture = getList();

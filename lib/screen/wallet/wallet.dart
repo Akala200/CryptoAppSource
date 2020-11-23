@@ -54,7 +54,7 @@ class _walletState extends State<wallet> {
     Size size = new Size(MediaQuery.of(context).size.width, 200.0);
 
 
-    return new Scaffold(
+    return  Scaffold(
       body: Stack(
         children: <Widget>[
           Padding(
@@ -96,37 +96,7 @@ class _walletState extends State<wallet> {
               SizedBox(
                 height: 5.0,
               ),
-              Padding(
-                padding:
-                const EdgeInsets.only(left: 17.0, right: 17.0, top: 6.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "Amount",
-                      style: TextStyle(
-                          color: Theme.of(context).hintColor,
-                          fontFamily: "Popins",
-                          fontSize: 14.0),
-                    ),
-                    Text(
-                      "Coin",
-                      style: TextStyle(
-                          color: Theme.of(context).hintColor,
-                          fontFamily: "Popins",
-                          fontSize: 14.0),
-                    ),
-                    Text(
-                      "Card",
-                      style: TextStyle(
-                          color: Theme.of(context).hintColor,
-                          fontFamily: "Popins",
-                          fontSize: 14.0),
-                    ),
 
-                  ],
-                ),
-              ),
             ],
           ),
         ],
@@ -333,10 +303,11 @@ class WaveClipper extends CustomClipper<Path> {
       animation != oldClipper.animation;
 }
 
+
 Widget card(assetsWallet item, BuildContext ctx) {
-  return new FutureBuilder  <List<assetsWallet>>(
-      future: transactionHistory(),
-      builder: (BuildContext context, AsyncSnapshot  <List<assetsWallet>> snapshot) {
+  return FutureBuilder <List<assetsWallet>>(
+      future: getNew(),
+      builder: (BuildContext context, AsyncSnapshot <List<assetsWallet>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return new Center(
             child: new CircularProgressIndicator(),
@@ -344,45 +315,8 @@ Widget card(assetsWallet item, BuildContext ctx) {
         } else if (snapshot.hasError) {
           return new Text('Error: ${snapshot.error}');
         } else
-          return Padding(
-            padding: const EdgeInsets.only(left: 12.0, top: 20.0),
-            child: InkWell(
-              onTap: () {
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    width: 100.0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          item.amount
-                          ,
-                          style: TextStyle(fontFamily: "Popins", fontSize: 16.5),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: 60.0,
-                    child: Text(
-                      item.coins,
-                      style: TextStyle(fontFamily: "Popins", fontSize: 14.0),
-                    ),
-                  ),
-                  Container(
-                    width: 100.0,
-                    child: Text(
-                      item.cardType + '***' + item.lastFour,
-                      style: TextStyle(fontFamily: "Popins", fontSize: 14.0),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
+          return  _card(Colors.lightBlueAccent, item.amount, item.coins,
+              item.cardType + '***' + item.lastFour);
       });
 }
 
@@ -412,7 +346,7 @@ double getBalanceNaira() {
 }
 
 @override
-List<assetsWallet> getNew() {
+Future<List<assetsWallet>> getNew() {
   List<assetsWallet> _listProducts;
   Future<List<assetsWallet>> listFuture;
   listFuture = transactionHistory();
@@ -420,10 +354,97 @@ List<assetsWallet> getNew() {
     _listProducts = value;
     assetsWalletList = _listProducts;
   });
-  return _listProducts == null ? [] : _listProducts;
 }
 
 
 
-List<assetsWallet> assetsWalletList =  getNew();
+List<assetsWallet> assetsWalletList =  [];
 
+Widget _card(Color _color, String _title, String _time, String _value) {
+  return Padding(
+    padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 19.0),
+    child: Container(
+      height: 120.0,
+      width: double.infinity,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          color: Color(0xFF363940),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 10.0,
+              spreadRadius: 2.0,
+            )
+          ]),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 30.0),
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        height: 8.0,
+                        width: 8.0,
+                        decoration: BoxDecoration(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(20.0)),
+                            color: Colors.white70 ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15.0),
+                        child: Text(
+                          _title,
+                          style: TextStyle(
+                              fontFamily: "Sans",
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16.0),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Icon(
+                    Icons.open_in_new,
+                    size: 17.0,
+                    color: Colors.white24,
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding:
+              const EdgeInsets.only(left: 45.0, right: 20.0, top: 13.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    _time,
+                    style: TextStyle(
+                        fontFamily: "Sans",
+                        fontWeight: FontWeight.w100,
+                        color: Colors.white54),
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        _value,
+                        style: TextStyle(
+                            fontFamily: "Sans",
+                            fontWeight: FontWeight.w800,
+                            fontSize: 19.0),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}

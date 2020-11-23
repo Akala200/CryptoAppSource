@@ -4,7 +4,6 @@ import 'package:crypto_template/screen/intro/login.dart';
 import 'package:crypto_template/screen/setting/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_template/component/style.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class onBoarding extends StatefulWidget {

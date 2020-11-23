@@ -35,7 +35,7 @@ setState(() {
 });
     });
   setState(() {
-    var rees = getAll();
+   getAll22();
     //  print(rees);
   });
     super.initState();
@@ -249,7 +249,7 @@ Widget _imageLoaded(BuildContext context) {
 
 
 @override
-List<losers> getAll() {
+List<losers> getAll22() {
   List<losers> _listProducts;
   Future<List<losers>> listFuture;
   listFuture = getList2();

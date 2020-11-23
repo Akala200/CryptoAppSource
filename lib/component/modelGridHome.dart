@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-final storage = new FlutterSecureStorage();
 
 Future <List<gridHome>> getListHome() async {
-  String value = await storage.read(key: "tokenize");
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String token = prefs.getString('token');

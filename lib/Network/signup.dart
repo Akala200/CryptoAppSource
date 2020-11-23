@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final storage = new FlutterSecureStorage();
 
 
 createAccount(email, password, firstName, lastName, phone) async {
@@ -66,7 +64,6 @@ login(email, password) async {
     var id = st["data"]["id"];
 
 
-    await storage.write(key: "token", value: token);
 
     await prefs.setString('firstName', firstName);
     await prefs.setString('lastName', lastName);
@@ -114,7 +111,6 @@ verifyAccount(code) async {
     var id = st["data"]["id"];
 
 
-    await storage.write(key: "token", value: token);
 
     await prefs.setString('firstName', firstName);
     await prefs.setString('lastName', lastName);
