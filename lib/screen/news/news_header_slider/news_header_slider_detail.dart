@@ -1,4 +1,4 @@
-import 'package:crypto_template/component/News/newsHeaderModel.dart';
+import 'package:sourcecodexchange/component/News/newsHeaderModel.dart';
 import 'package:flutter/material.dart';
 
 class headerSliderDetail extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:crypto_template/component/market/btcModel.dart';
+import 'package:sourcecodexchange/component/market/btcModel.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 

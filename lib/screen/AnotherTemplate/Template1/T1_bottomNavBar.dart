@@ -1,8 +1,8 @@
-import 'package:crypto_template/screen/AnotherTemplate/Template1/T1_BottomNav1_wallet.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template1/T1_BottomNav2_chat.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template1/T1_BottomNav3_new_wallet.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template1/T1_BottomNav4_card.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template1/T1_BottomNav5_profile.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template1/T1_BottomNav1_wallet.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template1/T1_BottomNav2_chat.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template1/T1_BottomNav3_new_wallet.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template1/T1_BottomNav4_card.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template1/T1_BottomNav5_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:bmnav/bmnav.dart' as bmnav;
 

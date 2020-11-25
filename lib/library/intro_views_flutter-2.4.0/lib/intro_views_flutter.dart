@@ -3,15 +3,15 @@ library intro_views_flutter;
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:crypto_template/Library/intro_views_flutter-2.4.0/lib/Animation_Gesture/animated_page_dragger.dart';
-import 'package:crypto_template/Library/intro_views_flutter-2.4.0/lib/Animation_Gesture/page_dragger.dart';
-import 'package:crypto_template/Library/intro_views_flutter-2.4.0/lib/Animation_Gesture/page_reveal.dart';
-import 'package:crypto_template/Library/intro_views_flutter-2.4.0/lib/Constants/constants.dart';
-import 'package:crypto_template/Library/intro_views_flutter-2.4.0/lib/Models/page_view_model.dart';
-import 'package:crypto_template/Library/intro_views_flutter-2.4.0/lib/Models/pager_indicator_view_model.dart';
-import 'package:crypto_template/Library/intro_views_flutter-2.4.0/lib/Models/slide_update_model.dart';
-import 'package:crypto_template/Library/intro_views_flutter-2.4.0/lib/UI/page_indicator_buttons.dart';
-import 'package:crypto_template/Library/intro_views_flutter-2.4.0/lib/UI/pager_indicator.dart';
+import 'package:sourcecodexchange/Library/intro_views_flutter-2.4.0/lib/Animation_Gesture/animated_page_dragger.dart';
+import 'package:sourcecodexchange/Library/intro_views_flutter-2.4.0/lib/Animation_Gesture/page_dragger.dart';
+import 'package:sourcecodexchange/Library/intro_views_flutter-2.4.0/lib/Animation_Gesture/page_reveal.dart';
+import 'package:sourcecodexchange/Library/intro_views_flutter-2.4.0/lib/Constants/constants.dart';
+import 'package:sourcecodexchange/Library/intro_views_flutter-2.4.0/lib/Models/page_view_model.dart';
+import 'package:sourcecodexchange/Library/intro_views_flutter-2.4.0/lib/Models/pager_indicator_view_model.dart';
+import 'package:sourcecodexchange/Library/intro_views_flutter-2.4.0/lib/Models/slide_update_model.dart';
+import 'package:sourcecodexchange/Library/intro_views_flutter-2.4.0/lib/UI/page_indicator_buttons.dart';
+import 'package:sourcecodexchange/Library/intro_views_flutter-2.4.0/lib/UI/pager_indicator.dart';
 
 import 'UI/page.dart';
 

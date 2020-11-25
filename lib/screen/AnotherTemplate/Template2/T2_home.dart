@@ -1,8 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template1/model_data/Lrm_dataModel.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template2/T2_Amount.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template2/T2_Investment.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template2/T2_Search.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template1/model_data/Lrm_dataModel.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template2/T2_Amount.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template2/T2_Investment.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template2/T2_Search.dart';
 import 'package:flutter/material.dart';
 
 class T2_home extends StatefulWidget {

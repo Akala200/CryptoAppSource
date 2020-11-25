@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:crypto_template/Library/intro_views_flutter-2.4.0/lib/Constants/constants.dart';
+import 'package:sourcecodexchange/Library/intro_views_flutter-2.4.0/lib/Constants/constants.dart';
 
-import 'package:crypto_template/Library/intro_views_flutter-2.4.0/lib/Models/page_button_view_model.dart';
+import 'package:sourcecodexchange/Library/intro_views_flutter-2.4.0/lib/Models/page_button_view_model.dart';
 
 /// Skip, Next, and Back button class
 

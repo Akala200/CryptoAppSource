@@ -15,8 +15,8 @@ class assetsWallet {
 
   Future <List<assetsWallet>>  transactionHistory() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  String email = prefs.getString('email');
-  var url = "https://coinzz.herokuapp.com/api/history?email=$email"; // iOS
+  String id = prefs.getString('id');
+  var url = "https://coinzz.herokuapp.com/api/history?email=$id"; // iOS
   final http.Response response = await http.get(
     url,
     headers: <String, String>{

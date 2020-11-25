@@ -1,5 +1,5 @@
 
-import 'package:crypto_template/Library/intro_views_flutter-2.4.0/lib/Constants/constants.dart';
+import 'package:sourcecodexchange/Library/intro_views_flutter-2.4.0/lib/Constants/constants.dart';
 
 /// This is view model for the skip and done buttons.
 

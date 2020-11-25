@@ -1,9 +1,17 @@
-import 'package:crypto_template/screen/intro/login.dart';
-import 'package:crypto_template/screen/intro/signup.dart';
-import 'package:crypto_template/screen/setting/themes.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
+import 'package:sourcecodexchange/Network/signup.dart';
+import 'package:sourcecodexchange/Network/wallet.dart';
+import 'package:sourcecodexchange/screen/Bottom_Nav_Bar/bottom_nav_bar.dart';
+import 'package:sourcecodexchange/screen/intro/login.dart';
+import 'package:sourcecodexchange/screen/intro/signup.dart';
+import 'package:sourcecodexchange/screen/intro/verifyCode.dart';
+import 'package:sourcecodexchange/screen/setting/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto_template/component/style.dart';
+import 'package:sourcecodexchange/component/style.dart';
+import 'package:toast/toast.dart';
 
+
+var email;
 class forgetPassword extends StatefulWidget {
   ThemeBloc themeBloc;
   forgetPassword({this.themeBloc});
@@ -14,6 +22,8 @@ class forgetPassword extends StatefulWidget {
 class _forgetPasswordState extends State<forgetPassword> {
   ThemeBloc _themeBloc;
   _forgetPasswordState(this._themeBloc);
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -41,108 +51,145 @@ class _forgetPasswordState extends State<forgetPassword> {
               height: double.infinity,
               width: double.infinity,
               child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding:
-                          EdgeInsets.only(top: mediaQuery.padding.top + 160.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Image.asset("assets/image/logo.png", height: 35.0),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 17.0, top: 7.0),
-                            child: Text(
-                              "Crypto",
-                              style: TextStyle(
-                                  fontFamily: "Sans",
-                                  color: Colors.white,
-                                  fontSize: 27.0,
-                                  fontWeight: FontWeight.w300,
-                                  letterSpacing: 3.5),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding:
+                            EdgeInsets.only(top: mediaQuery.padding.top + 160.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 17.0, top: 7.0),
+                              child: Text(
+                                "Reset Password",
+                                style: TextStyle(
+                                    fontFamily: "Sans",
+                                    color: Colors.white,
+                                    fontSize: 22.0,
+                                    fontWeight: FontWeight.w300,
+                                    letterSpacing: 3.5),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 20.0, right: 20.0, top: 90.0),
-                      child: _buildTextFeild(
-                          widgetIcon: Icon(
-                            Icons.email,
-                            color: colorStyle.primaryColor,
-                            size: 20,
-                          ),
-                          controller: _emailController,
-                          hint: 'Email',
-                          obscure: false,
-                          keyboardType: TextInputType.emailAddress,
-                          textAlign: TextAlign.start),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 20.0, right: 20.0, top: 60.0),
-                      child: Container(
-                        height: 50.0,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(0.0)),
-                          color: colorStyle.primaryColor,
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Send Verification Code",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 15.0,
-                                letterSpacing: 1.0),
-                          ),
+                          ],
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushReplacement(PageRouteBuilder(
-                                  pageBuilder: (_, __, ___) => new LoginNow(
-                                        themeBloc: _themeBloc,
-                                      )));
-                        },
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20.0, right: 20.0, top: 90.0),
+                        child: _buildTextFeild(
+                            widgetIcon: Icon(
+                              Icons.email,
+                              color: colorStyle.primaryColor,
+                              size: 20,
+                            ),
+                            controller: _emailController,
+                            hint: 'Email',
+                            catchText: (value){
+                              setState(() {
+                                email = value;
+                              });
+                            },
+                            obscure: false,
+                            keyboardType: TextInputType.emailAddress,
+                            textAlign: TextAlign.start),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20.0, right: 20.0, top: 60.0),
                         child: Container(
                           height: 50.0,
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(0.0)),
-                            border: Border.all(
-                              color: colorStyle.primaryColor,
-                              width: 0.35,
-                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(0.0)),
+                            color: colorStyle.primaryColor,
                           ),
-                          child: Center(
-                            child: Text(
-                              "Back to login",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w100,
-                                  fontSize: 16.5,
-                                  letterSpacing: 1.2),
+                          child:  GestureDetector(
+                            onTap: () async {
+                              Loader.show(context,progressIndicator: CircularProgressIndicator(backgroundColor: Colors.blueGrey,),themeData: Theme.of(context).copyWith(accentColor: Colors.blueAccent));
+                              final formState = _formKey.currentState;
+                              if (formState.validate()) {
+                                formState.save();
+                                var ressp = await forgotPaasword(email);
+                                if (ressp == 200){
+                                  Loader.hide();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => verifyCode()),
+                                  );
+                                } else {
+                                  Loader.hide();
+                                  Toast.show(ressp, context, duration: Toast.LENGTH_LONG, backgroundColor: Colors.red,  gravity:  Toast.BOTTOM);
+                                }
+                              }
+                            },
+                            child: Container(
+                              height: 50.0,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(0.0)),
+                                color: colorStyle.primaryColor,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Send Verification Code",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 18.0,
+                                      letterSpacing: 1.0),
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushReplacement(PageRouteBuilder(
+                                    pageBuilder: (_, __, ___) => new LoginNow(
+                                          themeBloc: _themeBloc,
+                                        )));
+                          },
+                          child: Container(
+                            height: 50.0,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(0.0)),
+                              border: Border.all(
+                                color: colorStyle.primaryColor,
+                                width: 0.35,
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "Back to login",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w100,
+                                    fontSize: 16.5,
+                                    letterSpacing: 1.2),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -157,6 +204,7 @@ class _forgetPasswordState extends State<forgetPassword> {
     TextEditingController controller,
     TextInputType keyboardType,
     bool obscure,
+    Function catchText,
     String icon,
     TextAlign textAlign,
     Widget widgetIcon,
@@ -187,6 +235,7 @@ class _forgetPasswordState extends State<forgetPassword> {
                   controller: controller,
                   keyboardType: keyboardType,
                   autocorrect: false,
+                  onChanged: catchText,
                   autofocus: false,
                   decoration: InputDecoration(
                       border: InputBorder.none,

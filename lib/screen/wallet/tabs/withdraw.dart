@@ -1,11 +1,13 @@
-import 'package:crypto_template/Network/wallet.dart';
+import 'package:sourcecodexchange/Network/wallet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dropdown/flutter_dropdown.dart';
+import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
 
 var queryGotten;
 var bitcoin = null ?? '0';
 var  realPrice;
 var  amount;
-
+var activity = '';
 class withDraw extends StatefulWidget {
   final Widget child;
 
@@ -35,9 +37,9 @@ class _withDrawState extends State<withDraw> {
                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                children: <Widget>[
                  Text("Available (BTC)",style: TextStyle(color: Theme.of(context).hintColor.withOpacity(0.5),fontFamily: "Popins",fontSize: 15.5),),
-               new FutureBuilder <double>(
+               new FutureBuilder <int>(
           future: balanceNew(),
-        builder: (BuildContext context, AsyncSnapshot <double> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot <int> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return new Center(
               child: new CircularProgressIndicator(),
@@ -72,18 +74,34 @@ class _withDrawState extends State<withDraw> {
                  crossAxisAlignment: CrossAxisAlignment.start,
                  children: <Widget>[
                    SizedBox(height: 27.0,),
-           Text("BTC Withdrawal Address",style: TextStyle(color: Theme.of(context).hintColor.withOpacity(0.7),fontFamily: "Popins",),),
+                   Padding(
+                     padding: const EdgeInsets.only(right:5.0,bottom: 35.0),
+                     child: DropDown(
+                       items: ["Withdraw", "Transfer"],
+                       hint: Text("Select Transaction Method"),
+                       onChanged: (value){
+                         setState(() {
+                           activity = value;
+                         });
+                         print(activity);
+                       },
+                     ),
+                   ),
+                    if (activity == 'Transfer')
+
             Padding(
               padding: const EdgeInsets.only(right:5.0,bottom: 35.0),
               child: TextField(
                 decoration: InputDecoration(
                   hintText: "Paste your deliver address",
+                    labelText: 'Enter Or Paste Wallet Address',
+                    fillColor: Colors.white,
+                    labelStyle: TextStyle(color: Colors.white),
                   hintStyle: TextStyle(color: Theme.of(context).hintColor,fontFamily: "Popins",fontSize: 15.0)
                 ),
               ),
             ),
 
-             Text("Amount In Naira",style: TextStyle(color: Theme.of(context).hintColor.withOpacity(0.7),fontFamily: "Popins",),),
             TextField(
               onChanged: (query){
                 if (query.length < 4) return;
@@ -101,6 +119,9 @@ class _withDrawState extends State<withDraw> {
               keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       hintText: "#0",
+                        labelText: 'Amount In Naira',
+                        fillColor: Colors.white,
+                        labelStyle: TextStyle(color: Colors.white),
                       hintStyle: TextStyle(color: Theme.of(context).hintColor,fontFamily: "Popins",fontSize: 15.0)
                     ),
                   ),
@@ -136,3 +157,4 @@ class _withDrawState extends State<withDraw> {
     );
   }
 }
+

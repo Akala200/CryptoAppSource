@@ -1,10 +1,10 @@
-import 'package:crypto_template/screen/AnotherTemplate/Template1/tab_wallet/T1_btc.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template1/tab_wallet/T1_dash.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template1/tab_wallet/T1_eth.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template1/tab_wallet/T1_lrm.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template1/tab_wallet/T1_ripple.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template1/tab_wallet/T1_btc.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template1/tab_wallet/T1_dash.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template1/tab_wallet/T1_eth.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template1/tab_wallet/T1_lrm.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template1/tab_wallet/T1_ripple.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto_template/component/style.dart';
+import 'package:sourcecodexchange/component/style.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class T1_wallet extends StatefulWidget {

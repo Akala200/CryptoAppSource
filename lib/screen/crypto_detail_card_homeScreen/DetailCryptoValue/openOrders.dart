@@ -1,5 +1,5 @@
-import 'package:crypto_template/component/CardDetail/AmountSell.dart';
-import 'package:crypto_template/component/CardDetail/BuyAmount.dart';
+import 'package:sourcecodexchange/component/CardDetail/AmountSell.dart';
+import 'package:sourcecodexchange/component/CardDetail/BuyAmount.dart';
 import 'package:flutter/material.dart';
 
 class openOrders extends StatefulWidget {

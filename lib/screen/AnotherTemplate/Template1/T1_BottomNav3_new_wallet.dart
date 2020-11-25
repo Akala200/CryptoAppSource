@@ -1,4 +1,4 @@
-import 'package:crypto_template/screen/AnotherTemplate/Template1/T1_wallet_detail.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template1/T1_wallet_detail.dart';
 import 'package:flutter/material.dart';
 
 class T1_new_wallet extends StatefulWidget {

@@ -1,13 +1,13 @@
-import 'package:crypto_template/screen/AnotherTemplate/Template4/T4_Custom_nav_bar.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template4/T4_banking.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template4/T4_home.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template4/T4_setting.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template4/T4_transactions.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template4/T4_wallet.dart';
-import 'package:crypto_template/screen/home/home.dart';
-import 'package:crypto_template/screen/market/markets.dart';
-import 'package:crypto_template/screen/news/news_home.dart';
-import 'package:crypto_template/screen/wallet/wallet.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template4/T4_Custom_nav_bar.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template4/T4_banking.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template4/T4_home.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template4/T4_setting.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template4/T4_transactions.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template4/T4_wallet.dart';
+import 'package:sourcecodexchange/screen/home/home.dart';
+import 'package:sourcecodexchange/screen/market/markets.dart';
+import 'package:sourcecodexchange/screen/news/news_home.dart';
+import 'package:sourcecodexchange/screen/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 
 class T4_dashboard extends StatefulWidget {

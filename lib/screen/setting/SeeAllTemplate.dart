@@ -1,9 +1,9 @@
-import 'package:crypto_template/screen/AnotherTemplate/Template1/T1_bottomNavBar.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template2/T2_home.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template3/T3_Dashboard.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template3/T3_home.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template4/T4_Dashboard.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template5/T5_bottomNavBar.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template1/T1_bottomNavBar.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template2/T2_home.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template3/T3_Dashboard.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template3/T3_home.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template4/T4_Dashboard.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template5/T5_bottomNavBar.dart';
 import 'package:flutter/material.dart';
 
 class seeAllTemplate extends StatefulWidget {

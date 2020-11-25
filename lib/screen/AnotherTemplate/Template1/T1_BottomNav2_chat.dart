@@ -1,4 +1,4 @@
-import 'package:crypto_template/screen/AnotherTemplate/Template1/chat_item/T1_chating_layout.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template1/chat_item/T1_chating_layout.dart';
 import 'package:flutter/material.dart';
 
 class T1_chat extends StatefulWidget {

@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'package:crypto_template/component/market/btcModel.dart';
-import 'package:crypto_template/screen/market/detailCrypto/btcDetail.dart';
+import 'package:sourcecodexchange/component/market/btcModel.dart';
+import 'package:sourcecodexchange/screen/market/detailCrypto/btcDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:crypto_template/Network/crptoList.dart';
+import 'package:sourcecodexchange/Network/crptoList.dart';
 
 
 class btc extends StatefulWidget {
@@ -32,12 +32,11 @@ class _btcState extends State<btc> {
   @override
   void initState() {
 
-
+    getNew();
     Timer(Duration(seconds: 6
 
     ),(){
       setState(() {
-        ldd3 = getNew();
         loadImage=false;
       });
     });
@@ -345,4 +344,70 @@ List<btcMarket> getNew() {
 
 
 List<btcMarket> ldd3;
-List<btcMarket> btcMarketList = ldd3 ?? [];
+List<btcMarket> btcMarketList = ldd3 ?? [
+  btcMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  btcMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  btcMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  btcMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  btcMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  btcMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  btcMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  btcMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  btcMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  btcMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  btcMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  btcMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  btcMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  )
+];

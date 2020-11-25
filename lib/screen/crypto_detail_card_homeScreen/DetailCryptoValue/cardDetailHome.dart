@@ -1,8 +1,8 @@
-import 'package:crypto_template/component/modelGridHome.dart';
-import 'package:crypto_template/screen/crypto_detail_card_homeScreen/DetailCryptoValue/openOrders.dart';
-import 'package:crypto_template/screen/crypto_detail_card_homeScreen/DetailCryptoValue/orderHistory.dart';
+import 'package:sourcecodexchange/component/modelGridHome.dart';
+import 'package:sourcecodexchange/screen/crypto_detail_card_homeScreen/DetailCryptoValue/openOrders.dart';
+import 'package:sourcecodexchange/screen/crypto_detail_card_homeScreen/DetailCryptoValue/orderHistory.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto_template/component/style.dart';
+import 'package:sourcecodexchange/component/style.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
 
 class cardDetailHome extends StatefulWidget {

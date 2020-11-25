@@ -1,13 +1,19 @@
 import 'dart:async';
-import 'package:crypto_template/screen/Bottom_Nav_Bar/bottom_nav_bar.dart';
-import 'package:crypto_template/screen/intro/on_Boarding.dart';
-import 'package:crypto_template/screen/setting/themes.dart';
+import 'package:sourcecodexchange/screen/Bottom_Nav_Bar/bottom_nav_bar.dart';
+import 'package:sourcecodexchange/screen/intro/on_Boarding.dart';
+import 'package:sourcecodexchange/screen/setting/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:crypto_template/screen/setting/setting.dart';
+import 'package:sourcecodexchange/screen/setting/setting.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:crypto_template/screen/home/home.dart';
-import 'package:crypto_template/screen/intro/login.dart';
+import 'package:sourcecodexchange/screen/home/home.dart';
+import 'package:sourcecodexchange/screen/intro/login.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:tuple/tuple.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:tuple/tuple.dart';
 
 /// Run first apps open
 void main() {
@@ -47,7 +53,7 @@ class _myAppState extends State<myApp> {
       stream: _themeBloc.themeDataStream,
       builder: (BuildContext context, AsyncSnapshot<ThemeData> snapshot) {
         return MaterialApp(
-          title: 'SourceCode Exchange',
+          title: 'SourceCodeExchange',
           theme: snapshot.data,
           debugShowCheckedModeBanner: false,
           home: SplashScreen(
@@ -91,13 +97,16 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String uid = await prefs.getString('id');
     String token = await prefs.getString('token');
+    String loginStateValue = await dataToken();
 
 
     if(token != null){
-      Navigator.of(context).pushReplacement(
-          PageRouteBuilder(
-              pageBuilder: (_, __, ___) =>
-                  bottomNavBar(themeBloc: themeBloc)));
+      if(loginStateValue == 'valid token'){
+        Navigator.of(context).pushReplacement(
+            PageRouteBuilder(
+                pageBuilder: (_, __, ___) =>
+                    bottomNavBar(themeBloc: themeBloc)));
+      }
     } else if(uid != null){
       Navigator.of(context)
           .pushReplacement(PageRouteBuilder(
@@ -145,7 +154,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Image.asset("assets/image/logo.png", height: 90.0),
+                      Image.asset("assets/image/logo.png", height: 65.0),
                       Padding(
                         padding: const EdgeInsets.only(left: 17.0, top: 7.0),
                       ),
@@ -158,5 +167,30 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       ),
     );
+  }
+}
+
+
+Future<String> dataToken() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String token = prefs.getString('token');
+  var url = "https://coinzz.herokuapp.com/api/data"; // iOS
+  final http.Response response = await http.get(
+    url,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': token
+    },
+  );
+
+  if (response.statusCode == 200) {
+    var st = jsonDecode(response.body);
+    var status = st["message"];
+    return status;
+  } else {
+    var st = jsonDecode(response.body);
+    var status = st["message"];
+    print(status);
+    return status;
   }
 }

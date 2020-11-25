@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:crypto_template/Library/intro_views_flutter-2.4.0/lib/Constants/constants.dart';
-import 'package:crypto_template/Library/intro_views_flutter-2.4.0/lib/Models/page_bubble_view_model.dart';
-import 'package:crypto_template/Library/intro_views_flutter-2.4.0/lib/Models/pager_indicator_view_model.dart';
-import 'package:crypto_template/Library/intro_views_flutter-2.4.0/lib/UI/page_bubble.dart';
+import 'package:sourcecodexchange/Library/intro_views_flutter-2.4.0/lib/Constants/constants.dart';
+import 'package:sourcecodexchange/Library/intro_views_flutter-2.4.0/lib/Models/page_bubble_view_model.dart';
+import 'package:sourcecodexchange/Library/intro_views_flutter-2.4.0/lib/Models/pager_indicator_view_model.dart';
+import 'package:sourcecodexchange/Library/intro_views_flutter-2.4.0/lib/UI/page_bubble.dart';
 
 /// This class contains the UI elements associated with bottom page indicator.
 

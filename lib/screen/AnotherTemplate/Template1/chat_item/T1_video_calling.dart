@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:crypto_template/screen/AnotherTemplate/Template1/chat_item/T1_chating_layout.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template1/chat_item/T1_video_layout.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template1/chat_item/T1_chating_layout.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template1/chat_item/T1_video_layout.dart';
 import 'package:flutter/material.dart';
 
 class T1_video_calling extends StatefulWidget {

@@ -2,8 +2,9 @@
 import 'dart:async';
 import 'dart:math';
 import 'dart:ui' as ui;
-import 'package:crypto_template/component/AssetsWallet/assetsModel.dart';
-import 'package:crypto_template/screen/wallet/walletDetail.dart';
+import 'package:sourcecodexchange/component/AssetsWallet/assetsModel.dart';
+import 'package:sourcecodexchange/screen/market/TabBarBody/btc.dart';
+import 'package:sourcecodexchange/screen/wallet/walletDetail.dart';
 import 'package:flutter/services.dart';
 import 'package:vector_math/vector_math.dart' as Vector;
 import 'package:flutter/foundation.dart';
@@ -11,8 +12,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
-import 'package:crypto_template/component/style.dart';
-import 'package:crypto_template/Network/wallet.dart';
+import 'package:sourcecodexchange/component/style.dart';
+import 'package:sourcecodexchange/Network/wallet.dart';
 
 var newBalance;
 var newBalanceNaira;
@@ -35,6 +36,7 @@ class _walletState extends State<wallet> {
 
   @override
   void initState() {
+    getNew();
     super.initState();
     getBalance();
      getNew();
@@ -63,16 +65,27 @@ class _walletState extends State<wallet> {
             ///
             /// Create card list
             ///
-            child: Container(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  primary: false,
-                  padding: EdgeInsets.only(top: 0.0),
-                  itemBuilder: (ctx, i) {
-                    return card(assetsWalletList[i], ctx);
-                  },
-                  itemCount: assetsWalletList.length,
-                )),
+            child: FutureBuilder <List<assetsWallet>>(
+    future: transactionHistory(),
+    builder: (BuildContext context, AsyncSnapshot <List<assetsWallet>> snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+    return new Center(
+    child: new CircularProgressIndicator(),
+    );
+    } else if (snapshot.hasError) {
+    return new Text('Error: ${snapshot.error}');
+    } else
+    return  Container(
+        child: ListView.builder(
+          shrinkWrap: true,
+          primary: false,
+          padding: EdgeInsets.only(top: 0.0),
+          itemBuilder: (ctx, i) {
+            return card(snapshot.data[i], ctx);
+          },
+          itemCount: assetsWalletList.length,
+        ));
+    }),
           ),
           Column(
             children: <Widget>[
@@ -167,9 +180,9 @@ class _waveBodyState extends State<waveBody> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return new FutureBuilder <double>(
+    return new FutureBuilder <int>(
         future: balanceNew(),
-        builder: (BuildContext context, AsyncSnapshot <double> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot <int> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return new Center(
               child: new CircularProgressIndicator(),
@@ -305,19 +318,8 @@ class WaveClipper extends CustomClipper<Path> {
 
 
 Widget card(assetsWallet item, BuildContext ctx) {
-  return FutureBuilder <List<assetsWallet>>(
-      future: getNew(),
-      builder: (BuildContext context, AsyncSnapshot <List<assetsWallet>> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return new Center(
-            child: new CircularProgressIndicator(),
-          );
-        } else if (snapshot.hasError) {
-          return new Text('Error: ${snapshot.error}');
-        } else
-          return  _card(Colors.lightBlueAccent, item.amount, item.coins,
+  return  _card(Colors.lightBlueAccent, item.amount, item.coins,
               item.cardType + '***' + item.lastFour);
-      });
 }
 
 
@@ -327,7 +329,7 @@ Widget card(assetsWallet item, BuildContext ctx) {
 double getBalance() {
   double  _balance;
   // ignore: non_constant_identifier_names
-  Future<double> StringFuture;
+  Future<int> StringFuture;
   StringFuture = balanceNew();
   StringFuture.then((value) {
     newBalance = value;

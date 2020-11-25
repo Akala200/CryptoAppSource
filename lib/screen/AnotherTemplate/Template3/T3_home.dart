@@ -1,7 +1,7 @@
-import 'package:crypto_template/screen/AnotherTemplate/Template1/tab_WALLET/T1_lrm.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template1/tab_WALLET/T1_lrm.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:crypto_template/component/style.dart';
+import 'package:sourcecodexchange/component/style.dart';
 
 class T3_HomeScreen extends StatefulWidget {
   T3_HomeScreen({Key key}) : super(key: key);

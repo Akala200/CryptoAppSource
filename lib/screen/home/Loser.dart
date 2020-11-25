@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:crypto_template/component/loserModel.dart';
-import 'package:crypto_template/screen/home/detailCrypto/loserDetail.dart';
+import 'package:sourcecodexchange/component/loserModel.dart';
+import 'package:sourcecodexchange/screen/home/detailCrypto/loserDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 

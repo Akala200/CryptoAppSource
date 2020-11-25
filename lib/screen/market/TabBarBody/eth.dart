@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:crypto_template/component/market/ethModel.dart';
-import 'package:crypto_template/screen/market/detailCrypto/ethDetail.dart';
+import 'package:sourcecodexchange/component/market/ethModel.dart';
+import 'package:sourcecodexchange/screen/market/detailCrypto/ethDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:crypto_template/Network/crptoList.dart';
+import 'package:sourcecodexchange/Network/crptoList.dart';
 
 class eth extends StatefulWidget {
   final Widget child;
@@ -30,16 +30,14 @@ class _ethState extends State<eth> {
 
   @override
   void initState() {
-
+    getNew();
     Timer(Duration(seconds: 6),(){
       setState(() {
         loadImage=false;
       });
     });
 
-    setState(() {
-      ldd4 = getNew();
-    });
+
     super.initState();
   }
 
@@ -374,4 +372,97 @@ List<ethMarket> getNew() {
 
 
 List<ethMarket> ldd4;
-List<ethMarket> ethMarketList = ldd4 ?? [];
+List<ethMarket> ethMarketList = ldd4 ?? [
+  ethMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  ethMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  )
+  ,
+  ethMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  )
+  ,
+  ethMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  )
+  ,
+  ethMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  )
+  ,
+  ethMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  )
+  ,
+  ethMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  ethMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  )
+  ,
+  ethMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  ethMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  ethMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  ethMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  ethMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  ethMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  ethMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  ethMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  ethMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  )
+
+];

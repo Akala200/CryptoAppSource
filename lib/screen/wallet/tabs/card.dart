@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:crypto_template/screen/wallet/tabs/coinDeposit.dart';
+import 'package:sourcecodexchange/screen/wallet/tabs/coinDeposit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_credit_card/credit_card_form.dart';

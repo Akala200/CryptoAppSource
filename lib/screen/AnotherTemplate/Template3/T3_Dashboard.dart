@@ -1,8 +1,8 @@
-import 'package:crypto_template/screen/AnotherTemplate/Template3/T3_deals.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template3/T3_finance.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template3/T3_history.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template3/T3_home.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template3/T3_wallet.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template3/T3_deals.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template3/T3_finance.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template3/T3_history.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template3/T3_home.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template3/T3_wallet.dart';
 import 'package:flutter/material.dart';
 
 class T3_Dashboard extends StatefulWidget {

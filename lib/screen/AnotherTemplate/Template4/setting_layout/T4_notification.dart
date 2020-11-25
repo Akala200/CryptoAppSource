@@ -1,4 +1,4 @@
-import 'package:crypto_template/screen/AnotherTemplate/Template4/model_data/notification_model.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template4/model_data/notification_model.dart';
 import 'package:flutter/material.dart';
 
 class T4_notification extends StatefulWidget {

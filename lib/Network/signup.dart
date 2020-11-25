@@ -34,6 +34,79 @@ createAccount(email, password, firstName, lastName, phone) async {
 
 
 
+forgotPaasword(email) async {
+  var url = "https://coinzz.herokuapp.com/api/forgot/password"; // iOS
+  final http.Response response = await http.post(
+    url,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'email': email,
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    var st = jsonDecode(response.body);
+    var status = st["statusCode"];
+    return status;
+  } else {
+    var st = jsonDecode(response.body);
+    var status = st["message"];
+    return status;
+  }
+}
+
+
+saveCode(code) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString('code', code);
+  print(code);
+
+  var status = 200;
+  if (status == 200) {
+    return status;
+  } else {
+  var notNow = 400;
+    return notNow;
+  }
+}
+//5439228
+
+
+
+Future<String> updatePasswordNoAuth(password) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String code = prefs.getString('code');
+  print(code);
+  var url = "https://coinzz.herokuapp.com/api/new/password"; // iOS
+  final http.Response response = await http.post(
+    url,
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+
+    },
+    body: jsonEncode(<String, String>{
+      'password': password,
+      'code': code
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    var st = jsonDecode(response.body);
+    print(st);
+    var status = st["message"];
+    return status;
+  } else {
+    var st = jsonDecode(response.body);
+    print(st);
+    var status = st["message"];
+    return status;
+  }
+}
+
+
+
 login(email, password) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -123,7 +196,29 @@ verifyAccount(code) async {
     return status;
   } else {
     var st = jsonDecode(response.body);
+    print(st);
     var status = st["message"];
+    return status;
+  }
+}
+
+
+Future<String>logout() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String id = prefs.getString('id');
+  print(id);
+
+  prefs.remove("token");
+  prefs.remove("email");
+  prefs.remove("first_name");
+  prefs.remove("last_name");
+  prefs.remove("phone");
+
+  var status = 'done';
+  if (status == 'done') {
+    return status;
+  } else {
+    var status = 'Unable to logout';
     return status;
   }
 }

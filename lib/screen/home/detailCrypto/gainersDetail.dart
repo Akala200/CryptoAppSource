@@ -1,9 +1,9 @@
-import 'package:crypto_template/component/gainersModel.dart';
-import 'package:crypto_template/screen/crypto_detail_card_homeScreen/DetailCryptoValue/openOrders.dart';
-import 'package:crypto_template/screen/crypto_detail_card_homeScreen/DetailCryptoValue/orderHistory.dart';
+import 'package:sourcecodexchange/component/gainersModel.dart';
+import 'package:sourcecodexchange/screen/crypto_detail_card_homeScreen/DetailCryptoValue/openOrders.dart';
+import 'package:sourcecodexchange/screen/crypto_detail_card_homeScreen/DetailCryptoValue/orderHistory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
-import 'package:crypto_template/component/style.dart';
+import 'package:sourcecodexchange/component/style.dart';
 
 class gainersDetail extends StatefulWidget {
   final gainers item;

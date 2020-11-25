@@ -1,4 +1,4 @@
-import 'package:crypto_template/screen/AnotherTemplate/Template1/chat_item/T1_video_calling.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template1/chat_item/T1_video_calling.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

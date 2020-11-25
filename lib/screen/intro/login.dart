@@ -1,13 +1,15 @@
-import 'package:crypto_template/screen/Bottom_Nav_Bar/bottom_nav_bar.dart';
-import 'package:crypto_template/screen/home/home.dart';
-import 'package:crypto_template/screen/intro/forget_password.dart';
-import 'package:crypto_template/screen/intro/signup.dart';
-import 'package:crypto_template/screen/setting/themes.dart';
+import 'package:sourcecodexchange/screen/Bottom_Nav_Bar/bottom_nav_bar.dart';
+import 'package:sourcecodexchange/screen/home/home.dart';
+import 'package:sourcecodexchange/screen/intro/forget_password.dart';
+import 'package:sourcecodexchange/screen/intro/signup.dart';
+import 'package:sourcecodexchange/screen/setting/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto_template/component/style.dart';
-import 'package:crypto_template/Network/signup.dart';
+import 'package:sourcecodexchange/component/style.dart';
+import 'package:sourcecodexchange/Network/signup.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
+import 'package:toast/toast.dart';
+import 'package:wc_form_validators/wc_form_validators.dart';
 
 // ignore: camel_case_types, must_be_immutable
 class LoginNow extends StatefulWidget {
@@ -247,11 +249,14 @@ class _LoginNowState extends State<LoginNow> {
                             left: 20.0, right: 20.0, top: 40.0),
                         child: GestureDetector(
                           onTap: () async {
-                            Loader.show(context,progressIndicator: CircularProgressIndicator(backgroundColor: Colors.blueGrey,),themeData: Theme.of(context).copyWith(accentColor: Colors.blueAccent));
+                            Loader.show(context,progressIndicator: CircularProgressIndicator(backgroundColor: Colors.blueGrey,), themeData: Theme.of(context).copyWith(accentColor: Colors.blueAccent));
                             final formState = _formKey.currentState;
                             if (formState.validate()) {
                               formState.save();
                               var ressp = await login(email, password);
+                              if(ressp == null){
+                                Loader.hide();
+                              }
                               if (ressp == 200){
                                 Loader.hide();
                                 Navigator.of(context).pushReplacement(
@@ -260,12 +265,10 @@ class _LoginNowState extends State<LoginNow> {
                                             bottomNavBar(themeBloc: _themeBloc)));
                               } else {
                                 Loader.hide();
-                                Alert(
-                                  context: context,
-                                  title: "Error",
-                                  desc: ressp,
-                                ).show();
+                                Toast.show(ressp, context, duration: Toast.LENGTH_LONG, backgroundColor: Colors.red,  gravity:  Toast.BOTTOM);
                               }
+                            } else {
+                              Loader.hide();
                             }
                           },
                           child: Container(

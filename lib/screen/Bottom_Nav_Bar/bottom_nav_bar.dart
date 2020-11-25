@@ -1,12 +1,12 @@
-import 'package:crypto_template/screen/Bottom_Nav_Bar/custom_nav_bar.dart';
-import 'package:crypto_template/screen/home/home.dart';
-import 'package:crypto_template/screen/market/markets.dart';
-import 'package:crypto_template/screen/news/news_home.dart';
-import 'package:crypto_template/screen/setting/setting.dart';
-import 'package:crypto_template/screen/setting/themes.dart';
-import 'package:crypto_template/screen/wallet/wallet.dart';
+import 'package:sourcecodexchange/screen/Bottom_Nav_Bar/custom_nav_bar.dart';
+import 'package:sourcecodexchange/screen/home/home.dart';
+import 'package:sourcecodexchange/screen/market/markets.dart';
+import 'package:sourcecodexchange/screen/news/news_home.dart';
+import 'package:sourcecodexchange/screen/setting/setting.dart';
+import 'package:sourcecodexchange/screen/setting/themes.dart';
+import 'package:sourcecodexchange/screen/wallet/wallet.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto_template/component/style.dart';
+import 'package:sourcecodexchange/component/style.dart';
 
 class bottomNavBar extends StatefulWidget {
 
@@ -39,7 +39,7 @@ class _bottomNavBarState extends State<bottomNavBar> {
       return new news();
         break;
       case 4:
-     return new setting(themeBloc :_themeBloc);
+     return new settings(themeBloc :_themeBloc);
         break;
       default: 
       return new home();
@@ -69,7 +69,7 @@ class _bottomNavBarState extends State<bottomNavBar> {
          BottomNavigationDotBarItem(icon: Icons.library_books, onTap: () { setState(() {
         currentIndex = 3;
         }); }),
-         BottomNavigationDotBarItem(icon: Icons.settings, onTap: () { setState(() {
+         BottomNavigationDotBarItem(icon: Icons.person, onTap: () { setState(() {
          currentIndex = 4;
         }); }), 
          ]

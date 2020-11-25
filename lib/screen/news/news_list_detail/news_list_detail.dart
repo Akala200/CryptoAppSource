@@ -1,4 +1,4 @@
-import 'package:crypto_template/component/News/newsListBottom.dart';
+import 'package:sourcecodexchange/component/News/newsListBottom.dart';
 import 'package:flutter/material.dart';
 
 class newsListDetail extends StatefulWidget {

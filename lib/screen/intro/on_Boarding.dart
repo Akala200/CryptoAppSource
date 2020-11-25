@@ -1,9 +1,9 @@
-import 'package:crypto_template/Library/intro_views_flutter-2.4.0/lib/Models/page_view_model.dart';
-import 'package:crypto_template/Library/intro_views_flutter-2.4.0/lib/intro_views_flutter.dart';
-import 'package:crypto_template/screen/intro/login.dart';
-import 'package:crypto_template/screen/setting/themes.dart';
+import 'package:sourcecodexchange/Library/intro_views_flutter-2.4.0/lib/Models/page_view_model.dart';
+import 'package:sourcecodexchange/Library/intro_views_flutter-2.4.0/lib/intro_views_flutter.dart';
+import 'package:sourcecodexchange/screen/intro/login.dart';
+import 'package:sourcecodexchange/screen/setting/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto_template/component/style.dart';
+import 'package:sourcecodexchange/component/style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class onBoarding extends StatefulWidget {

@@ -1,12 +1,12 @@
 import 'dart:async';
-import 'package:crypto_template/Network/wallet.dart';
+import 'package:sourcecodexchange/Network/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:toast/toast.dart';
 import 'package:wc_flutter_share/wc_flutter_share.dart';
-import 'package:crypto_template/screen/wallet/tabs/coinDeposit.dart';
+import 'package:sourcecodexchange/screen/wallet/tabs/coinDeposit.dart';
 
 var balanceNewHere;
 var balanceNaira;
@@ -34,9 +34,9 @@ class _depositState extends State<deposit> {
   }
   @override
   Widget build(BuildContext context) {
-    return new FutureBuilder <double>(
+    return new FutureBuilder <int>(
         future: balanceNew(),
-    builder: (BuildContext context, AsyncSnapshot <double> snapshot) {
+    builder: (BuildContext context, AsyncSnapshot <int> snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         return new Center(
           child: new CircularProgressIndicator(),
@@ -187,7 +187,7 @@ class _depositState extends State<deposit> {
 double getBalanceNew() {
   double  _balance;
   // ignore: non_constant_identifier_names
-  Future<double> StringFuture;
+  Future<int> StringFuture;
   StringFuture = balanceNew();
   StringFuture.then((value) {
     print(value);

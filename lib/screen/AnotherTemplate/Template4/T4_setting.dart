@@ -1,9 +1,9 @@
-import 'package:crypto_template/screen/AnotherTemplate/Template4/setting_layout/T4_aboutApps.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template4/setting_layout/T4_callCenter.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template4/setting_layout/T4_message.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template4/setting_layout/T4_notification.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template4/setting_layout/T4_payment.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template4/setting_layout/T4_setting_account.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template4/setting_layout/T4_aboutApps.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template4/setting_layout/T4_callCenter.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template4/setting_layout/T4_message.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template4/setting_layout/T4_notification.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template4/setting_layout/T4_payment.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template4/setting_layout/T4_setting_account.dart';
 import 'package:flutter/material.dart';
 
 class T4_setting extends StatefulWidget {

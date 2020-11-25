@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:crypto_template/screen/setting/SeeAllTemplate.dart';
-import 'package:crypto_template/screen/setting/themes.dart';
-import 'package:crypto_template/screen/wallet/tabs/card.dart';
+import 'package:sourcecodexchange/screen/setting/SeeAllTemplate.dart';
+import 'package:sourcecodexchange/screen/setting/themes.dart';
+import 'package:sourcecodexchange/screen/wallet/tabs/card.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto_template/component/style.dart';
-import 'package:crypto_template/Network/wallet.dart';
+import 'package:sourcecodexchange/component/style.dart';
+import 'package:sourcecodexchange/Network/wallet.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:tuple/tuple.dart';

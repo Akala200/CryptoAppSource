@@ -1,8 +1,8 @@
-import 'package:crypto_template/screen/market/TabBarBody/btc.dart';
-import 'package:crypto_template/screen/market/TabBarBody/eth.dart';
-import 'package:crypto_template/screen/market/TabBarBody/favorite.dart';
-import 'package:crypto_template/screen/market/TabBarBody/usdt.dart';
-import 'package:crypto_template/screen/market/TabBarBody/xrp.dart';
+import 'package:sourcecodexchange/screen/market/TabBarBody/btc.dart';
+import 'package:sourcecodexchange/screen/market/TabBarBody/eth.dart';
+import 'package:sourcecodexchange/screen/market/TabBarBody/favorite.dart';
+import 'package:sourcecodexchange/screen/market/TabBarBody/usdt.dart';
+import 'package:sourcecodexchange/screen/market/TabBarBody/xrp.dart';
 import 'package:flutter/material.dart';
 
 class market extends StatefulWidget {

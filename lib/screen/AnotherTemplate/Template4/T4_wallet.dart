@@ -1,6 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template1/model_data/Lrm_dataModel.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template4/model_data/cardWallet_model.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template1/model_data/Lrm_dataModel.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template4/model_data/cardWallet_model.dart';
 import 'package:flutter/material.dart';
 
 class T4_wallet extends StatefulWidget {

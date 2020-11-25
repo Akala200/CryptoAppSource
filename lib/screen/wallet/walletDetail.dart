@@ -1,5 +1,5 @@
-import 'package:crypto_template/screen/wallet/tabs/deposit.dart';
-import 'package:crypto_template/screen/wallet/tabs/withdraw.dart';
+import 'package:sourcecodexchange/screen/wallet/tabs/deposit.dart';
+import 'package:sourcecodexchange/screen/wallet/tabs/withdraw.dart';
 import 'package:flutter/material.dart';
 
 class walletDetail extends StatefulWidget {

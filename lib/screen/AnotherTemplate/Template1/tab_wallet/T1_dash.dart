@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template1/model_data/Dash_dataModel.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template1/model_data/Dash_dataModel.dart';
 import 'package:flutter/material.dart';
 
 class T1_dash extends StatefulWidget {

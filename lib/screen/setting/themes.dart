@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'dart:async';
-import 'package:crypto_template/component/style.dart';
+import 'package:sourcecodexchange/component/style.dart';
 
 class DemoTheme {
   final String name;
@@ -36,7 +36,7 @@ class ThemeBloc {
             buttonColor: colorStyle.primaryColor,
             canvasColor: colorStyle.grayBackground,
             cardColor: colorStyle.grayBackground,
-            textSelectionColor: colorStyle.fontColorDark,
+            textSelectionColor: Colors.blueGrey,
             textSelectionHandleColor: colorStyle.fontColorDarkTitle));
   }
 }

@@ -1,6 +1,6 @@
-import 'package:crypto_template/screen/AnotherTemplate/Template2/tab_bar_amount/T2_day.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template2/tab_bar_amount/T2_month.dart';
-import 'package:crypto_template/screen/AnotherTemplate/Template2/tab_bar_amount/T2_year.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template2/tab_bar_amount/T2_day.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template2/tab_bar_amount/T2_month.dart';
+import 'package:sourcecodexchange/screen/AnotherTemplate/Template2/tab_bar_amount/T2_year.dart';
 import 'package:flutter/material.dart';
 
 class T2_Amount extends StatefulWidget {

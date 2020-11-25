@@ -1,14 +1,15 @@
-import 'package:crypto_template/Network/signup.dart';
-import 'package:crypto_template/screen/Bottom_Nav_Bar/bottom_nav_bar.dart';
-import 'package:crypto_template/screen/intro/login.dart';
-import 'package:crypto_template/screen/intro/signup.dart';
-import 'package:crypto_template/screen/setting/themes.dart';
+import 'package:sourcecodexchange/Network/signup.dart';
+import 'package:sourcecodexchange/screen/Bottom_Nav_Bar/bottom_nav_bar.dart';
+import 'package:sourcecodexchange/screen/intro/login.dart';
+import 'package:sourcecodexchange/screen/intro/signup.dart';
+import 'package:sourcecodexchange/screen/setting/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:crypto_template/component/style.dart';
+import 'package:sourcecodexchange/component/style.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:toast/toast.dart';
 
 class verifyemail extends StatefulWidget {
   ThemeBloc themeBloc;
@@ -108,17 +109,14 @@ class _verifyemailState extends State<verifyemail> {
                               Loader.show(context,progressIndicator: CircularProgressIndicator(backgroundColor: Colors.blueGrey,),themeData: Theme.of(context).copyWith(accentColor: Colors.blueAccent));
                               var ressp = await verifyAccount(code);
                               if (ressp == 200){
+                                Loader.hide();
                                 Navigator.of(context).pushReplacement(
                                     PageRouteBuilder(
                                         pageBuilder: (_, __, ___) =>
                                             bottomNavBar(themeBloc: _themeBloc)));
                               } else {
                                 Loader.hide();
-                                Alert(
-                                  context: context,
-                                  title: "Error",
-                                  desc: ressp,
-                                ).show();
+                                Toast.show(ressp, context, duration: Toast.LENGTH_LONG, backgroundColor: Colors.red,  gravity:  Toast.BOTTOM);
                               }
                             },
                             child: Container(

@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:crypto_template/component/gainersModel.dart';
-import 'package:crypto_template/component/loserModel.dart';
-import 'package:crypto_template/component/modelGridHome.dart';
-import 'package:crypto_template/screen/crypto_detail_card_homeScreen/DetailCryptoValue/cardDetailHome.dart';
-import 'package:crypto_template/screen/home/Gainer.dart';
-import 'package:crypto_template/screen/home/Loser.dart';
+import 'package:sourcecodexchange/component/gainersModel.dart';
+import 'package:sourcecodexchange/component/loserModel.dart';
+import 'package:sourcecodexchange/component/modelGridHome.dart';
+import 'package:sourcecodexchange/screen/crypto_detail_card_homeScreen/DetailCryptoValue/cardDetailHome.dart';
+import 'package:sourcecodexchange/screen/home/Gainer.dart';
+import 'package:sourcecodexchange/screen/home/Loser.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
-import 'package:crypto_template/component/style.dart';
+import 'package:sourcecodexchange/component/style.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shimmer/shimmer.dart';

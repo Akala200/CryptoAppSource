@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:crypto_template/component/market/xrpModel.dart';
-import 'package:crypto_template/screen/market/detailCrypto/xrpDetail.dart';
+import 'package:sourcecodexchange/component/market/xrpModel.dart';
+import 'package:sourcecodexchange/screen/market/detailCrypto/xrpDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:crypto_template/Network/crptoList.dart';
+import 'package:sourcecodexchange/Network/crptoList.dart';
 
 class xrp extends StatefulWidget {
   final Widget child;
@@ -31,15 +31,14 @@ class _xrpState extends State<xrp> {
   @override
   void initState() {
 
+    getNew();
 
     Timer(Duration(seconds: 6),(){
       setState(() {
         loadImage=false;
       });
     });
-    setState(() {
-      ldd6 =  getNew();
-    });
+
     super.initState();
   }
 
@@ -342,4 +341,100 @@ List<xrpMarket> getNew() {
 
 
 List<xrpMarket> ldd6;
-List<xrpMarket> xrpMarketList = ldd6 ?? [];
+List<xrpMarket> xrpMarketList = ldd6 ?? [
+  xrpMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  xrpMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  xrpMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  xrpMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  xrpMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  xrpMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  xrpMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  xrpMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  xrpMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  xrpMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  xrpMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  xrpMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  xrpMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  xrpMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  xrpMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  xrpMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  xrpMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  xrpMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  xrpMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  )
+];

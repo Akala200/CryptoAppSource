@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:crypto_template/component/market/usdtModel.dart';
-import 'package:crypto_template/screen/market/detailCrypto/usdtDetail.dart';
+import 'package:sourcecodexchange/component/market/usdtModel.dart';
+import 'package:sourcecodexchange/screen/market/detailCrypto/usdtDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:crypto_template/Network/crptoList.dart';
+import 'package:sourcecodexchange/Network/crptoList.dart';
 
 class usdt extends StatefulWidget {
   final Widget child;
@@ -29,15 +29,12 @@ class _usdtState extends State<usdt> {
 
   @override
   void initState() {
-
+    getNew();
 
     Timer(Duration(seconds: 6),(){
       setState(() {
         loadImage=false;
       });
-    });
-    setState(() {
-      ldd5 = getNew();
     });
     super.initState();
   }
@@ -348,4 +345,85 @@ List<usdtMarket> getNew() {
 
 
 List<usdtMarket> ldd5;
-List<usdtMarket> usdtMarketList = ldd5 ?? [];
+List<usdtMarket> usdtMarketList = ldd5 ?? [
+  usdtMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  usdtMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  usdtMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  usdtMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  usdtMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  usdtMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  usdtMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  usdtMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  usdtMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  usdtMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  usdtMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  usdtMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  usdtMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  usdtMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  usdtMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  ),
+  usdtMarket(
+    name: 'John the beast',
+    priceValue: '300',
+    priceDollar: '500',
+  )
+];
