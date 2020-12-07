@@ -34,9 +34,9 @@ class _depositState extends State<deposit> {
   }
   @override
   Widget build(BuildContext context) {
-    return new FutureBuilder <int>(
+    return new FutureBuilder <double>(
         future: balanceNew(),
-    builder: (BuildContext context, AsyncSnapshot <int> snapshot) {
+    builder: (BuildContext context, AsyncSnapshot <double> snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         return new Center(
           child: new CircularProgressIndicator(),
@@ -187,7 +187,7 @@ class _depositState extends State<deposit> {
 double getBalanceNew() {
   double  _balance;
   // ignore: non_constant_identifier_names
-  Future<int> StringFuture;
+  Future<double> StringFuture;
   StringFuture = balanceNew();
   StringFuture.then((value) {
     print(value);

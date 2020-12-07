@@ -15,7 +15,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:tuple/tuple.dart';
 
-/// Run first apps open
+/// Run first apps open adb wireless
 void main() {
   runApp(myApp());
 }
