@@ -9,7 +9,7 @@ import 'package:tuple/tuple.dart';
 
 var skTest = "sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e";
 
-Future<int> balanceNew() async {
+Future<double> balanceNew() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String email = prefs.getString('email');
   var url = "https://coinzz.herokuapp.com/api/balance/coin?email=$email"; // iOS
@@ -22,8 +22,8 @@ Future<int> balanceNew() async {
 
   if (response.statusCode == 200) {
     var st = jsonDecode(response.body);
-    var balance = st["message"]["balance"];
-    await prefs.setInt('balance', balance);
+    var balance = st["message"];
+    await prefs.setDouble('balance', balance);
     return balance;
   } else {
     var st = jsonDecode(response.body);
@@ -52,6 +52,7 @@ Future<double> balanceNaira() async {
     return balance;
   } else {
     var st = jsonDecode(response.body);
+    print(st);
     var status = st["message"];
     return status;
   }

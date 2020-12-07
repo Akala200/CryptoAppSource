@@ -76,7 +76,7 @@ class _walletDetailState extends State<walletDetail>
                         tabs: [
                           new Tab(
                             child: Text(
-                              "Deposit",
+                              "Buy",
                               style: TextStyle(
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w300,
@@ -85,7 +85,7 @@ class _walletDetailState extends State<walletDetail>
                           ),
                           new Tab(
                               child: Text(
-                            "Withdraw",
+                            "Sell",
                             style: TextStyle(
                               fontSize: 15.0,
                               fontWeight: FontWeight.w300,

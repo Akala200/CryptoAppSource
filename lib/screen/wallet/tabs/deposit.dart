@@ -29,20 +29,20 @@ class _depositState extends State<deposit> {
     });
     @override
       var reee =  PaystackPlugin.initialize(
-          publicKey: 'pk_test_f68c4c8bf31e9dbe7b821d5922cc06c29505f956');
+          publicKey: 'sk_live_276ea373b7eff948c77c424ea2905d965bd8e9f8');
       print(reee);
   }
   @override
   Widget build(BuildContext context) {
-    return new FutureBuilder <int>(
+    return new FutureBuilder <double>(
         future: balanceNew(),
-    builder: (BuildContext context, AsyncSnapshot <int> snapshot) {
+    builder: (BuildContext context, AsyncSnapshot <double> snapshot) {
       if (snapshot.connectionState == ConnectionState.waiting) {
         return new Center(
           child: new CircularProgressIndicator(),
         );
       } else if (snapshot.hasError) {
-        return new Text('Error: ${snapshot.error}');
+        return new Text('Error: An error occurred ');
       } else
         return SingleChildScrollView(
           child: Column(
@@ -80,7 +80,7 @@ class _depositState extends State<deposit> {
           child: new CircularProgressIndicator(),
         );
       } else if (snapshot.hasError) {
-        return new Text('Error: ${snapshot.error}');
+        return new Text('Error: An error occurred ');
       } else
        return   Container(
          height:125.0,
@@ -108,7 +108,7 @@ class _depositState extends State<deposit> {
                   // FlutterClipboard.copy(snapshot.data).then(( value ) => {
                     // Toast.show("Copied!", context, duration: Toast.LENGTH_SHORT, backgroundColor: Colors.green, gravity:  Toast.TOP)
                    //});
-                 }, child: Text("SHARE",style: TextStyle(color: Theme.of(context).textSelectionColor),)),
+                 }, child: Text("SHARE",style: TextStyle(color: Colors.white),)),
                ),
              )
            ],
@@ -149,7 +149,7 @@ class _depositState extends State<deposit> {
                             context,
                             MaterialPageRoute(builder: (context) => coinDeposit()),
                           );
-                        }, child: Text("CARD DEPOSIT",style: TextStyle(color: Theme.of(context).textSelectionColor),)),
+                        }, child: Text("CARD DEPOSIT",style: TextStyle(color: Colors.white))),
                       ),
                     )
                   ],
@@ -170,7 +170,7 @@ class _depositState extends State<deposit> {
                     width: 210.0,
                     color: Theme.of(context).primaryColor,
                     child: Center(
-                      child: Text("QR CODE COMING SOON",style: TextStyle(color: Theme.of(context).textSelectionColor),),
+                      child: Text("QR CODE COMING SOON",style: TextStyle(color: Colors.white),),
                     ),
                   )
                 ],
@@ -187,7 +187,7 @@ class _depositState extends State<deposit> {
 double getBalanceNew() {
   double  _balance;
   // ignore: non_constant_identifier_names
-  Future<int> StringFuture;
+  Future<double> StringFuture;
   StringFuture = balanceNew();
   StringFuture.then((value) {
     print(value);

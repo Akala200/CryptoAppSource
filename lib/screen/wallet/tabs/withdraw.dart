@@ -37,9 +37,9 @@ class _withDrawState extends State<withDraw> {
                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                children: <Widget>[
                  Text("Available (BTC)",style: TextStyle(color: Theme.of(context).hintColor.withOpacity(0.5),fontFamily: "Popins",fontSize: 15.5),),
-               new FutureBuilder <int>(
+               new FutureBuilder <double>(
           future: balanceNew(),
-        builder: (BuildContext context, AsyncSnapshot <int> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot <double> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return new Center(
               child: new CircularProgressIndicator(),

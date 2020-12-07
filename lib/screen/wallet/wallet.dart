@@ -180,9 +180,9 @@ class _waveBodyState extends State<waveBody> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return new FutureBuilder <int>(
+    return new FutureBuilder <double>(
         future: balanceNew(),
-        builder: (BuildContext context, AsyncSnapshot <int> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot <double> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return new Center(
               child: new CircularProgressIndicator(),
@@ -255,7 +255,7 @@ class _waveBodyState extends State<waveBody> with TickerProviderStateMixin {
                       height: 5.0,
                     ),
                     Text(
-                      newBalance.toStringAsFixed(6),
+                      newBalance.toString(),
                       style: TextStyle(
                           fontWeight: FontWeight.w700,
                           fontFamily: "Popins",
@@ -329,7 +329,7 @@ Widget card(assetsWallet item, BuildContext ctx) {
 double getBalance() {
   double  _balance;
   // ignore: non_constant_identifier_names
-  Future<int> StringFuture;
+  Future<double> StringFuture;
   StringFuture = balanceNew();
   StringFuture.then((value) {
     newBalance = value;

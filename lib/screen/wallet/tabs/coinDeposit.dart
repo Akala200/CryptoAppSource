@@ -60,7 +60,7 @@ class _coinDeposit extends State<coinDeposit> {
 
   var publicKey = '[pk_test_f68c4c8bf31e9dbe7b821d5922cc06c29505f956]';
 
-  static const paystack_pub_key = "sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e";
+  static const paystack_pub_key = "sk_live_276ea373b7eff948c77c424ea2905d965bd8e9f8";
   static const paystack_backend_url = "https://infinite-peak-60063.herokuapp.com";
 
   Future<CheckoutResponse> initPaystack() async {
@@ -336,8 +336,8 @@ String getUrl() {
 var balance;
 
 Future<void> initPaystacks() async {
-  String paystackKey = "sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e";
-  var publicKey = 'pk_test_57c953b3220d4dc11412b46c30f1060c57c308b0';
+  String paystackKey = "sk_live_276ea373b7eff948c77c424ea2905d965bd8e9f8";
+  var publicKey = 'sk_live_276ea373b7eff948c77c424ea2905d965bd8e9f8';
 
   try {
     await PaystackPlugin.initialize(
