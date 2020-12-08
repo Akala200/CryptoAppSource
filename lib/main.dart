@@ -174,7 +174,7 @@ class _SplashScreenState extends State<SplashScreen> {
 Future<String> dataToken() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String token = prefs.getString('token');
-  var url = "https://coinzz.herokuapp.com/api/data"; // iOS
+  var url = "https://cryptonew-api.herokuapp.com/api/data"; // iOS
   final http.Response response = await http.get(
     url,
     headers: <String, String>{

@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 getCrypto() async {
-  var url = "https://coinzz.herokuapp.com/api/mobile"; // iOS
+  var url = "https://cryptonew-api.herokuapp.com/api/mobile"; // iOS
   final http.Response response = await http.get(
       url,
       headers: <String, String>{
@@ -22,7 +22,7 @@ getCrypto() async {
 
 Future<dynamic> getMarket() async {
   var res;
-  var url = "https://coinzz.herokuapp.com/api/coin/history"; // iOS
+  var url = "https://cryptonew-api.herokuapp.com/api/coin/history"; // iOS
   res = await http.get(
       url,
       headers: <String, String>{
@@ -37,7 +37,7 @@ Future<dynamic> getMarket() async {
 
 Future<dynamic> getMarketUSD() async {
   var res;
-  var url = "https://coinzz.herokuapp.com/api/coin/history/usd"; // iOS
+  var url = "https://cryptonew-api.herokuapp.com/api/coin/history/usd"; // iOS
   res = await http.get(
       url,
       headers: <String, String>{
@@ -51,7 +51,7 @@ Future<dynamic> getMarketUSD() async {
 
 Future<dynamic> getMarketBTC() async {
   var res;
-  var url = "https://coinzz.herokuapp.com/api/coin/market/btc"; // iOS
+  var url = "https://cryptonew-api.herokuapp.com/api/coin/market/btc"; // iOS
   res = await http.get(
       url,
       headers: <String, String>{
@@ -66,7 +66,7 @@ Future<dynamic> getMarketBTC() async {
 
 Future<dynamic> getMarketUSDT() async {
   var res;
-  var url = "https://coinzz.herokuapp.com/api/coin/market/sudt"; // iOS
+  var url = "https://cryptonew-api.herokuapp.com/api/coin/market/sudt"; // iOS
   res = await http.get(
       url,
       headers: <String, String>{
@@ -80,7 +80,7 @@ Future<dynamic> getMarketUSDT() async {
 
 Future<dynamic> getMarketXPR() async {
   var res;
-  var url = "https://coinzz.herokuapp.com/api/coin/market/xrp"; // iOS
+  var url = "https://cryptonew-api.herokuapp.com/api/coin/market/xrp"; // iOS
   res = await http.get(
       url,
       headers: <String, String>{
@@ -93,7 +93,7 @@ Future<dynamic> getMarketXPR() async {
 
 Future<dynamic> getMarketETH() async {
   var res;
-  var url = "https://coinzz.herokuapp.com/api/coin/market/eth"; // iOS
+  var url = "https://cryptonew-api.herokuapp.com/api/coin/market/eth"; // iOS
   res = await http.get(
       url,
       headers: <String, String>{
@@ -110,7 +110,7 @@ Future<dynamic> getBalance() async {
   var email = prefs.getString('email');
   print(email);
   var res;
-  var url = "https://coinzz.herokuapp.com/api/balance/coin?email=$email"; // iOS
+  var url = "https://cryptonew-api.herokuapp.com/api/balance/coin?email=$email"; // iOS
   res = await http.get(
       url,
       headers: <String, String>{
@@ -134,7 +134,7 @@ Future<dynamic> getAllBalance() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var email = prefs.getString('email');
   var res;
-  var url = "https://coinzz.herokuapp.com/api/wallet/all?email=$email";
+  var url = "https://cryptonew-api.herokuapp.com/api/wallet/all?email=$email";
   res = await http.get(
       url,
       headers: <String, String>{
@@ -151,7 +151,7 @@ Future<dynamic> getAllBalanceNaira() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var email = prefs.getString('email');
   var res;
-  var url = "https://coinzz.herokuapp.com/api/balance/naira?email=$email";
+  var url = "https://cryptonew-api.herokuapp.com/api/balance/naira?email=$email";
   res = await http.get(
       url,
       headers: <String, String>{

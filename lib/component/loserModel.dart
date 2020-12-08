@@ -16,7 +16,7 @@ Future <List<losers>> getList2() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String token = prefs.getString('token');
 
-  var url = "https://coinzz.herokuapp.com/api/coin/history/usd"; // iOS
+  var url = "https://cryptonew-api.herokuapp.com/api/coin/history/usd"; // iOS
   final http.Response response = await http.get(
     url,
     headers: <String, String>{

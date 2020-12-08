@@ -29,8 +29,9 @@ class _depositState extends State<deposit> {
     });
     @override
       var reee =  PaystackPlugin.initialize(
-          publicKey: 'pk_test_f68c4c8bf31e9dbe7b821d5922cc06c29505f956');
-      print(reee);
+          publicKey: 'pk_live_149127b35639db9211193e2dc2296e769b30c494').then((value) => {
+            print(value)
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class _depositState extends State<deposit> {
           child: new CircularProgressIndicator(),
         );
       } else if (snapshot.hasError) {
-        return new Text('Error: ${snapshot.error}');
+        return new Text('Error: An error occurred ');
       } else
         return SingleChildScrollView(
           child: Column(
@@ -80,7 +81,7 @@ class _depositState extends State<deposit> {
           child: new CircularProgressIndicator(),
         );
       } else if (snapshot.hasError) {
-        return new Text('Error: ${snapshot.error}');
+        return new Text('Error: An error occurred ');
       } else
        return   Container(
          height:125.0,
@@ -108,7 +109,7 @@ class _depositState extends State<deposit> {
                   // FlutterClipboard.copy(snapshot.data).then(( value ) => {
                     // Toast.show("Copied!", context, duration: Toast.LENGTH_SHORT, backgroundColor: Colors.green, gravity:  Toast.TOP)
                    //});
-                 }, child: Text("SHARE",style: TextStyle(color: Theme.of(context).textSelectionColor),)),
+                 }, child: Text("SHARE",style: TextStyle(color: Colors.white),)),
                ),
              )
            ],
@@ -149,7 +150,7 @@ class _depositState extends State<deposit> {
                             context,
                             MaterialPageRoute(builder: (context) => coinDeposit()),
                           );
-                        }, child: Text("CARD DEPOSIT",style: TextStyle(color: Theme.of(context).textSelectionColor),)),
+                        }, child: Text("CARD DEPOSIT",style: TextStyle(color: Colors.white))),
                       ),
                     )
                   ],
@@ -170,7 +171,7 @@ class _depositState extends State<deposit> {
                     width: 210.0,
                     color: Theme.of(context).primaryColor,
                     child: Center(
-                      child: Text("QR CODE COMING SOON",style: TextStyle(color: Theme.of(context).textSelectionColor),),
+                      child: Text("QR CODE COMING SOON",style: TextStyle(color: Colors.white),),
                     ),
                   )
                 ],

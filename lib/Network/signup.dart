@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 createAccount(email, password, firstName, lastName, phone) async {
-  var url = "https://coinzz.herokuapp.com/api/create/account"; // iOS
+  var url = "https://cryptonew-api.herokuapp.com/api/create/account"; // iOS
   final http.Response response = await http.post(
     url,
     headers: <String, String>{
@@ -35,7 +35,7 @@ createAccount(email, password, firstName, lastName, phone) async {
 
 
 forgotPaasword(email) async {
-  var url = "https://coinzz.herokuapp.com/api/forgot/password"; // iOS
+  var url = "https://cryptonew-api.herokuapp.com/api/forgot/password"; // iOS
   final http.Response response = await http.post(
     url,
     headers: <String, String>{
@@ -79,7 +79,7 @@ Future<String> updatePasswordNoAuth(password) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String code = prefs.getString('code');
   print(code);
-  var url = "https://coinzz.herokuapp.com/api/new/password"; // iOS
+  var url = "https://cryptonew-api.herokuapp.com/api/new/password"; // iOS
   final http.Response response = await http.post(
     url,
     headers: <String, String>{
@@ -110,7 +110,7 @@ Future<String> updatePasswordNoAuth(password) async {
 login(email, password) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  var url = "https://coinzz.herokuapp.com/api/login"; // iOS
+  var url = "https://cryptonew-api.herokuapp.com/api/login"; // iOS
   final http.Response response = await http.post(
     url,
     headers: <String, String>{
@@ -159,7 +159,7 @@ login(email, password) async {
 verifyAccount(code) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  var url = "https://coinzz.herokuapp.com/api/verify"; // iOS
+  var url = "https://cryptonew-api.herokuapp.com/api/verify"; // iOS
   final http.Response response = await http.post(
     url,
     headers: <String, String>{
