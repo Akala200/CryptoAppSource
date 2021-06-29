@@ -192,10 +192,12 @@ class _waveBodyState extends State<waveBody> with TickerProviderStateMixin {
     if (response.statusCode == 200) {
       var st = jsonDecode(response.body);
       print(st);
-      print('here');
-      var balance = st["price"];
-      await prefs.setDouble('balance', balance);
-      return balance;
+      setState(() {
+        newBalanceNaira = st["price"];
+      });
+
+      await prefs.setDouble('balance', newBalanceNaira);
+      return newBalanceNaira;
     } else {
       var st = jsonDecode(response.body);
       print(st);
@@ -203,11 +205,12 @@ class _waveBodyState extends State<waveBody> with TickerProviderStateMixin {
       return status;
     }
   }
-
+//https://cryptonew-api.herokuapp.com/
   Future<double> getWallet() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String email = prefs.getString('email');
-    var url = "https://cash200.herokuapp.com/api/balance/coin?email=$email&coin_type=${widget.coin}"; // iOS
+    print(email);
+    var url = "https://cryptonew-api.herokuapp.com/api/balance/coin?email=$email&coin_type=${widget.coin}"; // iOS
     final http.Response response = await http.get(
       url,
       headers: <String, String>{
@@ -239,7 +242,6 @@ class _waveBodyState extends State<waveBody> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     getBalance();
-    balanceNaira();
     animationController = new AnimationController(vsync: this, duration: new Duration(seconds: 2));
 
     animationController.addListener(() {
@@ -266,9 +268,11 @@ class _waveBodyState extends State<waveBody> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return new FutureBuilder <double>(
+    return new FutureBuilder <dynamic>(
         future: getWallet(),
-        builder: (BuildContext context, AsyncSnapshot <double> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot <dynamic> snapshot) {
+          print(snapshot.data);
+          print('sign');
           if (snapshot.connectionState == ConnectionState.waiting) {
             return new Center(
               child: new CircularProgressIndicator(),
@@ -351,11 +355,9 @@ class _waveBodyState extends State<waveBody> with TickerProviderStateMixin {
                     SizedBox(
                       height: 5.0,
                     ),
-                    FutureBuilder <double>(
+                    FutureBuilder <dynamic>(
                         future: balanceNaira(),
-                        builder: (BuildContext context, AsyncSnapshot <double> snapshot) {
-                          print(snapshot.data);
-                          print('sign');
+                        builder: (BuildContext context, AsyncSnapshot <dynamic> snapshot) {
                           if (snapshot.connectionState == ConnectionState.waiting) {
                             return new Center(
                               child: new CircularProgressIndicator(),
@@ -364,7 +366,7 @@ class _waveBodyState extends State<waveBody> with TickerProviderStateMixin {
                             return new Text('Error: ${snapshot.error}');
                           } else
                             return   Text(
-                              'USD - ${ snapshot.data != null ? snapshot.data.toString(): '0'}',
+                              'USD - ${ snapshot.data["price"] != null ? snapshot.data["price"].toString(): '0'}',
                               style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                   fontFamily: "Popins",

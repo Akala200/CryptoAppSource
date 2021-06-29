@@ -198,7 +198,7 @@ class _withDrawState extends State<withDraw> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text("Amount NGN",style: TextStyle(color: Theme.of(context).hintColor),),
+              Text("Amount USD",style: TextStyle(color: Theme.of(context).hintColor),),
               Text("$realPrice",style: TextStyle(color: Theme.of(context).hintColor.withOpacity(0.7)),)
             ],
           ),
