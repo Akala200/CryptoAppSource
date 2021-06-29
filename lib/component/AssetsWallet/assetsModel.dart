@@ -8,8 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 class assetsWallet {
-   String amount,cardType,coins, lastFour,status;
-  assetsWallet({this.amount,this.cardType,this.coins, this.lastFour, this.status});
+   String amount,type,coins, lastFour,status,mode;
+  assetsWallet({this.amount,this.type,this.coins, this.lastFour, this.status, this.mode});
 }
 
 
@@ -26,11 +26,10 @@ class assetsWallet {
   if (response.statusCode == 200) {
     var st = jsonDecode(response.body);
     var resp = st;
-    print(st);
     List<assetsWallet> _list =  List<assetsWallet>();
     for (var u in resp) {
       //_list.add(gainers(pair: u["currency"], lastPrice: u["price"], chg: u["percentage_change"]));
-          _list.add(assetsWallet(amount: u["amount"].toString(), cardType: u["cardType"], coins: u["coins"].toStringAsFixed(4),  lastFour: u["lastFour"], status: u["status"]));
+          _list.add(assetsWallet(amount: u["amount"].toStringAsFixed(3), type: u["type"], mode: u["mode"], coins: u["coins"].toStringAsFixed(4),  lastFour: u["lastFour"], status: u["status"]));
     }
     return _list;
   } else {

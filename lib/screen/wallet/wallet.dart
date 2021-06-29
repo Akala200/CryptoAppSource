@@ -1,11 +1,13 @@
-
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 import 'dart:ui' as ui;
 import 'package:sourcecodexchange/component/AssetsWallet/assetsModel.dart';
 import 'package:sourcecodexchange/screen/market/TabBarBody/btc.dart';
+import 'package:sourcecodexchange/screen/wallet/tabs/deposit.dart';
 import 'package:sourcecodexchange/screen/wallet/walletDetail.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vector_math/vector_math.dart' as Vector;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -14,41 +16,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:sourcecodexchange/component/style.dart';
 import 'package:sourcecodexchange/Network/wallet.dart';
+import 'package:http/http.dart' as http;
 
 var newBalance;
 var newBalanceNaira;
 
 class wallet extends StatefulWidget {
+  //final coinType;
+  final  String coinType;
+
+  wallet({Key key, @required this.coinType }) {
+    timeDilation = 1.0;
+  }
+
   @override
   _walletState createState() => new _walletState();
 
-  ///
-  /// time for wave header wallet
-  ///
-  wallet() {
-    timeDilation = 1.0;
-  }
 }
 
 class _walletState extends State<wallet> {
   @override
   assetsWallet item;
 
+
+
   @override
   void initState() {
     getNew();
     super.initState();
     getBalance();
-     getNew();
-    getBalanceNaira();
+    getNew();
     setState(() {
       getBalance();
     });
     setState(() {
       getNew();
-    });
-    setState(() {
-      getBalanceNaira();
     });
   }
   Widget build(BuildContext context) {
@@ -57,6 +59,28 @@ class _walletState extends State<wallet> {
 
 
     return  Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          iconSize: 20.0,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        brightness: Brightness.dark,
+        centerTitle: true,
+        title: Text(
+          "Wallet Details",
+          style: TextStyle(
+              color: Theme.of(context).textSelectionColor,
+              fontFamily: "Gotik",
+              fontWeight: FontWeight.w600,
+              fontSize: 18.5),
+        ),
+        iconTheme: IconThemeData(color: Theme.of(context).textSelectionColor),
+        elevation: 0.0,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      ),
       body: Stack(
         children: <Widget>[
           Padding(
@@ -66,26 +90,26 @@ class _walletState extends State<wallet> {
             /// Create card list
             ///
             child: FutureBuilder <List<assetsWallet>>(
-    future: transactionHistory(),
-    builder: (BuildContext context, AsyncSnapshot <List<assetsWallet>> snapshot) {
-    if (snapshot.connectionState == ConnectionState.waiting) {
-    return new Center(
-    child: new CircularProgressIndicator(),
-    );
-    } else if (snapshot.hasError) {
-    return new Text('Error: ${snapshot.error}');
-    } else
-    return  Container(
-        child: ListView.builder(
-          shrinkWrap: true,
-          primary: false,
-          padding: EdgeInsets.only(top: 0.0),
-          itemBuilder: (ctx, i) {
-            return card(snapshot.data[i], ctx);
-          },
-          itemCount: assetsWalletList.length,
-        ));
-    }),
+                future: transactionHistory(),
+                builder: (BuildContext context, AsyncSnapshot <List<assetsWallet>> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return new Center(
+                      child: new CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return new Text('Error: ${snapshot.error}');
+                  } else
+                    return  Container(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          primary: false,
+                          padding: EdgeInsets.only(top: 0.0),
+                          itemBuilder: (ctx, i) {
+                            return card(snapshot.data[i], ctx);
+                          },
+                          itemCount: snapshot.data.length,
+                        ));
+                }),
           ),
           Column(
             children: <Widget>[
@@ -95,13 +119,14 @@ class _walletState extends State<wallet> {
                   /// Create wave header
                   ///
                   new waveBody(
-                      size: size, xOffset: 0, yOffset: 0, color: Colors.red),
+                    size: size, xOffset: 0, yOffset: 0, color: Colors.red, coin: widget.coinType,),
                   new Opacity(
                     opacity: 0.9,
                     child: new waveBody(
                       size: size,
                       xOffset: 60,
                       yOffset: 10,
+                      coin: widget.coinType,
                     ),
                   ),
                 ],
@@ -114,11 +139,13 @@ class _walletState extends State<wallet> {
           ),
         ],
       ),
+
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Add your onPressed code here!
           Navigator.of(context).push(PageRouteBuilder(
-              pageBuilder: (_, __, ___) => new walletDetail()));
+              pageBuilder: (_, __, ___) => new walletDetail(coinType: widget.coinType,)));
         },
         child: Icon(Icons.account_balance_sharp),
         backgroundColor: Color(0xFF45C2DA),
@@ -127,14 +154,16 @@ class _walletState extends State<wallet> {
   }
 }
 
+
 class waveBody extends StatefulWidget {
   final Size size;
   final int xOffset;
   final int yOffset;
   final Color color;
+  final String coin;
 
   waveBody(
-      {Key key, @required this.size, this.xOffset, this.yOffset, this.color})
+      {Key key, @required this.size, this.xOffset, this.yOffset, this.color, this.coin})
       : super(key: key);
 
   @override
@@ -147,18 +176,75 @@ class _waveBodyState extends State<waveBody> with TickerProviderStateMixin {
   AnimationController animationController;
   List<Offset> animList1 = [];
 
+
+
+  Future<double> balanceNaira() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String email = prefs.getString('email');
+    var url = "https://cryptonew-api.herokuapp.com/api/balance/naira?email=$email&coinType=${widget.coin}"; // iOS
+    final http.Response response = await http.get(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var st = jsonDecode(response.body);
+      print(st);
+      print('here');
+      var balance = st["price"];
+      await prefs.setDouble('balance', balance);
+      return balance;
+    } else {
+      var st = jsonDecode(response.body);
+      print(st);
+      var status = st["message"];
+      return status;
+    }
+  }
+
+  Future<double> getWallet() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String email = prefs.getString('email');
+    var url = "https://cash200.herokuapp.com/api/balance/coin?email=$email&coin_type=${widget.coin}"; // iOS
+    final http.Response response = await http.get(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var st = jsonDecode(response.body);
+      var balance = st["message"];
+      print(balance);
+      if(balance == 0){
+        balance = 0.0;
+        await prefs.setDouble('balance', balance);
+        return balance;
+      } else {
+        await prefs.setDouble('balance', balance);
+        return balance;
+      }
+    } else {
+      var st = jsonDecode(response.body);
+      print(st);
+      var status = st["message"];
+      return status;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     getBalance();
-    animationController = new AnimationController(
-        vsync: this, duration: new Duration(seconds: 2));
+    balanceNaira();
+    animationController = new AnimationController(vsync: this, duration: new Duration(seconds: 2));
 
     animationController.addListener(() {
       animList1.clear();
-      for (int i = -2 - widget.xOffset;
-      i <= widget.size.width.toInt() + 2;
-      i++) {
+      for (int i = -2 - widget.xOffset; i <= widget.size.width.toInt() + 2; i++) {
         animList1.add(new Offset(
             i.toDouble() + widget.xOffset,
             sin((animationController.value * 360 - i) %
@@ -181,7 +267,7 @@ class _waveBodyState extends State<waveBody> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return new FutureBuilder <double>(
-        future: balanceNew(),
+        future: getWallet(),
         builder: (BuildContext context, AsyncSnapshot <double> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return new Center(
@@ -248,7 +334,7 @@ class _waveBodyState extends State<waveBody> with TickerProviderStateMixin {
                   alignment: Alignment.topCenter,
                   child: Column(children: <Widget>[
                     Text(
-                      "Total Asseets (BTC)",
+                      "Total Asseets (${widget.coin})",
                       style: TextStyle(fontFamily: "Popins", color: Colors.white),
                     ),
                     SizedBox(
@@ -265,25 +351,27 @@ class _waveBodyState extends State<waveBody> with TickerProviderStateMixin {
                     SizedBox(
                       height: 5.0,
                     ),
-   FutureBuilder <String>(
-    future: balanceNaira(),
-    builder: (BuildContext context, AsyncSnapshot <String> snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return new Center(
-          child: new CircularProgressIndicator(),
-        );
-      } else if (snapshot.hasError) {
-        return new Text('Error: ${snapshot.error}');
-      } else
-       return   Text(
-          'NGN-' + snapshot.data.toString(),
-          style: TextStyle(
-          fontWeight: FontWeight.w700,
-          fontFamily: "Popins",
-          fontSize: 15.0,
-          color: Colors.white),
-          );
-    }),
+                    FutureBuilder <double>(
+                        future: balanceNaira(),
+                        builder: (BuildContext context, AsyncSnapshot <double> snapshot) {
+                          print(snapshot.data);
+                          print('sign');
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return new Center(
+                              child: new CircularProgressIndicator(),
+                            );
+                          } else if (snapshot.hasError) {
+                            return new Text('Error: ${snapshot.error}');
+                          } else
+                            return   Text(
+                              'USD - ${ snapshot.data != null ? snapshot.data.toString(): '0'}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: "Popins",
+                                  fontSize: 15.0,
+                                  color: Colors.white),
+                            );
+                        }),
                   ]),
                 )
               ],
@@ -319,7 +407,7 @@ class WaveClipper extends CustomClipper<Path> {
 
 Widget card(assetsWallet item, BuildContext ctx) {
   return  _card(Colors.lightBlueAccent, item.amount, item.coins,
-              item.cardType + '***' + item.lastFour);
+      item.mode, item.type, item.status);
 }
 
 
@@ -336,16 +424,7 @@ double getBalance() {
   });
 }
 
-@override
-double getBalanceNaira() {
-  double  _balance;
-  // ignore: non_constant_identifier_names
-  Future<String> StringFuture;
-  StringFuture = balanceNaira();
-  StringFuture.then((value) {
-    newBalanceNaira = value;
-  });
-}
+
 
 @override
 Future<List<assetsWallet>> getNew() {
@@ -362,7 +441,8 @@ Future<List<assetsWallet>> getNew() {
 
 List<assetsWallet> assetsWalletList =  [];
 
-Widget _card(Color _color, String _title, String _time, String _value) {
+Widget _card(Color _color, String _amount, String _coin, String _mode, String _type, String _status) {
+
   return Padding(
     padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 19.0),
     child: Container(
@@ -370,7 +450,7 @@ Widget _card(Color _color, String _title, String _time, String _value) {
       width: double.infinity,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          color: Color(0xFF363940),
+          color: _type == 'debit' ? Colors.redAccent : Colors.green,
           boxShadow: [
             BoxShadow(
               color: Colors.black12,
@@ -395,12 +475,12 @@ Widget _card(Color _color, String _title, String _time, String _value) {
                         decoration: BoxDecoration(
                             borderRadius:
                             BorderRadius.all(Radius.circular(20.0)),
-                            color: Colors.white70 ),
+                            color: _type == 'debit' ? Colors.redAccent : Colors.green ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 15.0),
                         child: Text(
-                          _title,
+                          _amount,
                           style: TextStyle(
                               fontFamily: "Sans",
                               fontWeight: FontWeight.w600,
@@ -409,11 +489,18 @@ Widget _card(Color _color, String _title, String _time, String _value) {
                       ),
                     ],
                   ),
-                  Icon(
-                    Icons.open_in_new,
-                    size: 17.0,
-                    color: Colors.white24,
-                  )
+
+
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15.0),
+                    child: Text(
+                      _coin,
+                      style: TextStyle(
+                          fontFamily: "Sans",
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16.0),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -424,23 +511,35 @@ Widget _card(Color _color, String _title, String _time, String _value) {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    _time,
+                    _mode,
                     style: TextStyle(
                         fontFamily: "Sans",
-                        fontWeight: FontWeight.w100,
-                        color: Colors.white54),
+                        fontWeight: FontWeight.normal,
+                        color: Colors.white),
+                  ),
+
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        _type,
+                        style: TextStyle(
+                            fontFamily: "Sans",
+                            fontWeight: FontWeight.w800,
+                            fontSize: 15.0),
+                      ),
+                    ],
                   ),
                   Row(
                     children: <Widget>[
                       Text(
-                        _value,
+                        _status,
                         style: TextStyle(
                             fontFamily: "Sans",
                             fontWeight: FontWeight.w800,
-                            fontSize: 19.0),
+                            fontSize: 15.0),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
@@ -449,4 +548,5 @@ Widget _card(Color _color, String _title, String _time, String _value) {
       ),
     ),
   );
+
 }

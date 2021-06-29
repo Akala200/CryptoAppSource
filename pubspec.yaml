@@ -44,6 +44,9 @@ dependencies:
   flutter_dropdown: ^0.0.8
   flutter_conditional_rendering: ^1.1.1
   wc_form_validators: ^0.1.1
+  connectivity: ^2.0.2
+  random_string: ^2.1.0
+  flutterwave: ^0.0.2
 
 
 

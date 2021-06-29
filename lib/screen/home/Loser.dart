@@ -1,9 +1,8 @@
 import 'dart:async';
-
-import 'package:sourcecodexchange/component/loserModel.dart';
-import 'package:sourcecodexchange/screen/home/detailCrypto/loserDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:sourcecodexchange/component/loserModel.dart';
+import 'package:sourcecodexchange/screen/home/detailCrypto/loserDetail.dart';
 
 class loser extends StatefulWidget {
   final Widget child;
@@ -25,19 +24,19 @@ class _loserState extends State<loser> {
   ///
   bool loadImage = true;
 
-  
+
   @override
   void initState() {
-    
-  Timer(Duration(seconds: 3),(){
-setState(() {
-  loadImage=false;
-});
+
+    Timer(Duration(seconds: 3),(){
+      setState(() {
+        loadImage=false;
+      });
     });
-  setState(() {
-   getAll22();
-    //  print(rees);
-  });
+    setState(() {
+      getAll22();
+      //  print(rees);
+    });
     super.initState();
   }
 
@@ -91,7 +90,6 @@ setState(() {
         /// if image loaded true (image still downloading from server)
         /// Card to set card loading animation
         ///
-
         loadImage ? _loadingImageAnimation(context) : _imageLoaded(context),
       ],
     );
@@ -105,8 +103,8 @@ Widget listPriceloser(losers item, BuildContext ctx) {
       onTap: () {
         Navigator.of(ctx).push(PageRouteBuilder(
             pageBuilder: (_, __, ___) => new loserDetail(
-                  item: item,
-                )));
+              item: item,
+            )));
       },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -149,10 +147,10 @@ Widget listPriceloser(losers item, BuildContext ctx) {
                 ),
                 child: Center(
                     child: Text(
-                  item.chg,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600, color: Colors.white),
-                ))),
+                      item.chg,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, color: Colors.white),
+                    ))),
           )
         ],
       ),

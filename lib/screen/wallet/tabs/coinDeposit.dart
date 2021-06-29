@@ -1,21 +1,22 @@
 import 'dart:io';
 import 'dart:ui';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sourcecodexchange/screen/setting/SeeAllTemplate.dart';
 import 'package:sourcecodexchange/screen/setting/themes.dart';
-import 'package:sourcecodexchange/screen/wallet/tabs/card.dart';
 import 'package:flutter/material.dart';
 import 'package:sourcecodexchange/component/style.dart';
 import 'package:sourcecodexchange/Network/wallet.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_paystack/flutter_paystack.dart';
-import 'package:tuple/tuple.dart';
+import 'package:flutterwave/models/responses/charge_response.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_paystack/flutter_paystack.dart';
-import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
+import 'dart:async';
+import 'package:random_string/random_string.dart';
+import 'package:flutterwave/flutterwave.dart';
 import 'dart:async';
 import 'dart:convert';
-import 'package:toast/toast.dart';
+import 'dart:math';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tuple/tuple.dart';
 
 String _getReference() {
   String platform;
@@ -31,28 +32,97 @@ String _getReference() {
 final _formKey = GlobalKey<FormState>();
 var bitcoin = '0';
 var realPrice = '0';
-int amount = 0;
+int amount;
 var queryGotten;
-var coin;
-var email;
-
 class coinDeposit extends StatefulWidget {
   ///
   /// Get data bloc from
   ///
   ThemeBloc themeBloc;
+  final coin;
 
-  coinDeposit({Key key, this.themeBloc}) : super(key: key);
+  coinDeposit({Key key, this.themeBloc, this.coin}) : super(key: key);
 
   _coinDeposit createState() => _coinDeposit(themeBloc);
 }
 
 class _coinDeposit extends State<coinDeposit> {
-  @override
-  void initState() {
-    getEmail();
+
+
+  String transcation = 'No transcation Yet';
+  Map<String, dynamic> _data = {};
+// static const platform = const MethodChannel('maugost.com/paystack_flutter');
+  static const paystack_pub_key = "pk_live_9788e845e9c4098989720e1682facd83968aed3c";
+  static const paystack_backend_url =
+      "https://infinite-peak-60063.herokuapp.com";
+  var publicKey = 'pk_live_9788e845e9c4098989720e1682facd83968aed3c';
+
+  String paystackPublicKey = 'pk_live_9788e845e9c4098989720e1682facd83968aed3c';
+  var card_type = '';
+
+  final String txref = randomAlphaNumeric(20);
+  var amount = "";
+  final String currency = FlutterwaveCurrency.NGN;
+
+
+  beginPayment() async {
+    final Flutterwave flutterwave = Flutterwave.forUIPayment(
+        context: this.context,
+        encryptionKey: "FLWPUBK_TEST-SANDBOXDEMOKEY-X",
+        publicKey: "FLWPUBK_TEST-SANDBOXDEMOKEY-X",
+        currency: this.currency,
+        amount: this.amount,
+        email: "valid@email.com",
+        fullName: "Valid Full Name",
+        txRef: this.txref,
+        isDebugMode: true,
+        phoneNumber: "0123456789",
+        acceptCardPayment: true,
+        acceptUSSDPayment: false,
+        acceptAccountPayment: false,
+        acceptFrancophoneMobileMoney: false,
+        acceptGhanaPayment: false,
+        acceptMpesaPayment: false,
+        acceptRwandaMoneyPayment: true,
+        acceptUgandaPayment: false,
+        acceptZambiaPayment: false);
+
+    try {
+      final ChargeResponse response = await flutterwave.initializeForUiPayments();
+      if (response == null) {
+        // user didn't complete the transaction. Payment wasn't successful.
+      } else {
+        final isSuccessful = checkPaymentIsSuccessful(response);
+        if (isSuccessful) {
+          // provide value to customer
+        } else {
+          // check message
+          print(response.message);
+
+          // check status
+          print(response.status);
+
+          // check processor error
+          print(response.data.processorResponse);
+        }
+      }
+    } catch (error, stacktrace) {
+      // handleError(error);
+      // print(stacktrace);
+    }
   }
 
+  bool checkPaymentIsSuccessful(final ChargeResponse response) {
+    return response.data.status == FlutterwaveConstants.SUCCESSFUL &&
+        response.data.currency == this.currency &&
+        response.data.amount == this.amount &&
+        response.data.txRef == this.txref;
+  }
+
+  @override
+  void initState() {
+    initPaystacks();
+  }
   ///
   /// Bloc for double theme
   ///
@@ -61,28 +131,7 @@ class _coinDeposit extends State<coinDeposit> {
   bool theme = true;
   String _img = "assets/image/setting/lightMode.png";
 
-  var publicKey = '[pk_live_149127b35639db9211193e2dc2296e769b30c494]';
 
-  static const paystack_pub_key =
-      "pk_live_149127b35639db9211193e2dc2296e769b30c494";
-  static const paystack_backend_url =
-      "https://infinite-peak-60063.herokuapp.com";
-
-  Future<CheckoutResponse> initPaystack() async {
-    Charge charge = Charge()
-      ..amount = amount * 100
-      ..reference = _getReference()
-      ..accessCode = getUrl()
-      ..email = email
-      ..putCustomField(coin, email);
-    CheckoutResponse response = await PaystackPlugin.checkout(
-      context, method: CheckoutMethod.card,
-      fullscreen: true, // Defaults to CheckoutMethod.selectable
-      charge: charge,
-    );
-
-    return response;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,144 +165,102 @@ class _coinDeposit extends State<coinDeposit> {
               height: 20.0,
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 60.0, left: 60.0),
+              padding:const EdgeInsets.only( right: 60.0, left: 60.0),
               child: Form(
                   key: _formKey,
-                  child: Column(children: <Widget>[
-                    Container(
-                      width: 300,
-                      child: TextFormField(
-                        keyboardType: TextInputType.number,
-                        onChanged: (query) {
-                          var numberPrice = int.parse(query);
-                          // if the length of the word is less than 2, stop executing your API call.
+                  child: Column(
+                      children: <Widget>[
+                        Container(
+                          width: 300,
+                          child: TextFormField(
+                            onChanged: (query){
+                              if (query.length < 1) return;
+                              // if the length of the word is less than 2, stop executing your API call.
+                              print(widget.coin);
 
-                          convert(query).then((value) {
-                            queryGotten = query;
-                            setState(() {
-                              bitcoin = value.item1.toString();
-                              coin = value.item1.toString();
-                              realPrice = value.item2;
-                              amount = num.parse(query);
-                            });
-                          });
-                        },
-                        decoration: InputDecoration(
-                          labelText: 'Enter Amount In Naira',
-                          fillColor: Colors.white,
-                          labelStyle: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-
-                    SizedBox(
-                      height: 50.0,
-                    ),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'BTC :',
-                          style: new TextStyle(
-                              color: Color(0xFF84A2AF),
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          bitcoin,
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Fixed Fee:',
-                          style: new TextStyle(
-                              color: Color(0xFF84A2AF),
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          '800(NGN)',
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Variable Fee:',
-                          style: new TextStyle(
-                              color: Color(0xFF84A2AF),
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          '10%',
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Naira Amount :',
-                          style: new TextStyle(
-                              color: Color(0xFF84A2AF),
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          realPrice + '(NGN)',
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(
-                      height: 100.0,
-                    ),
-                    Container(
-                      height: 50.0,
-                      width: 300.0,
-                      color: Theme.of(context).primaryColor,
-                      child: Center(
-                        child: GestureDetector(
-                            onTap: () {
-                              if (amount < 10000) {
-                                Toast.show('Minimum of 10000 Naira ', context,
-                                    duration: Toast.LENGTH_LONG,
-                                    backgroundColor: Colors.red,
-                                    gravity: Toast.BOTTOM);
-                              } else {
-                                // getUrl(amount, bitcoin);
-                                initPaystacks();
-                                var resp = initPaystack();
-                                print(resp);
-                                print('Here');
-                              }
+                              convert(query, widget.coin).then((value) {
+                                print(value);
+                                queryGotten = query;
+                                setState(() {
+                                  bitcoin = value.item1.toString();
+                                  realPrice = value.item2;
+                                  amount = query;
+                                });
+                              });
                             },
-                            child: Text("INITIATE PAYMENT",
-                                style: TextStyle(color: Colors.white))),
-                      ),
-                    ),
-                    // Add TextFormFields and ElevatedButton here.
-                    //     setState(() {
-                    //     var newB = getAll();
-                    //   print(newB);
-                    // createAccessCode(amount, bitcoin).then((value) => {
-                    // _launchURL(value)
-                    //});
-                    //});
-                  ])),
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              labelText: 'Enter Amount In Naira',
+                              fillColor: Colors.white,
+                              labelStyle: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(
+                          height: 50.0,
+                        ),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '${widget.coin} :',
+                              style: new TextStyle(
+                                  color: Color(0xFF84A2AF), fontWeight: FontWeight.bold),
+                            ),
+
+                            Text(
+                              bitcoin,
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 30.0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Naira :',
+                              style: new TextStyle(
+                                  color: Color(0xFF84A2AF), fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              realPrice,
+                            ),
+                          ],
+                        ),
+
+                        SizedBox(
+                          height: 100.0,
+                        ),
+                        Container(
+                          height: 50.0,
+                          width: 300.0,
+                          color: Theme.of(context).primaryColor,
+                          child: Center(
+                            child:  GestureDetector(
+                                onTap: () {
+                                  // getUrl(amount, bitcoin);
+                                  var resp =  beginPayment();
+                                  print(resp);
+                                  print('Here');
+                                },
+                                child: Text("INITIATE PAYMENT",style: TextStyle(color: Theme.of(context).textSelectionColor),)),
+                          ),
+                        ),
+                        // Add TextFormFields and ElevatedButton here.
+                        //     setState(() {
+                        //     var newB = getAll();
+                        //   print(newB);
+                        // createAccessCode(amount, bitcoin).then((value) => {
+                        // _launchURL(value)
+                        //});
+                        //});
+                      ]
+                  )
+              ),
             ),
           ],
         ),
@@ -349,6 +356,21 @@ class _coinDeposit extends State<coinDeposit> {
             textSelectionColor: colorStyle.fontColorDark,
             textSelectionHandleColor: colorStyle.fontColorDarkTitle));
   }
+
+  Future<void> initPaystacks() async {
+
+    try {
+      await PaystackPlugin.initialize(
+          publicKey: publicKey).then((value) => {
+        print(value)
+      });
+      // Paystack is ready for use in receiving payments
+    } on PlatformException {
+      // well, error, deal with it
+      print('error');
+    }
+  }
+
 }
 
 _launchURL(urlz) async {
@@ -377,7 +399,7 @@ double getAll() {
 String getUrl() {
   String urlb;
   Future<String> urlc;
-  urlc = createAccessCode(amount, bitcoin);
+  urlc = createAccessCode();
   urlc.then((value) {
     urlb = value;
   });
@@ -386,26 +408,7 @@ String getUrl() {
 
 var balance;
 
-Future<void> initPaystacks() async {
-  String paystackKey = "sk_live_276ea373b7eff948c77c424ea2905d965bd8e9f8";
-  var publicKey = 'pk_live_149127b35639db9211193e2dc2296e769b30c494';
 
-  try {
-    await PaystackPlugin.initialize(publicKey: publicKey)
-        .then((value) => {print(value)});
-    // Paystack is ready for use in receiving payments
-  } on PlatformException {
-    // well, error, deal with it
-    print('error');
-  }
-}
-
-Future<String> getEmail() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String emailNew = prefs.getString('email');
-  email = emailNew;
-  return email;
-}
 // Navigator.push(
 //                     context,
 //                     MaterialPageRoute(builder: (context) => MySample()),

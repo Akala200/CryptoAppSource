@@ -9,10 +9,11 @@ import 'package:tuple/tuple.dart';
 
 var skTest = "sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e";
 
+
 Future<double> balanceNew() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String email = prefs.getString('email');
-  var url = "https://cryptonew-api.herokuapp.com/api/balance/coin?email=$email"; // iOS
+  var url = "https://cryptonew-api.herokuapp.com/api/balance/coin?email=$email&coin_type=BTC"; // iOS
   final http.Response response = await http.get(
     url,
     headers: <String, String>{
@@ -23,33 +24,15 @@ Future<double> balanceNew() async {
   if (response.statusCode == 200) {
     var st = jsonDecode(response.body);
     var balance = st["message"];
-    await prefs.setDouble('balance', balance);
-    return balance;
-  } else {
-    var st = jsonDecode(response.body);
-    var status = st["message"];
-    return status;
-  }
-}
-
-
-Future<String> balanceNaira() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String email = prefs.getString('email');
-  var url = "https://cryptonew-api.herokuapp.com/api/balance/naira?email=$email"; // iOS
-  final http.Response response = await http.get(
-    url,
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-  );
-
-  if (response.statusCode == 200) {
-    var st = jsonDecode(response.body);
-    print(st);
-    var balance = st["price"];
-    await prefs.setDouble('balance', balance);
-    return balance.toString();
+    print(balance);
+    if(balance == 0){
+      balance = 0.0;
+      await prefs.setDouble('balance', balance);
+      return balance;
+    } else {
+      await prefs.setDouble('balance', balance);
+      return balance;
+    }
   } else {
     var st = jsonDecode(response.body);
     print(st);
@@ -60,10 +43,14 @@ Future<String> balanceNaira() async {
 
 
 
-Future<String> address() async {
+
+
+
+
+Future<String> address(coin) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String email = prefs.getString('email');
-  var url = "https://cryptonew-api.herokuapp.com/api/user/address?email=$email"; // iOS
+  var url = "https://cryptonew-api.herokuapp.com/api/user/address?email=$email&coin_type=$coin"; // iOS
   final http.Response response = await http.get(
     url,
     headers: <String, String>{
@@ -75,7 +62,6 @@ Future<String> address() async {
     var st = jsonDecode(response.body);
     print(st);
     var address = st["message"];
-    await prefs.setString('address', address);
     return address;
   } else {
     var st = jsonDecode(response.body);
@@ -84,8 +70,8 @@ Future<String> address() async {
   }
 }
 
-Future<Tuple2> convert(query) async {
-  var url = "https://cryptonew-api.herokuapp.com/api/convert?amount=$query"; // iOS
+Future<Tuple2> convert(query, coinType) async {
+  var url = "https://cryptonew-api.herokuapp.com/api/convert?amount=$query&coin_type=$coinType"; // iOS
   final http.Response response = await http.get(
     url,
     headers: <String, String>{
@@ -95,9 +81,10 @@ Future<Tuple2> convert(query) async {
 
   if (response.statusCode == 200) {
     var st = jsonDecode(response.body);
+    print(st);
     var bitcoin = st["price"];
     var price = st["amountAfterFee"].toString();
-   return new Tuple2(bitcoin, price);
+    return new Tuple2(bitcoin, price);
   } else {
     var st = jsonDecode(response.body);
     var status = st["message"];
@@ -125,86 +112,73 @@ Future<String> realAmount(query) async {
   }
 }
 
-Future<double> getCoin(fee) async {
-  var url = "https://cryptonew-api.herokuapp.com/api/get/coin?amount=$fee"; // iOS
-  final http.Response response = await http.get(
-    url,
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-  );
-
-  if (response.statusCode == 200) {
-    var st = jsonDecode(response.body);
-    var price = st["price"];
-    return price;
-  } else {
-    var st = jsonDecode(response.body);
-    var status = st["message"];
-    return status;
-  }
-}
-
-Future<String>createAccessCode(amount, bitcoin) async {
+Future<String>createWithdraw(realPrice, bitcoin, accountAccount, accountBank ) async {
   // skTest -> Secret key
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String email = prefs.getString('email');
   Map<String, String> headers = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-   // 'Authorization': 'Bearer $skTest'
-   };
-  Map data = {"amount": amount, "email": email, "bitcoin": bitcoin, };
+    // 'Authorization': 'Bearer $skTest'
+  };
+  Map data = {"amount": realPrice, "email": email, "bitcoin": bitcoin, "flatAmount": bitcoin, "defaultAmount": realPrice, "account_account": accountAccount, "accountBank": accountBank };
   String payload = json.encode(data);
   http.Response response = await http.post(
-      'https://cryptonew-api.herokuapp.com/api/credit',
+      'https://cryptonew-api.herokuapp.com/api/withdraw',
       headers: headers,
       body: payload);
-  if (response.statusCode == 200) {
-    var dataNew = jsonDecode(response.body);
-    String accessCode = dataNew['accessCode'];
-    // var databe = dataNew['data'];
-    print(accessCode);
-    return accessCode;
-
-  } else {
-    var st = jsonDecode(response.body);
-    print(st);
-    var status = st["message"];
-    return status;
-  }
+  var dataNew = jsonDecode(response.body);
+  print(dataNew);
+  return dataNew;
 }
 
 
 
-Future<int>transfer(amount, bitcoinB, fee, flatAmount, address) async {
+Future<String>transfer(amountB4Fee, bitcoin, coinType, address ) async {
+  // skTest -> Secret key
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  String emailNew = prefs.getString('email');
-  var url = "https://cryptonew-api.herokuapp.com/api/send"; // iOS
-  final http.Response response = await http.post(
-    url,
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, String>{
-      'amount': amount,
-      'fee': fee,
-      'bitcoin': bitcoinB,
-      'email': emailNew,
-      'flatAmount': flatAmount,
-      'address': address,
-    }),
-  );
+  String email = prefs.getString('email');
+  print('checking');
+  Map<String, String> headers = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    // 'Authorization': 'Bearer $skTest'
+  };
+  Map data = {"amount": amountB4Fee, "email": email, "bitcoin": bitcoin, "flatAmount": bitcoin, "defaultAmount": amountB4Fee, "coin_type": coinType, "address": address };
+  String payload = json.encode(data);
+  http.Response response = await http.post(
+      'https://cryptonew-api.herokuapp.com/api/send',
+      headers: headers,
+      body: payload);
+  var dataNew = jsonDecode(response.body);
+  print(dataNew);
+  print('checking');
+  return dataNew;
+}
 
-  if (response.statusCode == 200) {
-   // var st = jsonDecode(response.body);
-    var status = response.statusCode;
-    return status;
-  } else {
-    var st = jsonDecode(response.body);
-    var status = st["message"];
-    return status;
-  }
+
+
+
+Future<String>createAccessCode() async {
+  // skTest -> Secret key
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String email = prefs.getString('email');
+  Map<String, String> headers = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    // 'Authorization': 'Bearer $skTest'
+  };
+  Map data = {"amount": 10000, "email": email, "bitcoin": 0.000939393, };
+  String payload = json.encode(data);                         http.Response response = await http.post(
+      'https://cryptonew-api.herokuapp.com/api/credit',
+      headers: headers,
+      body: payload);
+  final Map dataNew = jsonDecode(response.body);
+  print(dataNew);
+  String accessCode = dataNew['accessCode'];
+  // var databe = dataNew['data'];
+  //print(databe);
+  return accessCode;
 }
 
 
@@ -224,7 +198,7 @@ void _verifyOnServer(String reference) async {
       print('here');
     }
   }
-    catch (e) {
+  catch (e) {
     print(e);
   }
 }
@@ -235,13 +209,6 @@ Future<double> getBalance() async {
   var balance = prefs.getDouble('balance');
   return balance;
 }
-
-Future<String> getAddress() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  var address = prefs.getString('address');
-  return address;
-}
-
 
 
 Future<Tuple2> userDetails() async {
@@ -272,7 +239,7 @@ Future<Tuple2> userDetails() async {
 Future<String> getEmail() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String emailNew = prefs.getString('email');
-return emailNew;
+  return emailNew;
 }
 
 Future<Tuple2> getNames() async {

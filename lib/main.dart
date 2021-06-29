@@ -97,16 +97,13 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String uid = await prefs.getString('id');
     String token = await prefs.getString('token');
-    String loginStateValue = await dataToken();
 
 
     if(token != null){
-      if(loginStateValue == 'valid token'){
         Navigator.of(context).pushReplacement(
             PageRouteBuilder(
                 pageBuilder: (_, __, ___) =>
                     bottomNavBar(themeBloc: themeBloc)));
-      }
     } else if(uid != null){
       Navigator.of(context)
           .pushReplacement(PageRouteBuilder(

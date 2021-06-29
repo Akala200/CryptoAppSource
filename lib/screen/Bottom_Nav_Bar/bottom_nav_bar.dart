@@ -7,6 +7,7 @@ import 'package:sourcecodexchange/screen/setting/themes.dart';
 import 'package:sourcecodexchange/screen/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:sourcecodexchange/component/style.dart';
+import 'package:sourcecodexchange/screen/wallet/allaccount.dart';
 
 class bottomNavBar extends StatefulWidget {
 
@@ -33,7 +34,7 @@ class _bottomNavBarState extends State<bottomNavBar> {
       return new market();
         break;
       case 2:
-      return new wallet();
+      return new WalletMain();
         break;
         case 3:
       return new news();

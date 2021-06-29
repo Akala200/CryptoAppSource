@@ -2,10 +2,12 @@ import 'package:sourcecodexchange/screen/wallet/tabs/deposit.dart';
 import 'package:sourcecodexchange/screen/wallet/tabs/withdraw.dart';
 import 'package:flutter/material.dart';
 
+
 class walletDetail extends StatefulWidget {
   final Widget child;
+  final String coinType;
 
-  walletDetail({Key key, this.child}) : super(key: key);
+  walletDetail({Key key, this.child, this.coinType}) : super(key: key);
 
   _walletDetailState createState() => _walletDetailState();
 }
@@ -53,7 +55,7 @@ class _walletDetailState extends State<walletDetail>
                 backgroundColor: Colors.transparent,
                 appBar: PreferredSize(
                   preferredSize:
-                      Size.fromHeight(42.0), // here the desired height
+                  Size.fromHeight(42.0), // here the desired height
                   child: new AppBar(
                     backgroundColor: Colors.transparent,
                     elevation: 0.0,
@@ -71,12 +73,12 @@ class _walletDetailState extends State<walletDetail>
                         indicator: ShapeDecoration.fromBoxDecoration(
                             BoxDecoration(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(15.0)),
+                                BorderRadius.all(Radius.circular(15.0)),
                                 color: Theme.of(context).canvasColor)),
                         tabs: [
                           new Tab(
                             child: Text(
-                              "Buy Or Deposit",
+                              "Buy",
                               style: TextStyle(
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w300,
@@ -85,12 +87,12 @@ class _walletDetailState extends State<walletDetail>
                           ),
                           new Tab(
                               child: Text(
-                            "Sell Or Transfer",
-                            style: TextStyle(
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ))
+                                "Sell",
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ))
                         ],
                       ),
                     ),
@@ -101,12 +103,12 @@ class _walletDetailState extends State<walletDetail>
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 20.0, right: 20.0, top: 20.0),
-                      child: deposit(),
+                      child: deposit(coinType: widget.coinType),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 20.0, right: 20.0, top: 20.0),
-                      child: withDraw(),
+                      child: withDraw(coinType: widget.coinType),
                     ),
                   ],
                 ),

@@ -11,6 +11,7 @@ import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 
 
+
 class MySample extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -42,7 +43,7 @@ class MySampleState extends State<MySample> {
 
   @override
   void initState() {
-  initPaystack();
+    initPaystack();
   }
 
   Future<CheckoutResponse> initPaystack() async {
@@ -58,42 +59,42 @@ class MySampleState extends State<MySample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: true,
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              CreditCardWidget(
-                cardNumber: cardNumber,
-                expiryDate: expiryDate,
-                cardHolderName: cardHolderName,
-                cvvCode: cvvCode,
-                showBackView: isCvvFocused,
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: CreditCardForm(
-                    onCreditCardModelChange: onCreditCardModelChange,
-                  ),
+      resizeToAvoidBottomInset: true,
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            CreditCardWidget(
+              cardNumber: cardNumber,
+              expiryDate: expiryDate,
+              cardHolderName: cardHolderName,
+              cvvCode: cvvCode,
+              showBackView: isCvvFocused,
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: CreditCardForm(
+                  onCreditCardModelChange: onCreditCardModelChange,
                 ),
               ),
+            ),
 
-              Container(
-                height: 50.0,
-                width: 300.0,
-                color: Theme.of(context).primaryColor,
-                child: Center(
-                  child:  GestureDetector(
-                      onTap: () {
+            Container(
+              height: 50.0,
+              width: 300.0,
+              color: Theme.of(context).primaryColor,
+              child: Center(
+                child:  GestureDetector(
+                    onTap: () {
 
-                        initPaystack();
-                      },
-                      child: Text("Make PAYMENT",style: TextStyle(color: Theme.of(context).textSelectionColor),)),
-                ),
+                      initPaystack();
+                    },
+                    child: Text("Make PAYMENT",style: TextStyle(color: Theme.of(context).textSelectionColor),)),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
     );
   }
 

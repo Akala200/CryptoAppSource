@@ -5,6 +5,7 @@ import 'package:sourcecodexchange/screen/home/detailCrypto/gainersDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
+
 class gainer extends StatefulWidget {
   final Widget child;
 
@@ -29,14 +30,14 @@ class _gainerState extends State<gainer> {
   /// To set duration initState auto start if FlashSale Layout open
   @override
   void initState() {
-   
-  Timer(Duration(seconds: 3),(){
-setState(() {
-  loadImage=false;
-});
+
+    Timer(Duration(seconds: 3),(){
+      setState(() {
+        loadImage=false;
+      });
     });
-     getAll33();
-  //  print(rees);
+    getAll33();
+    //  print(rees);
     // TODO: implement initState
     super.initState();
   }
@@ -91,7 +92,6 @@ setState(() {
         /// if image loaded true (image still downloading from server)
         /// Card to set card loading animation
         ///
-
         loadImage ? _loadingImageAnimation(context) : _imageLoaded(context),
       ],
     );
@@ -105,8 +105,8 @@ Widget listPriceGainers(gainers item, BuildContext ctx) {
       onTap: () {
         Navigator.of(ctx).push(PageRouteBuilder(
             pageBuilder: (_, __, ___) => new gainersDetail(
-                  item: item,
-                )));
+              item: item,
+            )));
       },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -144,15 +144,15 @@ Widget listPriceGainers(gainers item, BuildContext ctx) {
                 width: 80.0,
                 height: 35.0,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(2.0)),
+                  borderRadius: BorderRadius.all(Radius.circular(2.0)),
                   color: Colors.lightBlue,
                 ),
                 child: Center(
                     child: Text(
-                  item.chg,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600, color: Colors.white),
-                ))),
+                      item.chg,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, color: Colors.white),
+                    ))),
           )
         ],
       ),

@@ -242,7 +242,7 @@ class _cardState extends State<card> {
                                 fontSize: 13.5),
                           ),
                           Text(
-                            'NGN',
+                            'USD',
                             style: TextStyle(color: Colors.green),
                           ),
                         ],
