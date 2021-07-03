@@ -29,7 +29,7 @@ class _depositState extends State<deposit> {
   Future<double> balanceSpecified() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String email = prefs.getString('email');
-    var url = "https://cash200.herokuapp.com/api/balance/coin?email=$email&coin_type=${widget.coinType}"; // iOS
+    var url = "https://cryptonew-api.herokuapp.com/api/balance/coin?email=$email&coin_type=${widget.coinType}"; // iOS
     final http.Response response = await http.get(
       url,
       headers: <String, String>{
@@ -62,7 +62,7 @@ class _depositState extends State<deposit> {
   void initState() {
     super.initState();
     setState(() {
-      getBalanceNew();
+      getBalanceNew(widget.coinType);
     });
     @override
     var reee =  PaystackPlugin.initialize(
@@ -222,11 +222,11 @@ class _depositState extends State<deposit> {
 }
 
 @override
-double getBalanceNew() {
+double getBalanceNew(coin) {
   double  _balance;
   // ignore: non_constant_identifier_names
   Future<double> StringFuture;
-  StringFuture = balanceNew();
+  StringFuture = balanceNew(coin);
   StringFuture.then((value) {
     print(value);
     balanceNewHere = value;

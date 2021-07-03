@@ -55,7 +55,7 @@ class _withDrawState extends State<withDraw> {
                     children: <Widget>[
                       Text("Available ${widget.coinType}",style: TextStyle(color: Theme.of(context).hintColor.withOpacity(0.5),fontFamily: "Popins",fontSize: 15.5),),
                       new FutureBuilder <double>(
-                          future: balanceNew(),
+                          future: balanceNew(widget.coinType),
                           builder: (BuildContext context, AsyncSnapshot <double> snapshot) {
                             if (snapshot.connectionState == ConnectionState.waiting) {
                               return new Center(
@@ -198,7 +198,7 @@ class _withDrawState extends State<withDraw> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text("Amount NGN",style: TextStyle(color: Theme.of(context).hintColor),),
+              Text("Amount USD",style: TextStyle(color: Theme.of(context).hintColor),),
               Text("$realPrice",style: TextStyle(color: Theme.of(context).hintColor.withOpacity(0.7)),)
             ],
           ),

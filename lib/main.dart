@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:sourcecodexchange/screen/Bottom_Nav_Bar/bottom_nav_bar.dart';
+import 'package:sourcecodexchange/screen/intro/complete_setup.dart';
 import 'package:sourcecodexchange/screen/intro/on_Boarding.dart';
 import 'package:sourcecodexchange/screen/setting/themes.dart';
 import 'package:flutter/material.dart';
@@ -97,13 +98,44 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String uid = await prefs.getString('id');
     String token = await prefs.getString('token');
+    String email = await prefs.getString('email');
+    var url = "https://cryptonew-api.herokuapp.com/api/get/user?email=$email"; // iOS
+
 
 
     if(token != null){
-        Navigator.of(context).pushReplacement(
-            PageRouteBuilder(
-                pageBuilder: (_, __, ___) =>
-                    bottomNavBar(themeBloc: themeBloc)));
+      final http.Response response = await http.get(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      if (response.statusCode == 200) {
+        var st = jsonDecode(response.body);
+        var bvnVerification = st["data"]["bvn_verified"];
+        print(st);
+        print(bvnVerification);
+          if(bvnVerification != true){
+            Navigator.of(context).pushReplacement(
+                PageRouteBuilder(
+                    pageBuilder: (_, __, ___) =>
+                        SetUp(
+                          themeBloc: themeBloc,
+                        )));
+
+          } else{
+            Navigator.of(context).pushReplacement(
+                PageRouteBuilder(
+                    pageBuilder: (_, __, ___) =>
+                        bottomNavBar(themeBloc: themeBloc)));
+          }
+
+      } else {
+        var st = jsonDecode(response.body);
+        var status = st["message"];
+        return status;
+      }
+
     } else if(uid != null){
       Navigator.of(context)
           .pushReplacement(PageRouteBuilder(

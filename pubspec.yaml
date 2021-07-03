@@ -47,6 +47,8 @@ dependencies:
   connectivity: ^2.0.2
   random_string: ^2.1.0
   flutterwave: ^0.0.2
+  dropdown_formfield: ^0.1.3
+
 
 
 

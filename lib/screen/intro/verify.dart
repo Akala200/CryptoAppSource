@@ -11,6 +11,8 @@ import 'package:otp_text_field/style.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:toast/toast.dart';
 
+import 'complete_setup.dart';
+
 class verifyemail extends StatefulWidget {
   ThemeBloc themeBloc;
   verifyemail({this.themeBloc});
@@ -113,7 +115,9 @@ class _verifyemailState extends State<verifyemail> {
                                 Navigator.of(context).pushReplacement(
                                     PageRouteBuilder(
                                         pageBuilder: (_, __, ___) =>
-                                            bottomNavBar(themeBloc: _themeBloc)));
+                                            SetUp(
+                                              themeBloc: _themeBloc,
+                                            )));
                               } else {
                                 Loader.hide();
                                 Toast.show(ressp, context, duration: Toast.LENGTH_LONG, backgroundColor: Colors.red,  gravity:  Toast.BOTTOM);

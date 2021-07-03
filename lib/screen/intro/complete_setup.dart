@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
+import 'package:sourcecodexchange/screen/Bottom_Nav_Bar/bottom_nav_bar.dart';
 import 'package:sourcecodexchange/screen/setting/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:sourcecodexchange/component/style.dart';
@@ -7,6 +9,7 @@ import 'package:sourcecodexchange/Network/wallet.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:flutterwave/models/responses/charge_response.dart';
+import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 import 'package:random_string/random_string.dart';
@@ -17,6 +20,7 @@ import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
+import 'package:dropdown_formfield/dropdown_formfield.dart';
 
 String _getReference() {
   String platform;
@@ -34,19 +38,19 @@ var bitcoin = '0';
 var realPrice = '0';
 int amount;
 var queryGotten;
-class coinDeposit extends StatefulWidget {
+class SetUp extends StatefulWidget {
   ///
   /// Get data bloc from
   ///
   ThemeBloc themeBloc;
   final coin;
 
-  coinDeposit({Key key, this.themeBloc, this.coin}) : super(key: key);
+  SetUp({Key key, this.themeBloc, this.coin}) : super(key: key);
 
-  _coinDeposit createState() => _coinDeposit(themeBloc);
+  _SetUp createState() => _SetUp(themeBloc);
 }
 
-class _coinDeposit extends State<coinDeposit> {
+class _SetUp extends State<SetUp> {
 
 
   String transcation = 'No transcation Yet';
@@ -56,6 +60,10 @@ class _coinDeposit extends State<coinDeposit> {
   static const paystack_backend_url =
       "https://infinite-peak-60063.herokuapp.com";
   var publicKey = 'pk_live_9788e845e9c4098989720e1682facd83968aed3c';
+  var dropdownValue = '';
+  var banks = [];
+  var accountNumber;
+  var bvn;
 
   String paystackPublicKey = 'pk_live_9788e845e9c4098989720e1682facd83968aed3c';
   var card_type = '';
@@ -65,50 +73,26 @@ class _coinDeposit extends State<coinDeposit> {
   final String currency = FlutterwaveCurrency.NGN;
 
 
-  beginPayment() async {
-    final Flutterwave flutterwave = Flutterwave.forUIPayment(
-        context: this.context,
-        encryptionKey: "FLWPUBK_TEST-SANDBOXDEMOKEY-X",
-        publicKey: "FLWPUBK_TEST-SANDBOXDEMOKEY-X",
-        currency: this.currency,
-        amount: this.amount,
-        email: "valid@email.com",
-        fullName: "Valid Full Name",
-        txRef: this.txref,
-        isDebugMode: true,
-        phoneNumber: "0123456789",
-        acceptCardPayment: true,
-        acceptUSSDPayment: false,
-        acceptAccountPayment: false,
-        acceptFrancophoneMobileMoney: false,
-        acceptGhanaPayment: false,
-        acceptMpesaPayment: false,
-        acceptRwandaMoneyPayment: true,
-        acceptUgandaPayment: false,
-        acceptZambiaPayment: false);
+   getBanks() async {
+    var url = "https://cryptonew-api.herokuapp.com/api/get/bank"; // iOS
+    final http.Response response = await http.get(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
 
-    try {
-      final ChargeResponse response = await flutterwave.initializeForUiPayments();
-      if (response == null) {
-        // user didn't complete the transaction. Payment wasn't successful.
-      } else {
-        final isSuccessful = checkPaymentIsSuccessful(response);
-        if (isSuccessful) {
-          // provide value to customer
-        } else {
-          // check message
-          print(response.message);
-
-          // check status
-          print(response.status);
-
-          // check processor error
-          print(response.data.processorResponse);
-        }
-      }
-    } catch (error, stacktrace) {
-      // handleError(error);
-      // print(stacktrace);
+    if (response.statusCode == 200) {
+      var st = jsonDecode(response.body);
+      print(st);
+     setState(() {
+       banks = st;
+     });
+    } else {
+      var st = jsonDecode(response.body);
+     setState(() {
+       banks = ["No banks added"];
+     });
     }
   }
 
@@ -121,13 +105,14 @@ class _coinDeposit extends State<coinDeposit> {
 
   @override
   void initState() {
-    initPaystacks();
+    getBanks();
   }
   ///
   /// Bloc for double theme
   ///
+  ///
   ThemeBloc themeBloc;
-  _coinDeposit(this.themeBloc);
+  _SetUp(this.themeBloc);
   bool theme = true;
   String _img = "assets/image/setting/lightMode.png";
 
@@ -139,13 +124,16 @@ class _coinDeposit extends State<coinDeposit> {
       appBar: AppBar(
         brightness: Brightness.dark,
         centerTitle: true,
-        title: Text(
-          "Make Payment",
-          style: TextStyle(
-              color: Theme.of(context).textSelectionColor,
-              fontFamily: "Gotik",
-              fontWeight: FontWeight.w600,
-              fontSize: 18.5),
+        title: Padding(
+          padding: const EdgeInsets.only(top: 30.0),
+          child: Text(
+            "Complete Account Setup",
+            style: TextStyle(
+                color: Theme.of(context).textSelectionColor,
+                fontFamily: "Gotik",
+                fontWeight: FontWeight.w600,
+                fontSize: 20.5),
+          ),
         ),
         iconTheme: IconThemeData(color: Theme.of(context).textSelectionColor),
         elevation: 0.0,
@@ -155,15 +143,10 @@ class _coinDeposit extends State<coinDeposit> {
         child: Column(
           children: <Widget>[
             SizedBox(
-              height: 50.0,
+              height: 160.0,
             ),
 
-            ///
-            /// Image header
-            ///
-            SizedBox(
-              height: 20.0,
-            ),
+
             Padding(
               padding:const EdgeInsets.only( right: 60.0, left: 60.0),
               child: Form(
@@ -174,23 +157,11 @@ class _coinDeposit extends State<coinDeposit> {
                           width: 300,
                           child: TextFormField(
                             onChanged: (query){
-                              if (query.length < 1) return;
-                              // if the length of the word is less than 2, stop executing your API call.
-                              print(widget.coin);
-
-                              convert(query, widget.coin).then((value) {
-                                print(value);
-                                queryGotten = query;
-                                setState(() {
-                                  bitcoin = value.item1.toString();
-                                  realPrice = value.item2;
-                                  amount = query;
-                                });
-                              });
+                              bvn = query;
                             },
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
-                              labelText: 'Enter Amount In Naira',
+                              labelText: 'Enter Your BVN Number',
                               fillColor: Colors.white,
                               labelStyle: TextStyle(color: Colors.white),
                             ),
@@ -198,38 +169,46 @@ class _coinDeposit extends State<coinDeposit> {
                         ),
 
                         SizedBox(
-                          height: 50.0,
+                          height: 40.0,
                         ),
 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '${widget.coin} :',
-                              style: new TextStyle(
-                                  color: Color(0xFF84A2AF), fontWeight: FontWeight.bold),
+                        Container(
+                          width: 300,
+                          child: TextFormField(
+                            onChanged: (query){
+                              accountNumber = query;
+                            },
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              labelText: 'Enter Your Account Number',
+                              fillColor: Colors.white,
+                              labelStyle: TextStyle(color: Colors.white),
                             ),
-
-                            Text(
-                              bitcoin,
-                            ),
-                          ],
+                          ),
                         ),
+
                         SizedBox(
-                          height: 30.0,
+                          height: 40.0,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'USD :',
-                              style: new TextStyle(
-                                  color: Color(0xFF84A2AF), fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              realPrice,
-                            ),
-                          ],
+
+
+
+                        DropDownFormField(
+                          titleText: 'Selected Bank',
+                          hintText: 'Select Your Bank',
+                          value: dropdownValue,
+                          onChanged: (value) {
+                            setState(() {
+                              dropdownValue = value;
+                            });
+                          },
+                          dataSource: banks,
+                          textField: 'name',
+                          valueField: 'code',
+                        ),
+
+                        SizedBox(
+                          height: 40.0,
                         ),
 
                         SizedBox(
@@ -241,13 +220,41 @@ class _coinDeposit extends State<coinDeposit> {
                           color: Theme.of(context).primaryColor,
                           child: Center(
                             child:  GestureDetector(
-                                onTap: () {
-                                  // getUrl(amount, bitcoin);
-                                  var resp =  beginPayment();
-                                  print(resp);
-                                  print('Here');
+                                onTap: () async{
+                                    // skTest -> Secret key
+
+                                  Loader.show(context,
+                                      progressIndicator: CircularProgressIndicator(
+                                        backgroundColor: Colors.blueGrey,
+                                      ),
+                                      themeData: Theme.of(context)
+                                          .copyWith(accentColor: Colors.blueAccent));
+
+                                    Map<String, String> headers = {
+                                      'Content-Type': 'application/json',
+                                      'Accept': 'application/json',
+                                      // 'Authorization': 'Bearer $skTest'
+                                    };
+                                    Map data = {"account_number": accountNumber, "bank_code": dropdownValue, "bvn": bvn };
+                                    String payload = json.encode(data);
+                                    http.Response response = await http.post(
+                                        'https://cryptonew-api.herokuapp.com/api/complete/account',
+                                        headers: headers,
+                                        body: payload);
+                                    if (response.statusCode == 200) {
+                                      Loader.hide();
+                                      Navigator.of(context).pushReplacement(
+                                          PageRouteBuilder(
+                                              pageBuilder: (_, __, ___) =>
+                                                  bottomNavBar(themeBloc: themeBloc)));
+                                    } else {
+                                      var st = jsonDecode(response.body);
+                                      var ressp = st["message"];
+                                      Loader.hide();
+                                      Toast.show(ressp, context, duration: Toast.LENGTH_LONG, backgroundColor: Colors.red,  gravity:  Toast.BOTTOM);
+                                    }
                                 },
-                                child: Text("INITIATE PAYMENT",style: TextStyle(color: Colors.white),)),
+                                child: Text("Complete Account Setup",style: TextStyle(color: Colors.white),)),
                           ),
                         ),
                         // Add TextFormFields and ElevatedButton here.
@@ -357,19 +364,7 @@ class _coinDeposit extends State<coinDeposit> {
             textSelectionHandleColor: colorStyle.fontColorDarkTitle));
   }
 
-  Future<void> initPaystacks() async {
 
-    try {
-      await PaystackPlugin.initialize(
-          publicKey: publicKey).then((value) => {
-        print(value)
-      });
-      // Paystack is ready for use in receiving payments
-    } on PlatformException {
-      // well, error, deal with it
-      print('error');
-    }
-  }
 
 }
 

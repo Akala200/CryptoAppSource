@@ -13,10 +13,10 @@ class assetsWallet {
 }
 
 
-  Future <List<assetsWallet>>  transactionHistory() async {
+  Future <List<assetsWallet>>  transactionHistory(coin) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String id = prefs.getString('email');
-  var url = "https://cryptonew-api.herokuapp.com/api/history?email=$id"; // iOS
+  var url = "https://cryptonew-api.herokuapp.com/api/history?email=$id&coinType=$coin"; // iOS
   final http.Response response = await http.get(
     url,
     headers: <String, String>{

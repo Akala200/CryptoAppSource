@@ -18,7 +18,7 @@ class _walletDetailState extends State<walletDetail>
   void initState() {
     super.initState();
     setState(() {
-      getBalanceNew();
+      getBalanceNew(widget.coinType);
     });
   }
   @override

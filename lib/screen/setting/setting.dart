@@ -1,5 +1,7 @@
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:sourcecodexchange/Network/signup.dart';
 import 'package:sourcecodexchange/Network/wallet.dart';
+import 'package:sourcecodexchange/screen/Bottom_Nav_Bar/bottom_nav_bar.dart';
 import 'package:sourcecodexchange/screen/intro/login.dart';
 import 'package:sourcecodexchange/screen/setting/SeeAllTemplate.dart';
 import 'package:sourcecodexchange/screen/setting/password.dart';
@@ -266,10 +268,13 @@ class _settings extends State<settings> {
                         ),
                       ],
                     ),
+
                     SizedBox(
                       height: 15.0,
                     ),
-            //    Row(
+                    _line(),
+
+                    //    Row(
               //    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 //  children: <Widget>[
                   //  Text("Change Phone Number", style: _txtStyleTitle),
@@ -305,6 +310,35 @@ class _settings extends State<settings> {
                   ),
                 ],
               ),
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    _line(),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text("Create Other wallets", style: _txtStyleTitle),
+                        InkWell(
+                          onTap: () {
+                            var response = createWallet();
+                            // ignore: unrelated_type_equality_checks
+                            if (response == 200) {
+                              Toast.show('Wallets Created', context, duration: Toast.LENGTH_LONG, backgroundColor: Colors.green,  gravity:  Toast.BOTTOM);
+
+                            } else {
+                              Loader.hide();
+                              Toast.show('Wallets Has Already Been Created', context, duration: Toast.LENGTH_LONG, backgroundColor: Colors.red,  gravity:  Toast.BOTTOM);
+                            }
+
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 10.0, bottom: 10.0),
+                            child: Icon(Icons.arrow_forward, color:  Colors.black12),
+                          ),
+                        ),
+                      ],
+                    ),
                     SizedBox(
                       height: 15.0,
                     ),

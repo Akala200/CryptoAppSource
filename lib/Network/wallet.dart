@@ -10,10 +10,10 @@ import 'package:tuple/tuple.dart';
 var skTest = "sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e";
 
 
-Future<double> balanceNew() async {
+Future<double> balanceNew(coin) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String email = prefs.getString('email');
-  var url = "https://cryptonew-api.herokuapp.com/api/balance/coin?email=$email&coin_type=BTC"; // iOS
+  var url = "https://cryptonew-api.herokuapp.com/api/balance/coin?email=$email&coin_type=$coin"; // iOS
   final http.Response response = await http.get(
     url,
     headers: <String, String>{
@@ -131,6 +131,28 @@ Future<String>createWithdraw(realPrice, bitcoin, accountAccount, accountBank ) a
   print(dataNew);
   return dataNew;
 }
+
+
+Future<int>createWallet() async {
+  // skTest -> Secret key
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String email = prefs.getString('email');
+  Map<String, String> headers = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    // 'Authorization': 'Bearer $skTest'
+  };
+  Map data = {"email": email, };
+  String payload = json.encode(data);
+  http.Response response = await http.post(
+      'https://cryptonew-api.herokuapp.com/api/create/other/wallet',
+      headers: headers,
+      body: payload);
+  var dataNew = response.statusCode;
+  print(response.statusCode);
+  return dataNew;
+}
+
 
 
 

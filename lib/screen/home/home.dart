@@ -128,7 +128,7 @@ setState(() {
                                               padding: const EdgeInsets.only(
                                                   left: 8.0),
                                               child: Text(
-                                                "Naira",
+                                                "USD",
                                                 style: TextStyle(
                                                     fontFamily: "Sans"),
                                               ),
