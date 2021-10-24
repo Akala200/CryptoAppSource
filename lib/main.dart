@@ -99,7 +99,7 @@ class _SplashScreenState extends State<SplashScreen> {
     String uid = await prefs.getString('id');
     String token = await prefs.getString('token');
     String email = await prefs.getString('email');
-    var url = "https://cryptonew-api.herokuapp.com/api/get/user?email=$email"; // iOS
+    var url = "https://cryptonew-apis.herokuapp.com/api/get/user?email=$email"; // iOS
 
 
 
@@ -203,7 +203,7 @@ class _SplashScreenState extends State<SplashScreen> {
 Future<String> dataToken() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String token = prefs.getString('token');
-  var url = "https://cryptonew-api.herokuapp.com/api/data"; // iOS
+  var url = "https://cryptonew-apis.herokuapp.com/api/data"; // iOS
   final http.Response response = await http.get(
     url,
     headers: <String, String>{

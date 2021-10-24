@@ -11,12 +11,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 import 'package:random_string/random_string.dart';
 import 'package:flutterwave/flutterwave.dart';
-import 'dart:async';
-import 'dart:convert';
-import 'dart:math';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tuple/tuple.dart';
+import 'package:stripe/stripe.dart';
+
 
 String _getReference() {
   String platform;
@@ -50,6 +46,9 @@ class _coinDeposit extends State<coinDeposit> {
 
 
   String transcation = 'No transcation Yet';
+  final stripe = Stripe('sk_test_51HyYgoCJuEjzdSAstUIYUrgKIA6ChIYwdn5Tc5LaIk9ctKWGvaiI589mczMA0I4yFkPViwF5bzZxmfw5FgH5hlsb00ynCnnMVR');
+  final chargeId = 'ch_foobar';
+
   Map<String, dynamic> _data = {};
 // static const platform = const MethodChannel('maugost.com/paystack_flutter');
   static const paystack_pub_key = "pk_live_9788e845e9c4098989720e1682facd83968aed3c";
@@ -227,7 +226,7 @@ class _coinDeposit extends State<coinDeposit> {
                                   color: Color(0xFF84A2AF), fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              realPrice,
+                              '\$ $realPrice',
                             ),
                           ],
                         ),
@@ -241,11 +240,10 @@ class _coinDeposit extends State<coinDeposit> {
                           color: Theme.of(context).primaryColor,
                           child: Center(
                             child:  GestureDetector(
-                                onTap: () {
-                                  // getUrl(amount, bitcoin);
-                                  var resp =  beginPayment();
-                                  print(resp);
-                                  print('Here');
+                                onTap: () async {
+                                  // All Stripe calls return dart objects, not generic Maps.
+                                  final charge = await stripe.charge.retrieve(chargeId);
+                                  print(charge.balanceTransaction);
                                 },
                                 child: Text("INITIATE PAYMENT",style: TextStyle(color: Colors.white),)),
                           ),

@@ -200,7 +200,7 @@ class _waveBodyState extends State<waveBody> with TickerProviderStateMixin {
   Future<double> getUSDBalnace() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String email = prefs.getString('email');
-    var url = "https://cryptonew-api.herokuapp.com/api/balance/naira?email=$email&coinType=${widget.coin}"; // iOS
+    var url = "https://cryptonew-apis.herokuapp.com/api/balance/naira?email=$email&coinType=${widget.coin}"; // iOS
     final http.Response response = await http.get(
       url,
       headers: <String, String>{
@@ -231,7 +231,7 @@ class _waveBodyState extends State<waveBody> with TickerProviderStateMixin {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String email = prefs.getString('email');
     print(email);
-    var url = "https://cryptonew-api.herokuapp.com/api/balance/coin?email=$email&coin_type=${widget.coin}"; // iOS
+    var url = "https://cryptonew-apis.herokuapp.com/api/balance/coin?email=$email&coin_type=${widget.coin}"; // iOS
     final http.Response response = await http.get(
       url,
       headers: <String, String>{
@@ -243,6 +243,7 @@ class _waveBodyState extends State<waveBody> with TickerProviderStateMixin {
       var st = jsonDecode(response.body);
       var balance = st["message"];
       print(balance);
+      print('balance above');
       if(balance == 0){
         balance = 0.0;
         await prefs.setDouble('balance', balance);

@@ -56,8 +56,7 @@ class IntroPageItem extends StatelessWidget {
         padding: const EdgeInsets.only(top: 16.0),
         child: Text(
           item.title,
-          style: textTheme.title
-              .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
       ),

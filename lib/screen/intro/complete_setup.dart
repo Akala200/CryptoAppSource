@@ -1,26 +1,25 @@
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
+import 'package:sourcecodexchange/Network/signup.dart';
 import 'package:sourcecodexchange/screen/Bottom_Nav_Bar/bottom_nav_bar.dart';
 import 'package:sourcecodexchange/screen/setting/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:sourcecodexchange/component/style.dart';
 import 'package:sourcecodexchange/Network/wallet.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:flutterwave/models/responses/charge_response.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 import 'package:random_string/random_string.dart';
 import 'package:flutterwave/flutterwave.dart';
-import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tuple/tuple.dart';
 import 'package:dropdown_formfield/dropdown_formfield.dart';
+import 'package:sourcecodexchange/Network/wallet.dart';
+
+import 'login.dart';
 
 String _getReference() {
   String platform;
@@ -74,7 +73,7 @@ class _SetUp extends State<SetUp> {
 
 
    getBanks() async {
-    var url = "https://cryptonew-api.herokuapp.com/api/get/bank"; // iOS
+    var url = "https://cryptonew-apis.herokuapp.com/api/get/bank"; // iOS
     final http.Response response = await http.get(
       url,
       headers: <String, String>{
@@ -143,7 +142,7 @@ class _SetUp extends State<SetUp> {
         child: Column(
           children: <Widget>[
             SizedBox(
-              height: 160.0,
+              height: 100.0,
             ),
 
 
@@ -207,12 +206,9 @@ class _SetUp extends State<SetUp> {
                           valueField: 'code',
                         ),
 
-                        SizedBox(
-                          height: 40.0,
-                        ),
 
                         SizedBox(
-                          height: 100.0,
+                          height: 80.0,
                         ),
                         Container(
                           height: 50.0,
@@ -238,7 +234,7 @@ class _SetUp extends State<SetUp> {
                                     Map data = {"account_number": accountNumber, "bank_code": dropdownValue, "bvn": bvn };
                                     String payload = json.encode(data);
                                     http.Response response = await http.post(
-                                        'https://cryptonew-api.herokuapp.com/api/complete/account',
+                                        'https://cryptonew-apis.herokuapp.com/api/complete/account',
                                         headers: headers,
                                         body: payload);
                                     if (response.statusCode == 200) {
@@ -257,6 +253,36 @@ class _SetUp extends State<SetUp> {
                                 child: Text("Complete Account Setup",style: TextStyle(color: Colors.white),)),
                           ),
                         ),
+
+                        SizedBox(
+                          height: 30.0,
+                        ),
+
+                        Container(
+                          width: 300,
+                          child:  GestureDetector(
+                              onTap: () async {
+                                  var response = await logout();
+                                  // ignore: unrelated_type_equality_checks
+                                  if (response == 'done') {
+                                    Navigator.of(context)
+                                        .pushReplacement(PageRouteBuilder(
+                                        pageBuilder: (_, __, ___) =>
+                                        new LoginNow(
+                                          themeBloc: themeBloc,
+                                        )));
+                                  } else {
+                                    Toast.show(response, context,
+                                        duration: Toast.LENGTH_LONG,
+                                        backgroundColor: Colors.red,
+                                        gravity: Toast.BOTTOM);
+                                  }
+
+                              },
+                              child: Center(child: Text("Login Into Another Account",style: TextStyle(color: Colors.grey),)))
+                        ),
+
+
                         // Add TextFormFields and ElevatedButton here.
                         //     setState(() {
                         //     var newB = getAll();

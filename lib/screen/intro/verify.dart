@@ -133,7 +133,7 @@ class _verifyemailState extends State<verifyemail> {
                               ),
                               child: Center(
                                 child: Text(
-                                  "Create Account",
+                                  "PROCEED",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w400,

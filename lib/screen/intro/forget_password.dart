@@ -1,14 +1,14 @@
+import 'dart:convert';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
-import 'package:sourcecodexchange/Network/signup.dart';
-import 'package:sourcecodexchange/Network/wallet.dart';
-import 'package:sourcecodexchange/screen/Bottom_Nav_Bar/bottom_nav_bar.dart';
-import 'package:sourcecodexchange/screen/intro/login.dart';
-import 'package:sourcecodexchange/screen/intro/signup.dart';
 import 'package:sourcecodexchange/screen/intro/verifyCode.dart';
 import 'package:sourcecodexchange/screen/setting/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:sourcecodexchange/component/style.dart';
 import 'package:toast/toast.dart';
+import 'package:http/http.dart' as http;
+
+import 'login.dart';
+
 
 
 var email;
@@ -115,18 +115,33 @@ class _forgetPasswordState extends State<forgetPassword> {
                               final formState = _formKey.currentState;
                               if (formState.validate()) {
                                 formState.save();
-                                var ressp = await forgotPaasword(email);
-                                if (ressp == 200){
-                                  Loader.hide();
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => verifyCode()),
+                                  var url = "https://cryptonew-apis.herokuapp.com/api/forgot/password"; // iOS
+                                  final http.Response response = await http.post(
+                                    url,
+                                    headers: <String, String>{
+                                      'Content-Type': 'application/json; charset=UTF-8',
+                                    },
+                                    body: jsonEncode(<String, String>{
+                                      'email': email,
+                                    }),
                                   );
-                                } else {
-                                  Loader.hide();
-                                  Toast.show(ressp, context, duration: Toast.LENGTH_LONG, backgroundColor: Colors.red,  gravity:  Toast.BOTTOM);
-                                }
+
+                                  if (response.statusCode == 201) {
+                                    var st = jsonDecode(response.body);
+                                    print(st);
+                                      Loader.hide();
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => verifyCode()),
+                                      );
+                                  } else {
+                                    var st = jsonDecode(response.body);
+                                    print(st);
+                                    var status = st["message"];
+                                    Loader.hide();
+                                    Toast.show(status, context, duration: Toast.LENGTH_LONG, backgroundColor: Colors.red,  gravity:  Toast.BOTTOM);
+                                  }
                               }
                             },
                             child: Container(

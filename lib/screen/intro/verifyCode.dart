@@ -137,7 +137,7 @@ class _verifyCode extends State<verifyCode> {
                               ),
                               child: Center(
                                 child: Text(
-                                  "Create Account",
+                                  "PROCEED",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w400,

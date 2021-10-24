@@ -13,7 +13,8 @@ var skTest = "sk_test_644ff7e9f679a6ecfc3152e30ad453611e0e564e";
 Future<double> balanceNew(coin) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String email = prefs.getString('email');
-  var url = "https://cryptonew-api.herokuapp.com/api/balance/coin?email=$email&coin_type=$coin"; // iOS
+  
+  var url = "https://cryptonew-apis.herokuapp.com/api/balance/coin?email=$email&coin_type=$coin"; // iOS
   final http.Response response = await http.get(
     url,
     headers: <String, String>{
@@ -47,10 +48,15 @@ Future<double> balanceNew(coin) async {
 
 
 
+
+
+
+
+
 Future<String> address(coin) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String email = prefs.getString('email');
-  var url = "https://cryptonew-api.herokuapp.com/api/user/address?email=$email&coin_type=$coin"; // iOS
+  var url = "https://cryptonew-apis.herokuapp.com/api/user/address?email=$email&coin_type=$coin"; // iOS
   final http.Response response = await http.get(
     url,
     headers: <String, String>{
@@ -71,7 +77,8 @@ Future<String> address(coin) async {
 }
 
 Future<Tuple2> convert(query, coinType) async {
-  var url = "https://cryptonew-api.herokuapp.com/api/convert?amount=$query&coin_type=$coinType"; // iOS
+  print(coinType);
+  var url = "https://cryptonew-apis.herokuapp.com/api/convert?amount=$query&coin_type=$coinType"; // iOS
   final http.Response response = await http.get(
     url,
     headers: <String, String>{
@@ -93,7 +100,7 @@ Future<Tuple2> convert(query, coinType) async {
 }
 
 Future<String> realAmount(query) async {
-  var url = "https://cryptonew-api.herokuapp.com/api/convert?amount=$query"; // iOS
+  var url = "https://cryptonew-apis.herokuapp.com/api/convert?amount=$query"; // iOS
   final http.Response response = await http.get(
     url,
     headers: <String, String>{
@@ -124,7 +131,7 @@ Future<String>createWithdraw(realPrice, bitcoin, accountAccount, accountBank ) a
   Map data = {"amount": realPrice, "email": email, "bitcoin": bitcoin, "flatAmount": bitcoin, "defaultAmount": realPrice, "account_account": accountAccount, "accountBank": accountBank };
   String payload = json.encode(data);
   http.Response response = await http.post(
-      'https://cryptonew-api.herokuapp.com/api/withdraw',
+      'https://cryptonew-apis.herokuapp.com/api/withdraw',
       headers: headers,
       body: payload);
   var dataNew = jsonDecode(response.body);
@@ -145,7 +152,7 @@ Future<int>createWallet() async {
   Map data = {"email": email, };
   String payload = json.encode(data);
   http.Response response = await http.post(
-      'https://cryptonew-api.herokuapp.com/api/create/other/wallet',
+      'https://cryptonew-apis.herokuapp.com/api/create/other/wallet',
       headers: headers,
       body: payload);
   var dataNew = response.statusCode;
@@ -169,7 +176,7 @@ Future<String>transfer(amountB4Fee, bitcoin, coinType, address ) async {
   Map data = {"amount": amountB4Fee, "email": email, "bitcoin": bitcoin, "flatAmount": bitcoin, "defaultAmount": amountB4Fee, "coin_type": coinType, "address": address };
   String payload = json.encode(data);
   http.Response response = await http.post(
-      'https://cryptonew-api.herokuapp.com/api/send',
+      'https://cryptonew-apis.herokuapp.com/api/send',
       headers: headers,
       body: payload);
   var dataNew = jsonDecode(response.body);
@@ -192,7 +199,7 @@ Future<String>createAccessCode() async {
   };
   Map data = {"amount": 10000, "email": email, "bitcoin": 0.000939393, };
   String payload = json.encode(data);                         http.Response response = await http.post(
-      'https://cryptonew-api.herokuapp.com/api/credit',
+      'https://cryptonew-apis.herokuapp.com/api/credit',
       headers: headers,
       body: payload);
   final Map dataNew = jsonDecode(response.body);
@@ -237,7 +244,7 @@ Future<Tuple2> userDetails() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String emailNew = prefs.getString('email');
   print(emailNew);
-  var url = "https://cryptonew-api.herokuapp.com/api/get/user?email=$emailNew"; // iOS
+  var url = "https://cryptonew-apis.herokuapp.com/api/get/user?email=$emailNew"; // iOS
   final http.Response response = await http.get(
     url,
     headers: <String, String>{
@@ -288,7 +295,7 @@ Future<String> updateUser(firstName, lastName) async {
   String phone = prefs.getString('phone');
 
   print(emailNew);
-  var url = "https://cryptonew-api.herokuapp.com/api/update/user?email=$emailNew"; // iOS
+  var url = "https://cryptonew-apis.herokuapp.com/api/update/user?email=$emailNew"; // iOS
   final http.Response response = await http.put(
     url,
     headers: <String, String>{
@@ -332,7 +339,7 @@ Future<String> updatePassword(password) async {
 
 
   print(emailNew);
-  var url = "https://cryptonew-api.herokuapp.com/api/update/email?email=$emailNew"; // iOS
+  var url = "https://cryptonew-apis.herokuapp.com/api/update/email?email=$emailNew"; // iOS
   final http.Response response = await http.put(
     url,
     headers: <String, String>{
@@ -365,7 +372,7 @@ Future<String> updateEmail(email) async {
   String emailNew = prefs.getString('email');
 
 
-  var url = "https://cryptonew-api.herokuapp.com/api/update/email?email=$emailNew"; // iOS
+  var url = "https://cryptonew-apis.herokuapp.com/api/update/email?email=$emailNew"; // iOS
   final http.Response response = await http.post(
     url,
     headers: <String, String>{
@@ -394,7 +401,7 @@ Future<String> updateEmail(email) async {
 
 verifyEmailCode(code) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  var url = "https://cryptonew-api.herokuapp.com/api/verify/new/email"; // iOS
+  var url = "https://cryptonew-apis.herokuapp.com/api/verify/new/email"; // iOS
   final http.Response response = await http.post(
     url,
     headers: <String, String>{

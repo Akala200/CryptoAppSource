@@ -11,7 +11,7 @@ Future <List<gridHome>> getListHome() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String token = prefs.getString('token');
 
-  var url = "https://cryptonew-api.herokuapp.com/api/mobile"; // iOS
+  var url = "https://cryptonew-apis.herokuapp.com/api/mobile"; // iOS
   final http.Response response = await http.get(
     url,
     headers: <String, String>{
@@ -32,6 +32,7 @@ Future <List<gridHome>> getListHome() async {
   } else {
     var st = jsonDecode(response.body);
     var status = st["message"];
+    print(status);
     return status;
   }
 }

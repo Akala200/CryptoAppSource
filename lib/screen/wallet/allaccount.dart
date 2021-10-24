@@ -30,7 +30,7 @@ class _walletMainState extends State<WalletMain>
   getWallet() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String email = prefs.getString('email');
-    var url = "https://cryptonew-api.herokuapp.com/api/get/wallet?email=$email"; // iOS
+    var url = "https://cryptonew-apis.herokuapp.com/api/get/wallet?email=$email"; // iOS
     final http.Response response = await http.get(
       url,
       headers: <String, String>{
@@ -53,6 +53,7 @@ class _walletMainState extends State<WalletMain>
     } else {
       var st = jsonDecode(response.body);
       print(st);
+
       var status = st["message"];
       return status;
     }
